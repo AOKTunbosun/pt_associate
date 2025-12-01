@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT-Associate - Bridging Teachers & Parents</title>
+
+    <link rel="stylesheet" href="{% static 'css/navbar-footer.css' %}">
+
+    {% block extracss %}
+
+    {% endblock extracss %}
+</head>
+
+<body>
+    {% block navbar %}
+    <nav>
+        <div class="nav-container">
+            <div class="logo">PT-Associate</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="#" class="btn btn-secondary">Login</a>
+                <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    {% endblock navbar %}
+
+
+    {% block content %}
+
+
+    {% endblock content %}
+
+
+    {% block footer %}
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2024 EduConnect. All rights reserved.</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">Privacy Policy | Terms of Service | Contact Us</p>
+        </div>
+    </footer>
+
+    {% endblock footer %}
+
+    {% block navbarjs %}
+    <script>
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+
+            if (!mobileNav.contains(event.target) && !menuBtn.contains(event.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+    </script>
+
+    {% endblock navbarjs %}
+
+</body>
+
+</html>
