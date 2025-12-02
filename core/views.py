@@ -8,3 +8,16 @@ class LandingPage(View):
         
         context = {}
         return render(request, 'core/landing.html', context)
+    
+
+class LoginPage(View):
+    def get(self, request):
+
+        context = {}
+        return render(request, 'core/login.html', context)
+
+
+class SignupPage(View):
+    def get(self, request):
+        context = {}
+        return render(request, 'core/signup.html', context)

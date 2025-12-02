@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PT-Associate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f8d 0%, #4a8bc2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .signup-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .signup-left {
+            background: linear-gradient(135deg, #2c5f8d 0%, #4a8bc2 100%);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-left h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .signup-left p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            background: rgba(255, 255, 255, 0.2);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .signup-right {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header {
+            margin-bottom: 2rem;
+        }
+
+        .signup-header h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2c5f8d;
+        }
+
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background: #ff4444;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background: #ffaa00;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: #00cc66;
+        }
+
+        .password-strength-text {
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .password-strength-text.weak {
+            color: #ff4444;
+        }
+
+        .password-strength-text.medium {
+            color: #ffaa00;
+        }
+
+        .password-strength-text.strong {
+            color: #00cc66;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            margin-top: 0.2rem;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .terms-checkbox label {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .terms-checkbox label a {
+            color: #2c5f8d;
+            text-decoration: none;
+        }
+
+        .terms-checkbox label a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 1rem;
+            background: #2c5f8d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-signup:hover {
+            background: #234a6e;
+            transform: translateY(-2px);
+        }
+
+        .btn-signup:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-note {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #2c5f8d;
+        }
+
+        .info-note p {
+            color: #2c5f8d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #999;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #2c5f8d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-home a {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-home a:hover {
+            color: #2c5f8d;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Tablet Responsive */
+        @media (max-width: 1024px) {
+            .signup-container {
+                max-width: 800px;
+            }
+
+            .signup-left,
+            .signup-right {
+                padding: 2.5rem;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .signup-container {
+                grid-template-columns: 1fr;
+            }
+
+            .signup-left {
+                padding: 2rem;
+                text-align: center;
+            }
+
+            .signup-left h2 {
+                font-size: 1.5rem;
+            }
+
+            .signup-left p {
+                font-size: 1rem;
+            }
+
+            .benefits-list li {
+                justify-content: center;
+            }
+
+            .signup-right {
+                padding: 2rem;
+            }
+
+            .signup-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+
+            .signup-left,
+            .signup-right {
+                padding: 1.5rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .signup-header h3 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <!-- Left Side -->
+        <div class="signup-left">
+            <h2>Join PT-Associate Today</h2>
+            <p>Create your account and choose your role after registration. You can be a teacher, parent, or both!</p>
+            <ul class="benefits-list">
+                <li>Flexible role management</li>
+                <li>Connect as teacher and/or parent</li>
+                <li>Secure and private platform</li>
+                <li>Real-time communication</li>
+                <li>Access from any device</li>
+            </ul>
+        </div>
+
+        <!-- Right Side - Signup Form -->
+        <div class="signup-right">
+            <div class="logo">PT-Associate</div>
+            <div class="signup-header">
+                <h3>Create Your Account</h3>
+                <p>Start by creating your basic account</p>
+            </div>
+
+            <!-- Info Note -->
+            <div class="info-note">
+                <p>📌 After registration, you'll be able to set up your profile as a teacher, parent, or both.</p>
+            </div>
+
+            <!-- Signup Form -->
+            <form action="#" method="POST" id="signupForm">
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                        <div class="error-message" id="firstNameError">First name is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                        <div class="error-message" id="lastNameError">Last name is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <!-- Password Fields -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required
+                        oninput="checkPasswordStrength()">
+                    <div class="password-requirements">Must be at least 8 characters with uppercase, lowercase, and
+                        numbers</div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="password-strength-text" id="strengthText"></div>
+                    <div class="error-message" id="passwordError">Password does not meet requirements</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                        placeholder="Re-enter your password" required>
+                    <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-signup">Create Account</button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="login-link">
+                Already have an account? <a href="#">Sign In</a>
+            </div>
+
+            <div class="back-home">
+                <a href="#">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            strengthText.className = 'password-strength-text';
+
+            if (password.length === 0) {
+                strengthText.textContent = '';
+            } else if (strength <= 1) {
+                strengthBar.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('medium');
+                strengthText.classList.add('medium');
+                strengthText.textContent = 'Medium strength';
+            } else {
+                strengthBar.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthText.textContent = 'Strong password';
+            }
+        }
+
+        // Form validation
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+
+            let isValid = true;
+
+            // Validate first name
+            const firstName = document.getElementById('firstName').value.trim();
+            if (firstName === '') {
+                document.getElementById('firstNameError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate last name
+            const lastName = document.getElementById('lastName').value.trim();
+            if (lastName === '') {
+                document.getElementById('lastNameError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate phone
+            const phone = document.getElementById('phone').value.trim();
+            if (phone === '') {
+                document.getElementById('phoneError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                document.getElementById('passwordError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate password confirmation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate terms
+            const terms = document.getElementById('terms').checked;
+            if (!terms) {
+                alert('Please accept the Terms of Service and Privacy Policy');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Form is valid, submit it
+                console.log('Form is valid, proceeding to role selection...');
+                alert('Account created successfully! You will now be redirected to set up your role(s).');
+                // this.submit(); // Uncomment when ready to actually submit
+            }
+        });
+    </script>
+</body>
+
+</html>

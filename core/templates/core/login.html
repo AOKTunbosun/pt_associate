@@ -1,0 +1,90 @@
+{% extends 'main.html' %}
+{% load static %}
+
+    <title>{% block title %}Login - PT-Associate{% endblock title %}</title>
+    {% block extracss %}
+    <link rel="stylesheet" href="{% static 'core/login.css' %}">
+    {% endblock extracss %}
+
+
+{% block content %}
+    <div class="login-container">
+        <!-- Left Side -->
+        <div class="login-left">
+            <h2>Welcome to PT-Associate</h2>
+            <p>Your bridge to meaningful communication between teachers and parents.</p>
+            <ul class="features-list">
+                <li>Secure messaging platform</li>
+                <li>Real-time updates</li>
+                <li>Track student progress</li>
+                <li>Personalized discussions</li>
+            </ul>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="login-right">
+            <div class="logo">PT-Associate</div>
+            <div class="login-header">
+                <h3>Sign In</h3>
+                <p>Access your account</p>
+            </div>
+
+            <!-- Role Selection Tabs -->
+            <div class="role-tabs">
+                <button class="role-tab active" onclick="selectRole('teacher')">Teacher</button>
+                <button class="role-tab" onclick="selectRole('parent')">Parent</button>
+            </div>
+
+            <!-- Login Form -->
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account? <a href="#">Sign Up</a>
+            </div>
+
+            <div class="back-home">
+                <a href="#">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+
+    {% block extrajs %}
+    <script>
+        function selectRole(role) {
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.role-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+
+            // You can add logic here to handle different role selections
+            console.log('Selected role:', role);
+        }
+    </script>
+    {% endblock extrajs %}

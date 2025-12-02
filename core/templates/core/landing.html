@@ -5,38 +5,10 @@
     <link rel="stylesheet" href="{% static 'core/landing.css' %}">
     {% endblock extracss %}
 
-    
-    <!-- Navigation -->
-    <!-- <nav>
-        <div class="nav-container">
-            <div class="logo">PT-Associate</div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            <div class="nav-cta">
-                <a href="#" class="btn btn-secondary">Login</a>
-                <a href="#" class="btn btn-primary">Get Started</a>
-            </div>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-        </div>
-    </nav> -->
-
     <!-- Mobile Navigation -->
 
     {% block content %}
-    <div class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="#features" onclick="toggleMobileMenu()">Features</a></li>
-            <li><a href="#how-it-works" onclick="toggleMobileMenu()">How It Works</a></li>
-            <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
-        </ul>
-        <div class="mobile-nav-cta">
-            <a href="#" class="btn btn-secondary">Login</a>
-            <a href="#" class="btn btn-primary">Get Started</a>
-        </div>
-    </div>
+   
 
     <!-- Hero Section -->
     <section class="hero">
