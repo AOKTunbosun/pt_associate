@@ -32,8 +32,18 @@ class TeacherProfile(models.Model):
 
 class SchoolProfile(models.Model):
     id = models.AutoField(primary_key=True)
-    school_name = models.CharField(max_length=500, null=False)
+    school_name = models.CharField(max_length=500, null=False, unique=True, db_index=True)
     school_admin = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.school_name
+
+
+class Classroom(models.Model):
+    id = models.AutoField(primary_key=True)
+    classroom_name = models.CharField(max_length=150, null=False)
+    teacher_id = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
+    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return f"{self.classroom_name} in {self.school_id.school_name}"
