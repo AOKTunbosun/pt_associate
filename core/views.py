@@ -21,19 +21,6 @@ class LoginPage(View):
         context = {}
         return render(request, 'core/login.html', context)
 
-# def login_page(request):
-#     if request.method == 'POST':
-#         print(request.POST.get('email'))
-
-#     context = {}
-#     return render(request, 'core/login.html', context)
-
-# def signup_page(request):
-#     if request.method == 'POST':
-#         print(request.POST.get('firstName'))
-
-#     context = {}
-#     return render(request, 'core/signup.html', context)
 
 
 class SignupPage(View):

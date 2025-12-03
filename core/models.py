@@ -12,3 +12,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+
+class ParentProfile(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user_id.first_name} {self.user_id.last_name}'s parent profile"

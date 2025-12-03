@@ -26,7 +26,6 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     if (isValid) {
         // Form is valid, submit it
         console.log('Login form submitted');
-        console.log('Email:', email);
         // this.submit(); // Uncomment when ready to actually submit
     }
 });
