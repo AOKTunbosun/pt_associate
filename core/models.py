@@ -47,3 +47,16 @@ class Classroom(models.Model):
 
     def __str__(self):
         return f"{self.classroom_name} in {self.school_id.school_name}"
+
+
+class Student(models.Model):
+    id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    classroom_id = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=False)
+    parent_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} in {self.classroom_id.classroom_name}"
+    
+
