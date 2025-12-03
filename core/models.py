@@ -64,6 +64,10 @@ class Message(models.Model):
     id = models.AutoField(primary_key=True)
     sender_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False, related_name='sender')
     receiver_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False, related_name='receiver')
+    message_body = models.TextField(default=None, null=True)
     is_viewed = models.BooleanField(default=False, null=True)
     edited = models.BooleanField(default=False, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender_id.first_name} {self.sender_id.last_name} message to {self.receiver_id.first_name} {self.receiver_id.lastname}"
