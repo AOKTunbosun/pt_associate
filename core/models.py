@@ -60,3 +60,10 @@ class Student(models.Model):
         return f"{self.first_name} {self.last_name} in {self.classroom_id.classroom_name}"
     
 
+class Message(models.Model):
+    id = models.AutoField(primary_key=True)
+    sender_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False, related_name='sender')
+    receiver_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False, related_name='receiver')
+    is_viewed = models.BooleanField(default=False, null=True)
+    edited = models.BooleanField(default=False, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
