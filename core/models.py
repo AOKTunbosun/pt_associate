@@ -29,3 +29,11 @@ class TeacherProfile(models.Model):
     def __str__(self):
         return f"{self.user_id.first_name} {self.user_id.last_name}'s teacher profile"
 
+
+class SchoolProfile(models.Model):
+    id = models.AutoField(primary_key=True)
+    school_name = models.CharField(max_length=500, null=False)
+    school_admin = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.school_name
