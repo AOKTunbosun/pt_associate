@@ -30,25 +30,36 @@ class LoginPage(View):
 
         try:
             user = User.objects.get(email=email)
-        
-        except:
+            
+        except User.DoesNotExist:
             messages.error(request, message='User does not exist, try signing up')
             return redirect('login')
         
-        user = authenticate(request, email=email, password=password)
-
-
-        if not user:
-            messages.error(request, message='Incorrect password')
+        except User.MultipleObjectsReturned:
+            messages.error(request, message='Multiple accounts found for this email')
             return redirect('login')
 
-        else:
-            login(request, user)
+        user = authenticate(request, username=user.username, password=password)
+
+
+        if user is not None:
             if not remember:
                 request.session.set_expiry(0)
             else:
                 request.session.set_expiry(60*60*24*30)
+            login(request, user)
+            return redirect('landing')
+
+            
+        else:
+            messages.error(request, message='Incorrect password')
             return redirect('login')
+
+
+def logout_user(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('login')
 
 
 class SignupPage(View):
