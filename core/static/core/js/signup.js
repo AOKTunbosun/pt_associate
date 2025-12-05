@@ -32,7 +32,6 @@ function checkPasswordStrength() {
 
 // Form validation
 document.getElementById('signupForm').addEventListener('submit', function (e) {
-    // e.preventDefault();
 
     // Clear previous errors
     document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
@@ -79,6 +78,7 @@ document.getElementById('signupForm').addEventListener('submit', function (e) {
     // Validate password confirmation
     const confirmPassword = document.getElementById('confirmPassword').value;
     if (password !== confirmPassword) {
+        e.preventDefault();
         document.getElementById('confirmPasswordError').classList.add('show');
         isValid = false;
     }

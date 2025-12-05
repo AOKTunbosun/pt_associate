@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
+import uuid
 
 # Create your views here.
 User = get_user_model()
@@ -48,7 +49,7 @@ class LoginPage(View):
             else:
                 request.session.set_expiry(60*60*24*30)
             login(request, user)
-            return redirect('landing')
+            return redirect('dashboard')
 
             
         else:
@@ -68,7 +69,42 @@ class SignupPage(View):
         return render(request, 'core/signup.html', context)
     
     def post(self, request):
-        print(request.POST.get('firstName'))
-        context = {}
-        return render(request, 'core/signup.html', context)
+        if request.user.is_authenticated:
+            logout(request)
 
+        first_name = request.POST.get('firstName')
+        last_name = request.POST.get('lastName')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+
+        username = email.split('@')[0] + str(uuid.uuid4())[:10]
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already exist')
+            return redirect('signup')
+        
+        try:
+            user = User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                email=email,
+                phone_number=phone,
+                password=password
+            )
+
+            if user:
+                login(request, user)
+                return redirect('dashboard')
+        
+        except Exception as e:
+            print(e)
+            messages.error(request, 'Error trying to create your account')
+            return redirect('signup')
+
+
+class DashboardPage(View):
+    def get(self, request):
+        context = {}
+        return render(request, 'core/dashboard.html', context)
