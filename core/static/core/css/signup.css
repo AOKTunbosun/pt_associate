@@ -25,7 +25,7 @@ body {
 }
 
 .signup-left {
-    background: linear-gradient(135deg, #2c5f8d 0%, #4a8bc2 100%);
+    background: linear-gradient(135deg, #0066cc, #0099ff);
     color: white;
     padding: 3rem;
     display: flex;
@@ -75,12 +75,12 @@ body {
     justify-content: center;
 }
 
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #2c5f8d;
-    margin-bottom: 0.5rem;
-}
+/* .logo { */
+    /* font-size: 1.8rem; */
+    /* font-weight: bold; */
+    /* color: #2c5f8d; */
+    /* margin-bottom: 0.5rem; */
+/* } */
 
 .signup-header {
     margin-bottom: 2rem;
@@ -215,7 +215,7 @@ body {
 .btn-signup {
     width: 100%;
     padding: 1rem;
-    background: #2c5f8d;
+    background: #0065c9;
     color: white;
     border: none;
     border-radius: 8px;

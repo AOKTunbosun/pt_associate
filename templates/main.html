@@ -8,7 +8,7 @@
     <title>{% block title %}PT-Associate - Bridging Teachers & Parents{% endblock title %}</title>
 
     <link rel="stylesheet" href="{% static 'css/navbar-footer.css' %}">
-
+    
     {% block extracss %}
 
     {% endblock extracss %}
@@ -16,7 +16,67 @@
 
 <body>
     {% block navbar %}
-    <nav>
+    {% if request.user.is_authenticated %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <header class="dashboard-header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>PT-Associate</h1>
+            </div>
+    
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-comments"></i> Messages</a></li>
+                    <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    <!-- <li><a href="#"><i class="fas fa-calendar"></i> Calendar</a></li> -->
+                </ul>
+            </nav>
+    
+            <div class="header-right">
+                <!-- Role Toggle Switch -->
+                <div class="role-toggle-container">
+                    <div class="role-toggle">
+                        <button class="role-btn active" data-role="parent">
+                            <i class="fas fa-user"></i>
+                            <span>Parent</span>
+                        </button>
+                        <button class="role-btn" data-role="teacher">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Teacher</span>
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-info">
+                        <img src="https://ui-avatars.com/api/?name=John+Smith&background=0066cc&color=fff"
+                            alt="User Avatar">
+                        <div class="user-details">
+                            <span class="user-name">John Smith</span>
+                            <span class="user-role">Parent & Teacher</span>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    {% else %}
+    <nav class="not-auth">
         <div class="nav-container">
             <div class="logo">PT-Associate</div>
             <ul class="nav-links">
@@ -43,6 +103,7 @@
             <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
         </div>
     </div>
+    {% endif %}
 
     {% endblock navbar %}
 
@@ -74,6 +135,13 @@
     {% endblock footer %}
 
     {% block navbarjs %}
+
+    {% if request.user.is_authenticated %}
+    
+    <script src="{% static 'core/js/dashboard.js' %}"></script>
+    
+    {% else %}
+
     <script>
         function toggleMobileMenu() {
             const mobileNav = document.getElementById('mobileNav');
@@ -90,6 +158,8 @@
             }
         });
     </script>
+    
+    {% endif %}
 
     {% endblock navbarjs %}
 

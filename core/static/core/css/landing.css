@@ -13,10 +13,10 @@
  
  /* Hero Section */
  .hero {
-     background: linear-gradient(135deg, #2c5f8d 0%, #4a8bc2 100%);
+     background: linear-gradient(135deg, #0066cc, #0099ff);
      color: white;
      padding: 150px 5% 100px;
-     margin-top: 70px;
+     /* margin-top: 70px; */
  }
 
  .hero-container {
@@ -65,7 +65,7 @@
  .section-title {
      text-align: center;
      font-size: 2.5rem;
-     color: #2c5f8d;
+     color: #0065c9;
      margin-bottom: 3rem;
  }
 
@@ -100,7 +100,7 @@
  }
 
  .feature-card h3 {
-     color: #2c5f8d;
+     color: #0065c9;
      margin-bottom: 1rem;
      font-size: 1.4rem;
  }
@@ -133,7 +133,7 @@
  .step-number {
      width: 50px;
      height: 50px;
-     background: #2c5f8d;
+     background: #0065c9;
      color: white;
      border-radius: 50%;
      display: flex;
@@ -145,13 +145,13 @@
  }
 
  .step h3 {
-     color: #2c5f8d;
+     color: #0065c9;
      margin-bottom: 0.5rem;
  }
 
  /* CTA Section */
  .cta {
-     background: linear-gradient(135deg, #2c5f8d 0%, #4a8bc2 100%);
+     background: linear-gradient(45deg, #0066cc, #0099ff);
      color: white;
      padding: 80px 5%;
      text-align: center;
@@ -226,7 +226,7 @@
 
      .hero {
          padding: 100px 4% 60px;
-         margin-top: 70px;
+         /* margin-top: 70px; */
      }
 
      .hero-container {

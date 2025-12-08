@@ -16,11 +16,11 @@
             <div class="hero-content">
                 <h1>Connecting Teachers & Parents for Student Success</h1>
                 <p>No more waiting for PTA meetings. Engage in meaningful, personalized conversations about your
-                    student's progress anytime, anywhere.</p>
+                    student's and children's progress anytime, anywhere.</p>
                 <div style="display: flex; gap: 1rem;">
-                    <a href="#" class="btn btn-primary btn-large">Join as Teacher</a>
-                    <a href="#" class="btn btn-secondary btn-large"
-                        style="background: white; color: #2c5f8d; border: none;">Join as Parent</a>
+                    <!-- <a href="#" class="btn btn-primary btn-large">Join as Teacher</a> -->
+                    <a href="{% url 'signup' %}" class="btn btn-secondary btn-large"
+                        style="background: white; color: #2c5f8d; border: none;">Get Started</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -115,7 +115,7 @@
             <h2>Ready to Transform Education Communication?</h2>
             <p>Join thousands of teachers and parents already using EduConnect to build stronger partnerships for
                 student success.</p>
-            <a href="#" class="btn btn-large" style="background: white; color: #2c5f8d;">Get Started Today</a>
+            <a href="{% url 'signup' %}" class="btn btn-large" style="background: white; color: #2c5f8d;">Get Started Today</a>
         </div>
     </section>
     {% endblock content %}

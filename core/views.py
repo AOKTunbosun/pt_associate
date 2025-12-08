@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
 
@@ -8,6 +11,7 @@ import uuid
 User = get_user_model()
 
 
+# @method_decorator(ratelimit(key='ip', rate='3/m', method='GET'), name='dispatch')
 class LandingPage(View):
     def get(self, request):
         
@@ -105,6 +109,8 @@ class SignupPage(View):
 
 
 class DashboardPage(View):
+
+    @method_decorator(login_required)
     def get(self, request):
         context = {}
         return render(request, 'core/dashboard.html', context)

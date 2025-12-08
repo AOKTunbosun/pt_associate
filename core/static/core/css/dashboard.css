@@ -361,8 +361,7 @@ body {
     gap: 22px;
 }
 
-.left-column,
-.right-column {
+.left-column, .right-column {
     display: flex;
     flex-direction: column;
     gap: 22px;
@@ -1024,12 +1023,12 @@ body {
     font-weight: 500;
 }
 
-.todo-item input[type="checkbox"]:checked+label .todo-title {
+.todo-item input[type="checkbox"]:checked + label .todo-title {
     text-decoration: line-through;
     color: #999;
 }
 
-.todo-item input[type="checkbox"]:checked+label .todo-desc {
+.todo-item input[type="checkbox"]:checked + label .todo-desc {
     color: #bbb;
 }
 
@@ -1161,33 +1160,32 @@ body {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
-    .left-column,
-    .right-column {
+    
+    .left-column, .right-column {
         gap: 20px;
     }
-
+    
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
+    
     .main-nav ul {
         gap: 8px;
     }
-
+    
     .main-nav a {
         font-size: 10px;
         padding: 5px 8px;
     }
-
+    
     .user-name {
         max-width: 100px;
     }
-
+    
     .role-btn span {
         display: none;
     }
-
+    
     .role-btn {
         padding: 8px 10px;
     }
@@ -1202,43 +1200,43 @@ body {
     .main-nav {
         display: none;
     }
-
+    
     .mobile-menu-btn {
         display: block;
     }
-
+    
     .header-right {
         order: 2;
     }
-
+    
     .mobile-menu-btn {
         order: 3;
     }
-
+    
     .stats-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .role-indicator-content {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
-
+    
     .role-switch-info {
         width: 100%;
     }
-
+    
     .class-item {
         flex-direction: column;
         align-items: flex-start;
     }
-
+    
     .class-actions {
         width: 100%;
         justify-content: flex-end;
     }
-
+    
     .actions-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1249,68 +1247,68 @@ body {
     .container {
         padding: 0 15px;
     }
-
+    
     .dashboard-main {
         padding: 20px 0;
     }
-
+    
     .welcome-card {
         padding: 20px;
     }
-
+    
     .welcome-card h2 {
         font-size: 22px;
     }
-
+    
     .dashboard-card {
         padding: 18px;
     }
-
+    
     .footer-container {
         flex-direction: column;
         gap: 12px;
         text-align: center;
     }
-
+    
     .footer-links {
         justify-content: center;
         gap: 15px;
     }
-
+    
     .progress-indicator {
         flex-wrap: wrap;
         gap: 5px;
     }
-
+    
     .progress-label {
         min-width: auto;
         width: 100%;
     }
-
+    
     .announcement-meta {
         flex-direction: column;
         gap: 5px;
     }
-
+    
     .message-meta {
         flex-direction: column;
         gap: 5px;
     }
-
+    
     .class-actions {
         flex-direction: column;
         gap: 8px;
     }
-
+    
     .class-actions button {
         width: 100%;
         justify-content: center;
     }
-
+    
     .add-task {
         flex-direction: column;
     }
-
+    
     .announcement-options {
         flex-direction: column;
     }
@@ -1321,84 +1319,84 @@ body {
     .logo h1 {
         font-size: 18px;
     }
-
+    
     .welcome-card h2 {
         font-size: 20px;
     }
-
+    
     .date-info {
         font-size: 13px;
         padding: 6px 12px;
     }
-
+    
     .user-info img {
         width: 32px;
         height: 32px;
     }
-
+    
     .user-name {
         max-width: 80px;
     }
-
+    
     .notification-bell {
         font-size: 16px;
     }
-
+    
     .role-toggle {
         padding: 2px;
     }
-
+    
     .role-btn {
         padding: 6px 8px;
     }
-
+    
     .role-btn i {
         font-size: 16px;
     }
-
+    
     .child-item {
         flex-direction: column;
         text-align: center;
         gap: 10px;
     }
-
+    
     .child-details {
         width: 100%;
     }
-
+    
     .actions-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .announcement-item {
         flex-direction: column;
         text-align: center;
     }
-
+    
     .announcement-icon {
         margin: 0 auto;
     }
-
+    
     .message-item {
         flex-direction: column;
         text-align: center;
     }
-
+    
     .message-avatar {
         margin: 0 auto;
     }
-
+    
     .event-item {
         flex-direction: column;
         text-align: center;
         align-items: center;
     }
-
+    
     .stat-card {
         flex-direction: column;
         text-align: center;
     }
-
+    
     .stat-icon {
         margin-bottom: 10px;
     }
@@ -1413,7 +1411,7 @@ body {
     left: 0;
     right: 0;
     background-color: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     padding: 20px;
     z-index: 1000;
     max-height: calc(100vh - 64px);

@@ -71,3 +71,4 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.sender_id.first_name} {self.sender_id.last_name} message to {self.receiver_id.first_name} {self.receiver_id.lastname}"
+

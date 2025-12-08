@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_ratelimit',
     'core',
 ]
 
@@ -104,6 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+LOGIN_URL = '/login/'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -132,6 +136,20 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Use the custom user model defined in the core app
 AUTH_USER_MODEL = 'core.CustomUser'
+
+
+RATELIMIT_ENABLE = True
+RATELIMIT_VIEW = 'django_ratelimit.views.ratelimit_view'
+
+# Shared cache backend for rate limiting
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211',
+    },
+}
+
+RATELIMIT_CACHE = 'default'
+
+

@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'main.html' %}
 {% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - PT-Associate</title>
-    <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
 
-<body>
+    <title>{% block title %}Dashboard - PT-Associate{% endblock title %}</title>
+    {% block extracss %}
+    <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
+    {% endblock extracss %}
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+
+
+
     <!-- Header/Navigation -->
-    <header class="dashboard-header">
+    <!-- <header class="dashboard-header">
         <div class="header-container">
             <div class="logo">
                 <h1>PT-Associate</h1>
@@ -23,14 +22,14 @@
                     <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a href="#"><i class="fas fa-comments"></i> Messages</a></li>
                     <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
-                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
-                    <li><a href="#"><i class="fas fa-calendar"></i> Calendar</a></li>
-                </ul>
+                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li> -->
+                    <!-- <li><a href="#"><i class="fas fa-calendar"></i> Calendar</a></li> -->
+                <!-- </ul>
             </nav>
 
-            <div class="header-right">
+            <div class="header-right"> -->
                 <!-- Role Toggle Switch -->
-                <div class="role-toggle-container">
+                <!-- <div class="role-toggle-container">
                     <div class="role-toggle">
                         <button class="role-btn active" data-role="parent">
                             <i class="fas fa-user"></i>
@@ -41,10 +40,10 @@
                             <span>Teacher</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- User Profile -->
-                <div class="user-profile">
+                <!-- <div class="user-profile">
                     <div class="notification-bell">
                         <i class="fas fa-bell"></i>
                         <span class="notification-count">3</span>
@@ -59,15 +58,17 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn">
+            <!-- <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
-
+ -->
+    
+    {% block content %}
     <!-- Main Content -->
     <main class="dashboard-main">
         <div class="container">
@@ -233,7 +234,7 @@
                         </section>
 
                         <!-- Upcoming Events -->
-                        <section class="dashboard-card">
+                        <!-- <section class="dashboard-card">
                             <div class="card-header">
                                 <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
                                 <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
@@ -263,7 +264,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </section> -->
 
                         <!-- Quick Actions -->
                         <section class="dashboard-card quick-actions">
@@ -550,7 +551,7 @@
                         </section>
 
                         <!-- Teacher Quick Actions -->
-                        <section class="dashboard-card quick-actions">
+                        <!-- <section class="dashboard-card quick-actions">
                             <div class="card-header">
                                 <h3><i class="fas fa-bolt"></i> Teacher Tools</h3>
                             </div>
@@ -580,12 +581,14 @@
                                     <span>Schedule Event</span>
                                 </a>
                             </div>
-                        </section>
+                        </section> -->
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    {% endblock %}
 
     <!-- Footer -->
     <footer class="dashboard-footer">
@@ -600,7 +603,4 @@
         </div>
     </footer>
 
-    <script src="{% static 'core/js/dashboard.js' %}"></script>
-</body>
-
-</html>
+    <!-- <script src="{% static 'core/js/dashboard.js' %}"></script> -->
