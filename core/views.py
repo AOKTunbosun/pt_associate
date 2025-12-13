@@ -11,8 +11,9 @@ import uuid
 User = get_user_model()
 
 
-# @method_decorator(ratelimit(key='ip', rate='3/m', method='GET'), name='dispatch')
+
 class LandingPage(View):
+    # @method_decorator(ratelimit(key='ip', rate='3/m', method='GET', block=True), name='dispatch')
     def get(self, request):
         
         context = {}
@@ -114,3 +115,9 @@ class DashboardPage(View):
     def get(self, request):
         context = {}
         return render(request, 'core/dashboard.html', context)
+
+
+class MessagesPage(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'core/messages.html')

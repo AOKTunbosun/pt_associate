@@ -86,7 +86,7 @@
 
             <!-- Dashboard Content -->
             <!-- PARENT DASHBOARD (Default Visible) -->
-            <div id="parent-dashboard" class="dashboard-content active">
+            <div id="parent-section" class="dashboard-content active">
                 <!-- Welcome Section -->
                 <section class="welcome-section">
                     <div class="welcome-card">
@@ -117,15 +117,15 @@
                                     <div class="child-details">
                                         <h4>Emily Smith</h4>
                                         <p>Grade 5, Room 204</p>
-                                        <div class="progress-indicator">
+                                        <!-- <div class="progress-indicator">
                                             <span class="progress-label">Math Progress:</span>
                                             <div class="progress-bar">
                                                 <div class="progress-fill" style="width: 85%"></div>
                                             </div>
                                             <span class="progress-percent">85%</span>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a>
+                                    <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
                                 </div>
 
                                 <div class="child-item">
@@ -135,15 +135,15 @@
                                     <div class="child-details">
                                         <h4>Michael Smith</h4>
                                         <p>Grade 3, Room 112</p>
-                                        <div class="progress-indicator">
+                                        <!-- <div class="progress-indicator">
                                             <span class="progress-label">Reading Progress:</span>
                                             <div class="progress-bar">
                                                 <div class="progress-fill" style="width: 72%"></div>
                                             </div>
                                             <span class="progress-percent">72%</span>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a>
+                                    <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
                                 </div>
                             </div>
                         </section>
@@ -157,7 +157,7 @@
                             <div class="announcements-list">
                                 <div class="announcement-item">
                                     <div class="announcement-icon">
-                                        <i class="fas fa-calendar-check"></i>
+                                        <i class="fas fa-bullhorn"></i>
                                     </div>
                                     <div class="announcement-content">
                                         <h4>Field Trip Next Friday</h4>
@@ -172,7 +172,7 @@
 
                                 <div class="announcement-item">
                                     <div class="announcement-icon">
-                                        <i class="fas fa-book"></i>
+                                        <i class="fas fa-bullhorn"></i>
                                     </div>
                                     <div class="announcement-content">
                                         <h4>Parent-Teacher Conferences</h4>
@@ -272,24 +272,24 @@
                                 <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
                             </div>
                             <div class="actions-grid">
-                                <a href="#" class="action-item">
+                                <!-- <a href="#" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-file-signature"></i>
                                     </div>
                                     <span>Sign Permission Slip</span>
-                                </a>
+                                </a> -->
                                 <a href="#" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-calendar-check"></i>
                                     </div>
                                     <span>Schedule Meeting</span>
                                 </a>
-                                <a href="#" class="action-item">
+                                <!-- <a href="#" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-chart-line"></i>
                                     </div>
                                     <span>View Progress Reports</span>
-                                </a>
+                                </a> -->
                                 <a href="#" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-cog"></i>
@@ -303,7 +303,7 @@
             </div>
 
             <!-- TEACHER DASHBOARD (Hidden by Default) -->
-            <div id="teacher-dashboard" class="dashboard-content">
+            <div id="teacher-section" class="dashboard-content">
                 <!-- Welcome Section -->
                 <section class="welcome-section">
                     <div class="welcome-card">
@@ -342,16 +342,16 @@
 
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-tasks"></i>
+                            <i class="fas fa-chalkboard"></i>
                         </div>
                         <div class="stat-content">
-                            <h3>Assignments Due</h3>
-                            <p class="stat-number">3</p>
-                            <p class="stat-change">To grade</p>
+                            <h3>Classes</h3>
+                            <p class="stat-number">2</p>
+                            <p class="stat-change">Registered</p>
                         </div>
                     </div>
 
-                    <div class="stat-card">
+                    <!-- <div class="stat-card">
                         <div class="stat-icon">
                             <i class="fas fa-calendar"></i>
                         </div>
@@ -360,7 +360,7 @@
                             <p class="stat-number">5</p>
                             <p class="stat-change">This week</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Dashboard Grid -->
@@ -591,7 +591,7 @@
     {% endblock %}
 
     <!-- Footer -->
-    <footer class="dashboard-footer">
+    <!-- <footer class="dashboard-footer">
         <div class="footer-container">
             <p>&copy; 2024 PT-Associate. All rights reserved.</p>
             <div class="footer-links">
@@ -601,6 +601,8 @@
                 <a href="#">Help Center</a>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
-    <!-- <script src="{% static 'core/js/dashboard.js' %}"></script> -->
+    {% block extrajs %}
+    <script src="{% static 'core/js/dashboard.js' %}"></script>
+    {% endblock extrajs %}

@@ -27,14 +27,35 @@
     
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-comments"></i> Messages</a></li>
+
+                    {% if request.path == '/dashboard/' %}
+                    <li><a href="{% url 'dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% else %}
+                    <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/messages/' %}
+                    <li><a href="{% url 'messages' %}" class="active"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% else %}
+                    <li><a href="{% url 'messages' %}"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/announcements/' %}
+                    <li><a href="#" class="active"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    {% else %}
                     <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/students/' %}
+                    <li><a href="#" class="active"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    {% else %}
                     <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
-                    <!-- <li><a href="#"><i class="fas fa-calendar"></i> Calendar</a></li> -->
+                    {% endif %}
+
                 </ul>
             </nav>
-    
+            
+
             <div class="header-right">
                 <!-- Role Toggle Switch -->
                 <div class="role-toggle-container">
@@ -67,6 +88,7 @@
                     </div>
                 </div>
             </div>
+
     
             <!-- Mobile Menu Button -->
             <button class="mobile-menu-btn">
@@ -125,10 +147,15 @@
 
 
     {% block footer %}
-    <footer>
+    <footer class="main-footer">
         <div class="footer-container">
-            <p>&copy; 2024 EduConnect. All rights reserved.</p>
-            <p style="margin-top: 1rem; opacity: 0.8;">Privacy Policy | Terms of Service | Contact Us</p>
+            <p>&copy; 2024 PT-Associate. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Help Center</a>
+            </div>
         </div>
     </footer>
 
@@ -138,7 +165,7 @@
 
     {% if request.user.is_authenticated %}
     
-    <script src="{% static 'core/js/dashboard.js' %}"></script>
+    <script src="{% static 'js/navbar-footer.js' %}"></script>
     
     {% else %}
 

@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    background-color: #f8fafc;
+    overflow-x: hidden;
+    line-height: 1.6
+}
+
+.container{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.messages-content{
+    display: none;
+}
+
+.messages-content.active {
+    display: block;
+}
+
+.messages-main {
+    padding: 25px 0;
+    min-height: calc(100vh -140px);
+}
+
+.greeting-section {
+    margin: 25px 20px;
+}
+
+.greeting-card {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    color: white;
+    padding: 22px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+}
+
+.greeting-card h3 {
+    font-size: 23px;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+.greeting-card p {
+    opacity: 0.9;
+    margin-bottom: 12px;
+}
+
+.messages-grid {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.left-column {
+    background-color: white;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+}
+
+.search-bar {
+    padding: 0.7rem;
+    margin: 6px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #2c5f8d;
+}
+
+.left-column p {
+    margin: 8px 6px;
+
+}
+
+.left-column a {
+    text-decoration: none;
+    color: #333;
+    margin: 6px;
+}
+
+.right-column {
+    background-color: white;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.messages-card-header {
+    margin: 6px;
+}
+
+.messages-item {
+    display: flex;
+    gap: 15px;
+    padding: 14px;
+    margin: 6px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.messages-item:hover {
+    background-color: #f0f7ff;
+}
+
+.messages-item.unread {
+    background-color: #f0f7ff;
+    border-left: 4px solid #0066cc;
+}
+
+.sender-initials {
+    display: flex;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #0066cc;
+    align-items: center;
+    justify-content: center;
+}
+
+.sender-initials h5 {
+    color: white;
+    font-size: 1.3rem;
+}

@@ -374,16 +374,38 @@ body {
 
 
 /* Footer */
-footer {
-    background: #1a3a52;
+.main-footer {
+    background-color: #1a1a2e;
     color: white;
-    padding: 40px 5%;
-    text-align: center;
+    padding: 18px 0;
 }
 
 .footer-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #bbb;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: white;
 }
 
 

@@ -1,0 +1,80 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+<title>{% block title %}Messages - PT-Associate{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/messages.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<main class="messages-main">
+    <div class="container">
+        <div class="role-indicator">
+                <div class="role-indicator-content">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Currently viewing as: <strong id="current-role">Parent</strong></span>
+                    <div class="role-switch-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>You can switch between roles using the toggle above</span>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div id="parent-section" class="messages-content active">
+        <section class="greeting-section">
+            <div class="greeting-card">
+                <h3>Here are your messages, John!</h3>
+                <p>Check out the teachers' messages</p>
+            </div>
+        </section>
+
+        <div class="messages-grid">
+            <div class="left-column">
+                <input class="search-bar" placeholder="Search" name="search-bar">
+                <p><a href="#">Unread</a></p>
+                <p><a href="#">Recent</a></p>
+
+            </div>
+
+            <div class="right-column">
+                <section class="messages-card">
+                    <div class="messages-card-header">
+                        <h2>Messages</h2>
+                    </div>
+                    <div class="messages-list">
+                        <div class="messages-item">
+                            <div class="sender-initials">
+                                <h5>AK</h5>
+                            </div>
+                            <div class="message-content">
+                                <h4>Mr. Keruwole <span class="message-badge">Computer Teacher</span></h4>
+                                <p class="message-preview">The computer training will begin next week.</p>
+
+                                <div class="message-meta-data">
+                                    <span>5 minutes ago</span>
+                                    <span class="unread-indicator">Unread</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+{% endblock content %}
