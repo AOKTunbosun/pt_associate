@@ -27,7 +27,7 @@
     <div id="parent-section" class="messages-content active">
         <section class="greeting-section">
             <div class="greeting-card">
-                <h3>Here are your messages, John!</h3>
+                <h3>Here are your messages, {{ request.user.first_name }}!</h3>
                 <p>Check out the teachers' messages</p>
             </div>
         </section>

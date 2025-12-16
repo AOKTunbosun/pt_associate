@@ -90,7 +90,7 @@
                 <!-- Welcome Section -->
                 <section class="welcome-section">
                     <div class="welcome-card">
-                        <h2>Welcome back, John!</h2>
+                        <h2>Welcome back, {{ request.user.first_name }}!</h2>
                         <p>Here's what's happening with your children today.</p>
                         <div class="date-info">
                             <i class="fas fa-calendar-day"></i>
@@ -307,7 +307,7 @@
                 <!-- Welcome Section -->
                 <section class="welcome-section">
                     <div class="welcome-card">
-                        <h2>Welcome back, Mr. Smith!</h2>
+                        <h2>Welcome back, Mr. {{ request.user.last_name }}!</h2>
                         <p>Here's your classroom overview and teaching activities for today.</p>
                         <div class="date-info">
                             <i class="fas fa-calendar-day"></i>

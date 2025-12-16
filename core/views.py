@@ -18,29 +18,29 @@ class LandingPage(View):
         
         context = {}
         return render(request, 'core/landing.html', context)
-    
+
 
 class LoginPage(View):
     def get(self, request):
 
         context = {}
         return render(request, 'core/login.html', context)
-    
+
     def post(self, request):
         if request.user.is_authenticated:
             logout(request)
-        
+
         email = request.POST.get('email').strip()
         password = request.POST.get('password').strip()
         remember = request.POST.get('remember')
 
         try:
             user = User.objects.get(email=email)
-            
+
         except User.DoesNotExist:
             messages.error(request, message='User does not exist, try signing up')
             return redirect('login')
-        
+
         except User.MultipleObjectsReturned:
             messages.error(request, message='Multiple accounts found for this email')
             return redirect('login')
@@ -56,7 +56,7 @@ class LoginPage(View):
             login(request, user)
             return redirect('dashboard')
 
-            
+
         else:
             messages.error(request, message='Incorrect password')
             return redirect('login')
@@ -72,7 +72,7 @@ class SignupPage(View):
     def get(self, request):
         context = {}
         return render(request, 'core/signup.html', context)
-    
+
     def post(self, request):
         if request.user.is_authenticated:
             logout(request)
@@ -88,7 +88,7 @@ class SignupPage(View):
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exist')
             return redirect('signup')
-        
+
         try:
             user = User.objects.create_user(
                 first_name=first_name,
@@ -102,7 +102,7 @@ class SignupPage(View):
             if user:
                 login(request, user)
                 return redirect('dashboard')
-        
+
         except Exception as e:
             print(e)
             messages.error(request, 'Error trying to create your account')
