@@ -46,7 +46,7 @@ class Classroom(models.Model):
     id = models.AutoField(primary_key=True)
     classroom_name = models.CharField(max_length=150, null=False)
     teacher_id = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
-    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=False)
+    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
