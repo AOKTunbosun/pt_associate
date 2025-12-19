@@ -104,6 +104,12 @@ body{
     margin: 6px;
 }
 
+.messages-list a {
+    text-decoration: none;
+}
+
+
+
 .messages-item {
     display: flex;
     gap: 15px;
@@ -137,4 +143,44 @@ body{
 .sender-initials h5 {
     color: white;
     font-size: 1.3rem;
+}
+
+.message-content {
+    flex: 1;
+}
+
+.message-content h4 {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.message-content .message-badge {
+    background-color: #e6f2ff;
+    color: #0066cc;
+    border-radius: 10px;
+    font-size: 11px;
+    padding: 2px 8px;
+    font-weight: 500;
+}
+
+.message-content .message-preview {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-orient: vertical;
+    overflow: hidden;
+}
+
+.message-meta-data {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+    flex-wrap: wrap;
+}
+
+.message-meta-data .unread-indicator {
+    color: #0066cc;
 }
