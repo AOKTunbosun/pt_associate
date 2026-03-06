@@ -13,10 +13,10 @@
     <!-- Left Side -->
     <div class="signup-left">
         <h2>Join PT-Associate Today</h2>
-        <p>Create your account and choose your role after registration. You can be a teacher, parent, or both!</p>
+        <p>Create your account and choose your role after registration. You can be either a teacher or a parent!</p>
         <ul class="benefits-list">
             <li>Flexible role management</li>
-            <li>Connect as teacher and/or parent</li>
+            <li>Connect as teacher or parent</li>
             <li>Secure and private platform</li>
             <li>Real-time communication</li>
             <li>Access from any device</li>
@@ -26,76 +26,148 @@
     <!-- Right Side - Signup Form -->
     <div class="signup-right">
         <div class="logo">PT-Associate</div>
-        <div class="signup-header">
-            <h3>Create Your Account</h3>
-            <p>Start by creating your basic account</p>
+        <div class="form-toggle-container">
+            <div class="form-toggle">
+                <button id="individual-toggle" class="form-toggle-btn active-btn">Individual</button>
+                <button id="institution-toggle" class="form-toggle-btn">Institution</button>
+            </div>
         </div>
 
-        <!-- Info Note -->
-        <div class="info-note">
-            <p>📌 After registration, you'll be able to set up your profile as a teacher, parent, or both.</p>
+        <!-- Individual form  -->
+        <div id="individual-form" class="forms active-form">
+            <div class="signup-header">
+                <h3>Create Your Account</h3>
+                <p>Start by creating your basic account</p>
+            </div>
+
+            <!-- Info Note -->
+            <div class="info-note">
+                <p>📌 You can either create a parent or teacher account.</p>
+            </div>
+
+            <!-- Signup Form -->
+            <form action="{% url 'signup' %}" method="POST" id="signupForm">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="individual">
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                        <div class="error-message" id="firstNameError">First name is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                        <div class="error-message" id="lastNameError">Last name is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <!-- Password Fields -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required
+                        oninput="checkPasswordStrength()">
+                    <div class="password-requirements">Must be at least 8 characters with uppercase, lowercase, and
+                        numbers</div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="password-strength-text" id="strengthText"></div>
+                    <div class="error-message" id="passwordError">Password does not meet requirements</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                        placeholder="Re-enter your password" required>
+                    <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-signup">Create Account</button>
+            </form>
+
         </div>
 
-        <!-- Signup Form -->
-        <form action="{% url 'signup' %}" method="POST" id="signupForm">
-            {% csrf_token %}
-            <!-- Personal Information -->
-            <div class="form-row">
+
+        <!-- Institution form  -->
+        <div id="institution-form" class="forms">
+            <div class="signup-header">
+                <h3>Register Your Institution</h3>
+                <p>Provide correct details</p>
+            </div>
+
+            <div class="info-note">
+                <p>📌 You must create a teacher account before creating your institution/school.</p>
+            </div>
+
+            <form action="{% url 'signup' %}" method="POST" id="signupForm">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="institution">
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required>
-                    <div class="error-message" id="firstNameError">First name is required</div>
+                    <label for="institutionName">Institution Name</label>
+                    <input type="text" id="institutionName" name="institutionName" placeholder="Enter institution name" required>
                 </div>
+                
+
                 <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required>
-                    <div class="error-message" id="lastNameError">Last name is required</div>
+                    <label for="institutionEmail">Principal's Account Email</label>
+                    <input type="email" id="institutionEmail" name="institutionEmail" placeholder="Enter principal account email" required>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
-                <div class="error-message" id="emailError">Please enter a valid email address</div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-                <div class="error-message" id="phoneError">Please enter a valid phone number</div>
-            </div>
-
-            <!-- Password Fields -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Create a strong password" required
-                    oninput="checkPasswordStrength()">
-                <div class="password-requirements">Must be at least 8 characters with uppercase, lowercase, and
-                    numbers</div>
-                <div class="password-strength">
-                    <div class="password-strength-bar" id="strengthBar"></div>
+                <div class="form-group">
+                    <label for="institutionType">Institution Type</label>
+                    <select name="institutionType" id="institutionType">
+                        <option value="primary">Primary</option>
+                        <option value="secondary">Secondary</option>
+                    </select>
                 </div>
-                <div class="password-strength-text" id="strengthText"></div>
-                <div class="error-message" id="passwordError">Password does not meet requirements</div>
-            </div>
 
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password"
-                    required>
-                <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
-            </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location"
+                        placeholder="Enter the location of institution" required>
+                </div>
 
-            <!-- Terms and Conditions -->
-            <div class="terms-checkbox">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">
-                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                </label>
-            </div>
+                <div class="form-group">
+                    <label for="institutionPassword">Principal's Account Password</label>
+                    <input type="password" id="institutionPassword" name="institutionPassword"
+                        placeholder="Enter principal account password" required>
+                </div>
 
-            <button type="submit" class="btn-signup">Create Account</button>
-        </form>
+
+                <!-- Terms and Conditions -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-signup">Create Account</button>
+            </form>
+
+        </div>
 
         <div class="divider">
             <span>OR</span>

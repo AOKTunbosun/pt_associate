@@ -77,36 +77,48 @@ class SignupPage(View):
         if request.user.is_authenticated:
             logout(request)
 
-        first_name = request.POST.get('firstName')
-        last_name = request.POST.get('lastName')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        password = request.POST.get('password')
+        if request.POST.get('form_type') == 'individual':
 
-        username = email.split('@')[0] + str(uuid.uuid4())[:10]
+            first_name = request.POST.get('firstName')
+            last_name = request.POST.get('lastName')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            password = request.POST.get('password')
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exist')
-            return redirect('signup')
+            username = email.split('@')[0] + str(uuid.uuid4())[:10]
 
-        try:
-            user = User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                username=username,
-                email=email,
-                phone_number=phone,
-                password=password
-            )
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exist')
+                return redirect('signup')
 
-            if user:
-                login(request, user)
-                return redirect('dashboard')
+            try:
+                user = User.objects.create_user(
+                    first_name=first_name,
+                    last_name=last_name,
+                    username=username,
+                    email=email,
+                    phone_number=phone,
+                    password=password
+                )
 
-        except Exception as e:
-            print(e)
-            messages.error(request, 'Error trying to create your account')
-            return redirect('signup')
+                if user:
+                    login(request, user)
+                    return redirect('dashboard')
+
+            except Exception as e:
+                print(e)
+                messages.error(request, 'Error trying to create your account')
+                return redirect('signup')
+            
+            
+        elif request.POST.get('form_type') == 'individual':
+            institution_name = request.POST.get('institutionName')
+            institution_principal_email = request.POST.get('institutionEmail')
+            institution_type = request.POST.get('institutionType')
+            location = request.POST.get('location')
+            institution_principal_password = request.POST.get('institutionPassword')
+
+
 
 
 class DashboardPage(View):

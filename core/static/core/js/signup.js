@@ -1,3 +1,35 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const individualForm = document.getElementById('individual-form');
+    const institutionForm = document.getElementById('institution-form');
+    const individualToggle = document.getElementById('individual-toggle');
+    const institutionToggle = document.getElementById('institution-toggle');
+
+    
+
+    individualToggle.addEventListener('click', e => {
+        e.stopPropagation();
+
+        individualToggle.classList.add('active-btn');
+        institutionToggle.classList.remove('active-btn');
+
+        individualForm.classList.add('active-form');
+        institutionForm.classList.remove('active-form');
+    });
+
+    institutionToggle.addEventListener('click', e => {
+        e.stopPropagation();
+
+        individualToggle.classList.remove('active-btn');
+        institutionToggle.classList.add('active-btn');
+
+        individualForm.classList.remove('active-form');
+        institutionForm.classList.add('active-form');
+    });
+
+});
+
+
+
 function checkPasswordStrength() {
     const password = document.getElementById('password').value;
     const strengthBar = document.getElementById('strengthBar');

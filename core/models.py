@@ -14,28 +14,30 @@ class CustomUser(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 
-class ParentProfile(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class ParentProfile(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.user_id.first_name} {self.user_id.last_name}'s parent profile"
+#     def __str__(self):
+#         return f"{self.user_id.first_name} {self.user_id.last_name}'s parent profile"
 
 
-class TeacherProfile(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class TeacherProfile(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.user_id.first_name} {self.user_id.last_name}'s teacher profile"
+#     def __str__(self):
+#         return f"{self.user_id.first_name} {self.user_id.last_name}'s teacher profile"
 
 
 class SchoolProfile(models.Model):
     id = models.AutoField(primary_key=True)
     school_name = models.CharField(max_length=500, null=False, unique=True, db_index=True)
-    school_admin = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
+    principal = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='principal')
+    burser = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='burser')
+    institution_type = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -45,8 +47,8 @@ class SchoolProfile(models.Model):
 class Classroom(models.Model):
     id = models.AutoField(primary_key=True)
     classroom_name = models.CharField(max_length=150, null=False)
-    teacher_id = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
-    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=True)
+    teacher_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='teacher')
+    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=True, related_name='school')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

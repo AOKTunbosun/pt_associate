@@ -75,12 +75,52 @@ body {
     justify-content: center;
 }
 
-/* .logo { */
-    /* font-size: 1.8rem; */
-    /* font-weight: bold; */
-    /* color: #2c5f8d; */
-    /* margin-bottom: 0.5rem; */
-/* } */
+.form-toggle-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0px;
+}
+
+.form-toggle {
+    display: flex;
+    background-color: #f0f7ff;
+    padding: 5px;
+    border: 1px solid #e0e7ff;
+    border-radius: 5px;
+    gap: 10px;
+}
+
+.form-toggle-btn {
+    color: #0065c9;
+    padding: 8px 24px;
+    border: 2px solid #0065c9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-toggle-btn:hover {
+    background-color: #deecfd;
+}
+
+.active-btn {
+    background-color: #0065c9;
+    color: white;
+}
+
+.active-btn:hover {
+    background-color: hsl(210, 100%, 29%);
+    border-color: hsl(210, 100%, 29%);
+}
+
+.forms {
+    display: none;
+}
+
+.active-form {
+    display: block;
+}
 
 .signup-header {
     margin-bottom: 2rem;
@@ -126,6 +166,19 @@ body {
 }
 
 .form-group input:focus {
+    outline: none;
+    border-color: #2c5f8d;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+}
+
+.form-group select:focus {
     outline: none;
     border-color: #2c5f8d;
 }
