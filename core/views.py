@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
 
+from .models import SchoolProfile
+
 # Create your views here.
 User = get_user_model()
 
@@ -83,6 +85,7 @@ class SignupPage(View):
             last_name = request.POST.get('lastName')
             email = request.POST.get('email')
             phone = request.POST.get('phone')
+            account_type = request.POST.get('accountType')
             password = request.POST.get('password')
 
             username = email.split('@')[0] + str(uuid.uuid4())[:10]
@@ -98,7 +101,9 @@ class SignupPage(View):
                     username=username,
                     email=email,
                     phone_number=phone,
-                    password=password
+                    password=password,
+                    is_parent=True if account_type == 'parent' else False,
+                    is_teacher=True if account_type == 'teacher' else False,
                 )
 
                 if user:
@@ -111,7 +116,7 @@ class SignupPage(View):
                 return redirect('signup')
             
             
-        elif request.POST.get('form_type') == 'individual':
+        elif request.POST.get('form_type') == 'institution':
             institution_name = request.POST.get('institutionName')
             institution_principal_email = request.POST.get('institutionEmail')
             institution_type = request.POST.get('institutionType')
@@ -119,6 +124,50 @@ class SignupPage(View):
             institution_principal_password = request.POST.get('institutionPassword')
 
 
+            try:
+                user = User.objects.get(email=institution_principal_email)
+
+            except User.DoesNotExist:
+                messages.error(request, message='User does not exist, try signing up')
+                return redirect('signup')
+
+            except User.MultipleObjectsReturned:
+                messages.error(request, message='Multiple accounts found for this email')
+                return redirect('signup')
+            
+            user = authenticate(request, username=user.username, password=institution_principal_password)
+            
+
+            if user is not None:
+                if user.is_teacher and not user.is_parent:
+
+                    try:
+                        school = SchoolProfile.objects.create(
+                            school_name=institution_name, 
+                            principal=user,
+                            institution_type=institution_type,
+                            location=location
+                        )
+
+                        if school:
+                            login(request, user)
+                            return redirect('dashboard')
+                        
+                    except Exception as e:
+                        print(e)
+                        messages.error(request, 'Error trying to create your school account')
+                        return redirect('signup')
+                
+                else:
+                    messages.error(request, 'Principal must be a teacher account')
+                    return redirect('signup')
+                
+
+
+                
+            else:
+                messages.error(request, message='Incorrect password')
+                return redirect('signup')
 
 
 class DashboardPage(View):

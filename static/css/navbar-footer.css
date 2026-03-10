@@ -12,10 +12,11 @@ body {
 .dashboard-header {
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 100;
     overflow: visible;
+    width: 100%;
 }
 
 .header-container {
@@ -455,6 +456,12 @@ body {
     flex-direction: column;
     gap: 1rem;
     margin-top: 1.5rem;
+}
+
+.wrapper {
+    margin-top: 90.344px;
+    display: flex;
+    justify-content: center;
 }
 
 

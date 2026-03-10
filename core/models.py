@@ -8,6 +8,8 @@ class CustomUser(AbstractUser):
     phone_number = models.IntegerField(default=None, null=True)
     is_parent = models.BooleanField(default=False, null=True)
     is_teacher = models.BooleanField(default=False, null=True)
+    is_principal = models.BooleanField(default=False, null=True)
+    is_burser = models.BooleanField(default=False, null=True)
 
 
     def __str__(self):
@@ -38,6 +40,7 @@ class SchoolProfile(models.Model):
     principal = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='principal')
     burser = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='burser')
     institution_type = models.CharField(max_length=10)
+    location = models.CharField(max_length=350, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
