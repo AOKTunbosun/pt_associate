@@ -1,0 +1,97 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+<title>{% block title %}Principal Dashboard - PT-Associate{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/add_staff.css' %}">
+{% endblock extracss %}
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+
+
+{% block content %}
+
+<main class="dashboard-main">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2><i class="fas fa-user-plus"></i> Add New Staff</h2>
+            <p>Enter teacher's email address to add them to your school</p>
+        </div>
+
+        <!-- Add Staff Form Card -->
+        <div class="form-card">
+            <form id="addStaffForm">
+                <div class="form-group">
+                    <label for="teacherEmail"><i class="fas fa-envelope"></i> Teacher's Email Address</label>
+                    <input type="email" id="teacherEmail" name="email" placeholder="e.g., teacher@example.com" required>
+                    <small>Teacher will receive an email notification. If they don't have an account, they'll get a
+                        signup link.</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Add Teacher
+                    </button>
+                    <a href="{% url 'principal-dashboard' %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Recently Added Teachers -->
+        <div class="recent-teachers">
+            <div class="card-header">
+                <h3><i class="fas fa-history"></i> Recently Added Teachers</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="teachers-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Added On</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentTeachersList">
+                        <tr>
+                            <td>Sarah Johnson</td>
+                            <td>sarah.j@school.edu</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>Mar 10, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Michael Brown</td>
+                            <td>michael.b@school.edu</td>
+                            <td><span class="status pending">Invite Sent</span></td>
+                            <td>Mar 12, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">
+    <div class="toast-content">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Teacher added successfully</span>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/add_staff.js' %}"></script>
+{% endblock extrajs %}

@@ -28,6 +28,37 @@
             <nav class="main-nav">
                 <ul>
 
+                    {% if request.user.is_principal %}
+
+                    {% if request.path == '/principal-dashboard/' %}
+                    <li><a href="{% url 'principal-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% else %}
+                    <li><a href="{% url 'principal-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/teachers/' %}
+                    <li><a href="#" class="active"><i class="fas fa-comments"></i> Teachers</a></li>
+                    {% else %}
+                    <li><a href="#"><i class="fas fa-comments"></i> Teachers</a></li>
+                    {% endif %}
+                    
+                    {% if request.path == '/classes/' %}
+                    <li><a href="#" class="active"><i class="fas fa-comments"></i> Classes</a></li>
+                    {% else %}
+                    <li><a href="#"><i class="fas fa-comments"></i> Classes</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/add-staff/' %}
+                    <li><a href="{% url 'add-staff' %}" class="active"><i class="fas fa-comments"></i> Add Staff</a></li>
+                    {% else %}
+                    <li><a href="{% url 'add-staff' %}"><i class="fas fa-comments"></i> Add Staff</a></li>
+                    {% endif %}
+
+
+
+
+                    {% elif request.user.is_teacher %}
+
                     {% if request.path == '/dashboard/' %}
                     <li><a href="{% url 'dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                     {% else %}
@@ -52,13 +83,15 @@
                     <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
                     {% endif %}
 
+                    {% endif %}
+
                 </ul>
             </nav>
             
 
             <div class="header-right">
                 <!-- Role Toggle Switch -->
-                <div class="role-toggle-container">
+                <!-- <div class="role-toggle-container">
                     <div class="role-toggle">
                         <button class="role-btn active" data-role="parent">
                             <i class="fas fa-user"></i>
@@ -69,7 +102,7 @@
                             <span>Teacher</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
     
                 <!-- User Profile -->
                 <div class="user-profile">
@@ -82,7 +115,17 @@
                             alt="User Avatar">
                         <div class="user-details">
                             <span class="user-name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-                            <span class="user-role">Parent & Teacher</span>
+                            <span class="user-role">
+                                {% if request.user.is_parent == True %}
+                                Parent
+                                {% elif request.user.is_principal == True %}
+                                Principal
+                                {% elif request.user.is_burser == True %}
+                                Burser
+                                {% else %}
+                                Teacher
+                                {% endif %}
+                            </span>
                         </div>
                         <i class="fas fa-chevron-down"></i>
                     </div>

@@ -1,0 +1,254 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+<title>{% block title %}Parent Dashboard - PT-Associate{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
+{% endblock extracss %}
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+
+
+{% block content %}
+
+<main class="dashboard-main">
+    <div class="container">
+
+        <div id="parent-section" class="dashboard-content active">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Welcome back, {{ request.user.first_name }}!</h2>
+                    <p>Here's what's happening with your children today.</p>
+                    <div class="date-info">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Wednesday, March 12, 2025</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div class="left-column">
+                    <!-- Children Summary -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-graduate"></i> My Children</h3>
+                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="children-list">
+                            <div class="child-item">
+                                <div class="child-avatar">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <div class="child-details">
+                                    <h4>Emily Smith</h4>
+                                    <p>Grade 5, Room 204</p>
+                                    <!-- <div class="progress-indicator">
+                                            <span class="progress-label">Math Progress:</span>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 85%"></div>
+                                            </div>
+                                            <span class="progress-percent">85%</span>
+                                        </div> -->
+                                </div>
+                                <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
+                            </div>
+
+                            <div class="child-item">
+                                <div class="child-avatar">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <div class="child-details">
+                                    <h4>Michael Smith</h4>
+                                    <p>Grade 3, Room 112</p>
+                                    <!-- <div class="progress-indicator">
+                                            <span class="progress-label">Reading Progress:</span>
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 72%"></div>
+                                            </div>
+                                            <span class="progress-percent">72%</span>
+                                        </div> -->
+                                </div>
+                                <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Announcements -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bullhorn"></i> Recent Announcements</h3>
+                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="announcements-list">
+                            <div class="announcement-item">
+                                <div class="announcement-icon">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                                <div class="announcement-content">
+                                    <h4>Field Trip Next Friday</h4>
+                                    <p>Science Museum field trip planned for next Friday. Permission slips due
+                                        Wednesday.</p>
+                                    <div class="announcement-meta">
+                                        <span><i class="fas fa-user-tie"></i> Mrs. Johnson</span>
+                                        <span><i class="fas fa-clock"></i> 2 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="announcement-item">
+                                <div class="announcement-icon">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                                <div class="announcement-content">
+                                    <h4>Parent-Teacher Conferences</h4>
+                                    <p>Sign up for parent-teacher conferences next week. Please select your
+                                        preferred time slot.</p>
+                                    <div class="announcement-meta">
+                                        <span><i class="fas fa-user-tie"></i> Mr. Davis</span>
+                                        <span><i class="fas fa-clock"></i> 1 day ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Recent Messages -->
+                    <section class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-comments"></i> Recent Messages</h3>
+                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="messages-list">
+                            <div class="message-item unread">
+                                <div class="message-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=Lisa+Johnson&background=0066cc&color=fff"
+                                        alt="Teacher Avatar">
+                                </div>
+                                <div class="message-content">
+                                    <h4>Mrs. Johnson <span class="message-badge">Math Teacher</span></h4>
+                                    <p class="message-preview">Emily did excellent on her math test today! She
+                                        scored 98%...</p>
+                                    <div class="message-meta">
+                                        <span><i class="fas fa-clock"></i> 30 minutes ago</span>
+                                        <span class="unread-indicator"><i class="fas fa-circle"></i> Unread</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="message-item">
+                                <div class="message-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=Robert+Davis&background=0066cc&color=fff"
+                                        alt="Teacher Avatar">
+                                </div>
+                                <div class="message-content">
+                                    <h4>Mr. Davis <span class="message-badge">Science Teacher</span></h4>
+                                    <p class="message-preview">Michael's science project is coming along nicely. He
+                                        needs...</p>
+                                    <div class="message-meta">
+                                        <span><i class="fas fa-clock"></i> 5 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="new-message-btn">
+                            <button class="btn-primary"><i class="fas fa-plus"></i> New Message</button>
+                        </div>
+                    </section>
+
+                    <!-- Upcoming Events -->
+                    <!-- <section class="dashboard-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                                <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            <div class="events-list">
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <span class="event-day">15</span>
+                                        <span class="event-month">MAR</span>
+                                    </div>
+                                    <div class="event-details">
+                                        <h4>Science Fair</h4>
+                                        <p>School Science Fair in the gymnasium</p>
+                                        <span class="event-time"><i class="fas fa-clock"></i> 9:00 AM - 3:00 PM</span>
+                                    </div>
+                                </div>
+
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <span class="event-day">18</span>
+                                        <span class="event-month">MAR</span>
+                                    </div>
+                                    <div class="event-details">
+                                        <h4>Parent-Teacher Conference</h4>
+                                        <p>Conference with Mrs. Johnson</p>
+                                        <span class="event-time"><i class="fas fa-clock"></i> 2:00 PM - 2:30 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section> -->
+
+                    <!-- Quick Actions -->
+                    <section class="dashboard-card quick-actions">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        </div>
+                        <div class="actions-grid">
+                            <!-- <a href="#" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
+                                    <span>Sign Permission Slip</span>
+                                </a> -->
+                            <a href="#" class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <span>Schedule Meeting</span>
+                            </a>
+                            <!-- <a href="#" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <span>View Progress Reports</span>
+                                </a> -->
+                            <a href="#" class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <span>Account Settings</span>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}
+
+<!-- Footer -->
+<!-- <footer class="dashboard-footer">
+        <div class="footer-container">
+            <p>&copy; 2024 PT-Associate. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Help Center</a>
+            </div>
+        </div>
+    </footer> -->
+
+{% block extrajs %}
+<script src="{% static 'core/js/dashboard.js' %}"></script>
+{% endblock extrajs %}

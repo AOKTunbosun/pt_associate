@@ -1,0 +1,281 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+/* Main Content */
+.dashboard-main {
+    padding: 30px 0;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-header p {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Form Card */
+.form-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group label i {
+    color: #0066cc;
+    margin-right: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0066cc;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-primary {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0052a3;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #666;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.3s;
+    border: 0;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* Recent Teachers Section */
+.recent-teachers {
+    background-color: white;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 17px;
+}
+
+.view-all {
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* Table */
+.teachers-table {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 12px;
+    background-color: #f9f9f9;
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #e8f5e9;
+    color: #4CAF50;
+}
+
+.status.pending {
+    background-color: #fff3e0;
+    color: #ff9800;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 12px 20px;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-content i {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+/* Footer */
+.dashboard-footer {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 13px;
+    margin-top: 30px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .main-nav {
+        display: none;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .user-details {
+        display: none;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-header h2 {
+        font-size: 22px;
+    }
+    
+    .form-card {
+        padding: 20px;
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+

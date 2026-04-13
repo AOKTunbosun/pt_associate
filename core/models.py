@@ -5,7 +5,8 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     # Extending the User model
 
-    phone_number = models.IntegerField(default=None, null=True)
+    phone_number = models.BigIntegerField(default=None, null=True)
+    gender = models.CharField(null=True, max_length=8, choices=[('male', 'male'), ('female', 'female')])
     is_parent = models.BooleanField(default=False, null=True)
     is_teacher = models.BooleanField(default=False, null=True)
     is_principal = models.BooleanField(default=False, null=True)
