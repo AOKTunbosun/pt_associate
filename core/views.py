@@ -5,9 +5,11 @@ from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 import uuid
 
-from .models import SchoolProfile
+from .models import Institution
 
 # Create your views here.
 User = get_user_model()
@@ -123,10 +125,22 @@ class SignupPage(View):
                 )
 
                 if user and account_type == 'parent':
+                    html_content = render_to_string('emails/welcome.html', {'user': user})
+                    send_mail(subject='Welcome to PT-Associate',
+                              message='Your parent account has been created',
+                              from_email=None,
+                              recipient_list=[user.email],
+                              html_message=html_content)
                     login(request, user)
                     return redirect('parent-dashboard')
                 
                 elif user and account_type == 'teacher':
+                    html_content = render_to_string('emails/welcome.html', {'user': user})
+                    send_mail(subject='Welcome to PT-Associate',
+                              message='Your teacher account has been created',
+                              from_email=None,
+                              recipient_list=[user.email],
+                              html_message=html_content)
                     login(request, user)
                     return redirect('teacher-dashboard')
 
@@ -163,8 +177,8 @@ class SignupPage(View):
                 if user.is_teacher and not user.is_parent:
 
                     try:
-                        school = SchoolProfile.objects.create(
-                            school_name=institution_name,
+                        school = Institution.objects.create(
+                            institution_name=institution_name,
                             principal=user,
                             institution_type=institution_type,
                             location=location
@@ -229,7 +243,17 @@ class AddStaffPage(View):
     
 
     def post(self, request):
-        pass
+        teacher_email = request.POST.get('email')
+
+
+        try:
+            user = User.objects.get(email=teacher_email)
+
+        except User.DoesNotExist:
+            send_mail(subject='PT-Associate Invite', 
+                      message='You have been invited to signup with PT-Associate as a teacher', 
+                      from_email=None)
+
 
 
 class MessagesPage(View):

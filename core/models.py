@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     # Extending the User model
 
+    email = models.EmailField(unique=True)
+
     phone_number = models.BigIntegerField(default=None, null=True)
     gender = models.CharField(null=True, max_length=8, choices=[('male', 'male'), ('female', 'female')])
     is_parent = models.BooleanField(default=False, null=True)
@@ -35,9 +37,9 @@ class CustomUser(AbstractUser):
 #         return f"{self.user_id.first_name} {self.user_id.last_name}'s teacher profile"
 
 
-class SchoolProfile(models.Model):
+class Institution(models.Model):
     id = models.AutoField(primary_key=True)
-    school_name = models.CharField(max_length=500, null=False, unique=True, db_index=True)
+    institution_name = models.CharField(max_length=500, null=False, unique=True, db_index=True)
     principal = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='principal')
     burser = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='burser')
     institution_type = models.CharField(max_length=10)
@@ -52,7 +54,7 @@ class Classroom(models.Model):
     id = models.AutoField(primary_key=True)
     classroom_name = models.CharField(max_length=150, null=False)
     teacher_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='teacher')
-    school_id = models.ForeignKey(SchoolProfile, on_delete=models.CASCADE, null=True, related_name='school')
+    school_id = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, related_name='school')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -93,3 +95,9 @@ class Announcement(models.Model):
 
     def __str__(self):
         return f'{self.classroom_id.classroom_name} Announcement'
+    
+
+class Staff(models.Model):
+    id = models.AutoField(primary_key=True)
+    teacher_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
+    institution_id = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='institution_staff')

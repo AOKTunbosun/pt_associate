@@ -156,4 +156,9 @@ CACHES = {
 
 RATELIMIT_CACHE = 'default'
 
+EMAIL_BACKEND = "core.email_backend.ResendBackend"
+DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
+
+RESEND_API_KEY = env('RESEND_API_KEY')
+
 
