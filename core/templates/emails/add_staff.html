@@ -3,26 +3,18 @@
     <div style="max-width: 500px; margin: auto; background-color: #ffffff; padding: 25px; border-radius: 8px; text-align: center;">
         
         <h2 style="color: #0066cc; margin-bottom: 15px;">
-            Welcome {{ user.first_name }} {{ user.last_name }} 🎉
+            You have been added as a staff in {{ institution.institution_name }}
         </h2>
 
         <p style="color: #333333; font-size: 16px; line-height: 1.5;">
-            Your account has been created successfully.
+            Your account has been added successfully as a staff of {{ institution.institution_name }}.
         </p>
 
         <div style="margin-top: 25px;">
-            {% if user.is_parent==True %}
-            <a href="http://127.0.0.1:8500/parent-dashboard" 
-               style="background-color: #0066cc; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                Get Started
-            </a>
-            {% else %}
             <a href="http://127.0.0.1:8500/teacher-dashboard" 
                style="background-color: #0066cc; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                Get Started
+                Teacher Dashboard
             </a>
-
-            {% endif %}
         </div>
 
     </div>

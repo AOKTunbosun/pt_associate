@@ -99,5 +99,5 @@ class Announcement(models.Model):
 
 class Staff(models.Model):
     id = models.AutoField(primary_key=True)
-    teacher_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
-    institution_id = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='institution_staff')
+    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='institution_staff')

@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 import uuid
 
-from .models import Institution
+from .models import Institution, Staff
 
 # Create your views here.
 User = get_user_model()
@@ -243,17 +243,48 @@ class AddStaffPage(View):
     
 
     def post(self, request):
-        teacher_email = request.POST.get('email')
+        if request.user.is_principal:
+
+            teacher_email = request.POST.get('email').strip()
 
 
-        try:
-            user = User.objects.get(email=teacher_email)
+            try:
+                user = User.objects.get(email=teacher_email)
 
-        except User.DoesNotExist:
-            send_mail(subject='PT-Associate Invite', 
-                      message='You have been invited to signup with PT-Associate as a teacher', 
-                      from_email=None)
+                try:
+                    institution = Institution.objects.get(principal=request.user)
+                    
+                    staff = Staff.objects.create(institution=institution, teacher=user)
 
+                    html_content = render_to_string('emails/add_staff.html', {'institution': institution})
+                    send_mail(subject=f'PT-Associate: Added as a staff of {institution.institution_name}', 
+                        message=f'You have been added as a staff of {institution.institution_name}', 
+                        from_email=None,
+                        recipient_list=[teacher_email],
+                        html_message=html_content
+                        )
+                    
+                    messages.success(request, f'Account have been added as a staff of {institution.institution_name}')
+                
+                except Institution.DoesNotExist:
+                    messages.error(request, 'You do not have a principal account, create your institution before adding staff')
+                    return redirect('signup')
+                
+            except User.DoesNotExist:
+                html_content = render_to_string('emails/invite_staff.html')
+
+                send_mail(subject='PT-Associate Invite', 
+                        message='You have been invited to signup with PT-Associate as a teacher', 
+                        from_email=None,
+                        recipient_list=[teacher_email],
+                        html_message=html_content
+                        )
+                
+                messages.success(request, f'Invite has been sent to {teacher_email}')
+        
+        else:
+            messages.error(request, 'You do not have a principal account, create your instituion before adding staff')
+            return redirect('signup')
 
 
 class MessagesPage(View):
