@@ -1,27 +1,27 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const nav = document.querySelector('.main-nav');
+    // // Mobile menu toggle
+    // const menuBtn = document.querySelector('.mobile-menu-btn');
+    // const nav = document.querySelector('.main-nav');
     
-    if (menuBtn && nav) {
-        menuBtn.addEventListener('click', function() {
-            if (nav.style.display === 'flex') {
-                nav.style.display = 'none';
-            } else {
-                nav.style.display = 'flex';
-                nav.style.flexDirection = 'column';
-                nav.style.position = 'absolute';
-                nav.style.top = '60px';
-                nav.style.left = '0';
-                nav.style.right = '0';
-                nav.style.backgroundColor = 'white';
-                nav.style.padding = '20px';
-                nav.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
-            }
-        });
-    }
+    // if (menuBtn && nav) {
+    //     menuBtn.addEventListener('click', function() {
+    //         if (nav.style.display === 'flex') {
+    //             nav.style.display = 'none';
+    //         } else {
+    //             nav.style.display = 'flex';
+    //             nav.style.flexDirection = 'column';
+    //             nav.style.position = 'absolute';
+    //             nav.style.top = '60px';
+    //             nav.style.left = '0';
+    //             nav.style.right = '0';
+    //             nav.style.backgroundColor = 'white';
+    //             nav.style.padding = '20px';
+    //             nav.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+    //         }
+    //     });
+    // }
     
     // Form submission
     const form = document.getElementById('addStaffForm');
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
+        
         const email = document.getElementById('teacherEmail').value.trim();
         
         if (!email) {
@@ -60,42 +60,42 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-            // Simulate response based on email domain
-            if (email.includes('new')) {
-                showToast('Invitation sent! Teacher will receive signup link');
-                addToRecentList(email, 'Invite Sent');
-            } else {
-                showToast('Teacher added successfully! Notification email sent');
-                addToRecentList(email, 'Active');
-            }
+        // setTimeout(() => {
+        //     // Simulate response based on email domain
+        //     if (email.includes('new')) {
+        //         showToast('Invitation sent! Teacher will receive signup link');
+        //         addToRecentList(email, 'Invite Sent');
+        //     } else {
+        //         showToast('Teacher added successfully! Notification email sent');
+        //         addToRecentList(email, 'Active');
+        //     }
             
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-            document.getElementById('teacherEmail').value = '';
-        }, 1500);
+        //     submitBtn.innerHTML = originalText;
+        //     submitBtn.disabled = false;
+        //     document.getElementById('teacherEmail').value = '';
+        // }, 1500);
     });
     
-    function addToRecentList(email, status) {
-        const tbody = document.getElementById('recentTeachersList');
-        const row = document.createElement('tr');
-        const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    // function addToRecentList(email, status) {
+    //     const tbody = document.getElementById('recentTeachersList');
+    //     const row = document.createElement('tr');
+    //     const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         
-        const statusClass = status === 'Active' ? 'active' : 'pending';
-        const nameDisplay = status === 'Active' ? email.split('@')[0] : '—';
+    //     const statusClass = status === 'Active' ? 'active' : 'pending';
+    //     const nameDisplay = status === 'Active' ? email.split('@')[0] : '—';
         
-        row.innerHTML = `
-            <td>${nameDisplay}</td>
-            <td>${email}</td>
-            <td><span class="status ${statusClass}">${status}</span></td>
-            <td>${date}</td>
-        `;
+    //     row.innerHTML = `
+    //         <td>${nameDisplay}</td>
+    //         <td>${email}</td>
+    //         <td><span class="status ${statusClass}">${status}</span></td>
+    //         <td>${date}</td>
+    //     `;
         
-        tbody.insertBefore(row, tbody.firstChild);
+    //     tbody.insertBefore(row, tbody.firstChild);
         
-        // Keep only last 5
-        while (tbody.children.length > 5) {
-            tbody.removeChild(tbody.lastChild);
-        }
-    }
+    //     // Keep only last 5
+    //     while (tbody.children.length > 5) {
+    //         tbody.removeChild(tbody.lastChild);
+    //     }
+    // }
 });

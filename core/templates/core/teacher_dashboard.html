@@ -18,7 +18,7 @@
             <!-- Welcome Section -->
             <section class="welcome-section">
                 <div class="welcome-card">
-                    <h2>Welcome back, Mr. {{ request.user.last_name }}!</h2>
+                    <h2>Welcome back,{% if request.user.gender == 'male' %} Mr. {% else %} Mrs. {% endif %} {{ request.user.last_name }}!</h2>
                     <p>Here's your classroom overview and teaching activities for today.</p>
                     <div class="date-info">
                         <i class="fas fa-calendar-day"></i>

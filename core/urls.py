@@ -14,5 +14,6 @@ urlpatterns = [
     path('principal-dashboard/', views.PrincipalDashboardPage.as_view(),
          name='principal-dashboard'),
     path('add-staff/', views.AddStaffPage.as_view(), name='add-staff'),
+    path('create-classroom/', views.CreateClassroom.as_view(), name='create-classroom'),
     path('messages/', views.MessagesPage.as_view(), name='messages')
 ]

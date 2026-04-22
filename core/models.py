@@ -53,8 +53,8 @@ class Institution(models.Model):
 class Classroom(models.Model):
     id = models.AutoField(primary_key=True)
     classroom_name = models.CharField(max_length=150, null=False)
-    teacher_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='teacher')
-    school_id = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, related_name='school')
+    teacher = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='teacher')
+    school = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, related_name='school')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -101,3 +101,11 @@ class Staff(models.Model):
     id = models.AutoField(primary_key=True)
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='institution_staff')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['teacher', 'institution'],
+                name='unique_staff_per_institution'
+            )
+        ]

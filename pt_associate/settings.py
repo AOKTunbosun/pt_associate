@@ -150,14 +150,14 @@ RATELIMIT_VIEW = 'django_ratelimit.views.ratelimit_view'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6381/1',
+        'LOCATION': env('REDIS_URL'),
     },
 }
 
 RATELIMIT_CACHE = 'default'
 
 EMAIL_BACKEND = "core.email_backend.ResendBackend"
-DEFAULT_FROM_EMAIL = "pt-associate@resend.dev"
+DEFAULT_FROM_EMAIL = "noreply@resend.dev"
 
 RESEND_API_KEY = env('RESEND_API_KEY')
 

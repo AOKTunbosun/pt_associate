@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.db import IntegrityError
 import uuid
 
 from .models import Institution, Staff
@@ -125,22 +126,22 @@ class SignupPage(View):
                 )
 
                 if user and account_type == 'parent':
-                    html_content = render_to_string('emails/welcome.html', {'user': user})
-                    send_mail(subject='Welcome to PT-Associate',
-                              message='Your parent account has been created',
-                              from_email=None,
-                              recipient_list=[user.email],
-                              html_message=html_content)
+                    # html_content = render_to_string('emails/welcome.html', {'user': user})
+                    # send_mail(subject='Welcome to PT-Associate',
+                    #           message='Your parent account has been created',
+                    #           from_email=None,
+                    #           recipient_list=[user.email],
+                    #           html_message=html_content)
                     login(request, user)
                     return redirect('parent-dashboard')
                 
                 elif user and account_type == 'teacher':
-                    html_content = render_to_string('emails/welcome.html', {'user': user})
-                    send_mail(subject='Welcome to PT-Associate',
-                              message='Your teacher account has been created',
-                              from_email=None,
-                              recipient_list=[user.email],
-                              html_message=html_content)
+                    # html_content = render_to_string('emails/welcome.html', {'user': user})
+                    # send_mail(subject='Welcome to PT-Associate',
+                    #           message='Your teacher account has been created',
+                    #           from_email=None,
+                    #           recipient_list=[user.email],
+                    #           html_message=html_content)
                     login(request, user)
                     return redirect('teacher-dashboard')
 
@@ -251,24 +252,29 @@ class AddStaffPage(View):
             try:
                 user = User.objects.get(email=teacher_email)
 
-                try:
-                    institution = Institution.objects.get(principal=request.user)
-                    
-                    staff = Staff.objects.create(institution=institution, teacher=user)
-
-                    html_content = render_to_string('emails/add_staff.html', {'institution': institution})
-                    send_mail(subject=f'PT-Associate: Added as a staff of {institution.institution_name}', 
-                        message=f'You have been added as a staff of {institution.institution_name}', 
-                        from_email=None,
-                        recipient_list=[teacher_email],
-                        html_message=html_content
-                        )
-                    
-                    messages.success(request, f'Account have been added as a staff of {institution.institution_name}')
                 
-                except Institution.DoesNotExist:
-                    messages.error(request, 'You do not have a principal account, create your institution before adding staff')
-                    return redirect('signup')
+                institution = Institution.objects.get(principal=request.user)
+                    
+                staff = Staff.objects.create(institution=institution, teacher=user)
+
+                    # html_content = render_to_string('emails/add_staff.html', {'institution': institution})
+                    # send_mail(subject=f'PT-Associate: Added as a staff of {institution.institution_name}', 
+                    #     message=f'You have been added as a staff of {institution.institution_name}', 
+                    #     from_email=None,
+                    #     recipient_list=[teacher_email],
+                    #     html_message=html_content
+                    #     )
+                    
+                messages.success(request, f'Account have been added as a staff of {institution.institution_name}')
+                return redirect('add-staff')
+            
+            except IntegrityError:
+                messages.error(request, 'Teacher is already a staff of the school')
+                return redirect('add-staff')
+                
+            except Institution.DoesNotExist:
+                messages.error(request, 'You do not have a principal account, create your institution before adding staff')
+                return redirect('add-staff')
                 
             except User.DoesNotExist:
                 html_content = render_to_string('emails/invite_staff.html')
@@ -281,10 +287,25 @@ class AddStaffPage(View):
                         )
                 
                 messages.success(request, f'Invite has been sent to {teacher_email}')
+                return redirect('add-staff')
         
         else:
             messages.error(request, 'You do not have a principal account, create your instituion before adding staff')
             return redirect('signup')
+
+
+class CreateClassroom(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        institution = Institution.objects.get(principal=request.user)
+
+
+        context = {'institution': institution}
+        return render(request, 'core/create_classroom.html', context)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        pass
 
 
 class MessagesPage(View):

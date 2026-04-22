@@ -37,21 +37,21 @@
                     {% endif %}
 
                     {% if request.path == '/teachers/' %}
-                    <li><a href="#" class="active"><i class="fas fa-comments"></i> Teachers</a></li>
+                    <li><a href="#" class="active"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
                     {% else %}
-                    <li><a href="#"><i class="fas fa-comments"></i> Teachers</a></li>
+                    <li><a href="#"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
                     {% endif %}
                     
-                    {% if request.path == '/classes/' %}
-                    <li><a href="#" class="active"><i class="fas fa-comments"></i> Classes</a></li>
+                    {% if request.path == '/create-classroom/' %}
+                    <li><a href="{% url 'create-classroom' %}" class="active"><i class="fas fa-school"></i> Classes</a></li>
                     {% else %}
-                    <li><a href="#"><i class="fas fa-comments"></i> Classes</a></li>
+                    <li><a href="{% url 'create-classroom' %}"><i class="fas fa-school"></i> Classes</a></li>
                     {% endif %}
 
                     {% if request.path == '/add-staff/' %}
-                    <li><a href="{% url 'add-staff' %}" class="active"><i class="fas fa-comments"></i> Add Staff</a></li>
+                    <li><a href="{% url 'add-staff' %}" class="active"><i class="fas fa-user-plus"></i> Add Staff</a></li>
                     {% else %}
-                    <li><a href="{% url 'add-staff' %}"><i class="fas fa-comments"></i> Add Staff</a></li>
+                    <li><a href="{% url 'add-staff' %}"><i class="fas fa-user-plus"></i> Add Staff</a></li>
                     {% endif %}
 
 
@@ -60,9 +60,9 @@
                     {% elif request.user.is_teacher %}
 
                     {% if request.path == '/dashboard/' %}
-                    <li><a href="{% url 'dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="{% url 'teacher-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                     {% else %}
-                    <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="{% url 'teacher-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
                     {% endif %}
 
                     {% if request.path == '/messages/' %}
@@ -140,6 +140,14 @@
         </div>
     </header>
 
+    
+    <div class="drop-down" id="dropDown" style="display: none;">
+        <a href="#" class="btn btn-secondary">Profile</a>
+        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+    </div>
+
+
     {% else %}
     <nav class="not-auth">
         <div class="nav-container">
@@ -168,6 +176,7 @@
             <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
         </div>
     </div>
+
     {% endif %}
 
     {% endblock navbar %}
