@@ -15,5 +15,6 @@ urlpatterns = [
          name='principal-dashboard'),
     path('add-staff/', views.AddStaffPage.as_view(), name='add-staff'),
     path('create-classroom/', views.CreateClassroom.as_view(), name='create-classroom'),
+    path('classrooms/', views.ClassroomList.as_view(), name='classroom-list'),
     path('messages/', views.MessagesPage.as_view(), name='messages')
 ]

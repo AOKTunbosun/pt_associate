@@ -61,7 +61,7 @@ class LoginPage(View):
             if user.is_principal == True:
                 login(request, user)
                 return redirect('principal-dashboard')
-            
+
             # elif user.is_burser == True:
             #     pass
 
@@ -134,7 +134,7 @@ class SignupPage(View):
                     #           html_message=html_content)
                     login(request, user)
                     return redirect('parent-dashboard')
-                
+
                 elif user and account_type == 'teacher':
                     # html_content = render_to_string('emails/welcome.html', {'user': user})
                     # send_mail(subject='Welcome to PT-Associate',
@@ -231,7 +231,6 @@ class PrincipalDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
 
-
         context = {}
         return render(request, 'core/principal_dashboard.html', context)
 
@@ -241,56 +240,59 @@ class AddStaffPage(View):
     def get(self, request):
         context = {}
         return render(request, 'core/add_staff.html', context)
-    
 
     def post(self, request):
         if request.user.is_principal:
 
             teacher_email = request.POST.get('email').strip()
 
-
             try:
                 user = User.objects.get(email=teacher_email)
 
-                
                 institution = Institution.objects.get(principal=request.user)
-                    
-                staff = Staff.objects.create(institution=institution, teacher=user)
 
-                    # html_content = render_to_string('emails/add_staff.html', {'institution': institution})
-                    # send_mail(subject=f'PT-Associate: Added as a staff of {institution.institution_name}', 
-                    #     message=f'You have been added as a staff of {institution.institution_name}', 
-                    #     from_email=None,
-                    #     recipient_list=[teacher_email],
-                    #     html_message=html_content
-                    #     )
-                    
-                messages.success(request, f'Account have been added as a staff of {institution.institution_name}')
+                staff = Staff.objects.create(
+                    institution=institution, staff=user)
+
+                # html_content = render_to_string('emails/add_staff.html', {'institution': institution})
+                # send_mail(subject=f'PT-Associate: Added as a staff of {institution.institution_name}',
+                #     message=f'You have been added as a staff of {institution.institution_name}',
+                #     from_email=None,
+                #     recipient_list=[teacher_email],
+                #     html_message=html_content
+                #     )
+
+                messages.success(
+                    request, f'Account have been added as a staff of {institution.institution_name}')
                 return redirect('add-staff')
-            
+
             except IntegrityError:
-                messages.error(request, 'Teacher is already a staff of the school')
+                messages.error(
+                    request, 'Teacher is already a staff of the school')
                 return redirect('add-staff')
-                
+
             except Institution.DoesNotExist:
-                messages.error(request, 'You do not have a principal account, create your institution before adding staff')
+                messages.error(
+                    request, 'You do not have a principal account, create your institution before adding staff')
                 return redirect('add-staff')
-                
+
             except User.DoesNotExist:
                 html_content = render_to_string('emails/invite_staff.html')
 
-                send_mail(subject='PT-Associate Invite', 
-                        message='You have been invited to signup with PT-Associate as a teacher', 
-                        from_email=None,
-                        recipient_list=[teacher_email],
-                        html_message=html_content
-                        )
-                
-                messages.success(request, f'Invite has been sent to {teacher_email}')
+                send_mail(subject='PT-Associate Invite',
+                          message='You have been invited to signup with PT-Associate as a teacher',
+                          from_email=None,
+                          recipient_list=[teacher_email],
+                          html_message=html_content
+                          )
+
+                messages.success(
+                    request, f'Invite has been sent to {teacher_email}')
                 return redirect('add-staff')
-        
+
         else:
-            messages.error(request, 'You do not have a principal account, create your instituion before adding staff')
+            messages.error(
+                request, 'You do not have a principal account, create your instituion before adding staff')
             return redirect('signup')
 
 
@@ -299,9 +301,49 @@ class CreateClassroom(View):
     def get(self, request):
         institution = Institution.objects.get(principal=request.user)
 
+        staff_members = institution.institution_staff.select_related('staff')
 
-        context = {'institution': institution}
+        context = {'institution': institution, 'staffs': staff_members}
         return render(request, 'core/create_classroom.html', context)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        class_name = request.POST.get('class_name')
+        class_code = request.POST.get('class_code')
+        academic_session = request.POST.get('academic_session')
+        class_teacher_id = request.POST.get('class_teacher')
+
+        try:
+            teacher = User.objects.get(id=class_teacher_id)
+            institution = Institution.objects.get(principal=request.user.id)
+            staff = Staff.objects.get(staff=teacher, institution=institution)
+        
+        except User.DoesNotExist:
+            messages.error(
+                request, message='User does not exist')
+            return redirect('create-classroom')
+
+        except Institution.DoesNotExist:
+            messages.error(
+                request, message='Institution does not exist'
+            )
+            return redirect('create-classroom')
+        
+        except Staff.DoesNotExist:
+            messages.error(
+                request, message='Teacher is not a staff of your institution, add as staff first'
+            )
+            return redirect('create-classroom')
+        
+        
+
+
+
+class ClassroomList(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        context = {}
+        return render(request, 'core/classroom_list.html', context)
 
     @method_decorator(login_required)
     def post(self, request):

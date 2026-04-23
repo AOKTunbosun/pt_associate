@@ -43,6 +43,26 @@ document.addEventListener('DOMContentLoaded', function() {
             toast.classList.remove('show');
         }, 3000);
     }
+
+
+    // Dynamic sessions 
+    const academicSession = document.getElementById('academicSession')
+
+    const currentYear = new Date().getFullYear();
+    const previousYearSession = `${currentYear-1}/${currentYear}`;
+    const nextYearSession = `${currentYear}/${currentYear + 1}`;
+
+    const previousYearOption = document.createElement('option');
+    previousYearOption.value = previousYearSession;
+    previousYearOption.textContent = previousYearSession;
+
+    const nextYearOption = document.createElement('option');
+    nextYearOption.value = nextYearSession;
+    nextYearOption.textContent = nextYearSession;
+
+    academicSession.appendChild(previousYearOption);
+    academicSession.appendChild(nextYearOption);
+
     
     // Generate class code automatically (optional)
     const classNameSelect = document.getElementById('className');
@@ -73,8 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
+                
         const className = document.getElementById('className').value;
         const classCode = document.getElementById('classCode').value.trim();
         const academicSession = document.getElementById('academicSession').value;
@@ -91,17 +110,17 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-            showToast(`Class "${className}" created successfully!`);
+        // setTimeout(() => {
+        //     showToast(`Class "${className}" created successfully!`);
             
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-            form.reset();
+        //     submitBtn.innerHTML = originalText;
+        //     submitBtn.disabled = false;
+        //     form.reset();
             
-            // Refresh page or redirect
-            setTimeout(() => {
-                location.reload();
-            }, 1500);
-        }, 1500);
+        //     // Refresh page or redirect
+        //     setTimeout(() => {
+        //         location.reload();
+        //     }, 1500);
+        // }, 1500);
     });
 })

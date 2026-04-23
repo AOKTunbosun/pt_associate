@@ -42,10 +42,10 @@
                     <li><a href="#"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
                     {% endif %}
                     
-                    {% if request.path == '/create-classroom/' %}
-                    <li><a href="{% url 'create-classroom' %}" class="active"><i class="fas fa-school"></i> Classes</a></li>
+                    {% if request.path == '/classrooms/' %}
+                    <li><a href="{% url 'classroom-list' %}" class="active"><i class="fas fa-school"></i> Classes</a></li>
                     {% else %}
-                    <li><a href="{% url 'create-classroom' %}"><i class="fas fa-school"></i> Classes</a></li>
+                    <li><a href="{% url 'classroom-list' %}"><i class="fas fa-school"></i> Classes</a></li>
                     {% endif %}
 
                     {% if request.path == '/add-staff/' %}

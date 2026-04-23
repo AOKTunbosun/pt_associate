@@ -54,23 +54,25 @@ class Classroom(models.Model):
     id = models.AutoField(primary_key=True)
     classroom_name = models.CharField(max_length=150, null=False)
     teacher = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='teacher')
-    school = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, related_name='school')
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, related_name='school')
+    academic_session = models.CharField(max_length=10, default=None, null=True)
+    classroom_code = models.CharField(max_length=20, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.classroom_name} in {self.school_id.school_name}"
+        return f"{self.classroom_name} in {self.institution.institution_name}"
 
 
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    classroom_id = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=False)
-    parent_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=False)
+    parent = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} in {self.classroom_id.classroom_name}"
+        return f"{self.first_name} {self.last_name} in {self.classroom.classroom_name} in {self.classroom.institution.institution_name}"
     
 
 class Message(models.Model):
@@ -99,13 +101,16 @@ class Announcement(models.Model):
 
 class Staff(models.Model):
     id = models.AutoField(primary_key=True)
-    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
+    staff = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='staff', null=False)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, related_name='institution_staff')
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['teacher', 'institution'],
+                fields=['staff', 'institution'],
                 name='unique_staff_per_institution'
             )
         ]
+    
+    def __str__(self):
+        return f'{self.staff.first_name} {self.staff.last_name} is a staff of {self.institution.institution_name}'

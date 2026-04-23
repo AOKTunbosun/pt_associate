@@ -9,147 +9,136 @@
 
 {% block content %}
 
-    <main class="dashboard-main">
-        <div class="container">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h2><i class="fas fa-plus-circle"></i> Create New Classroom</h2>
-                <p>Add a new class to your school</p>
-            </div>
-
-            <!-- Create Class Form Card -->
-            <div class="form-card">
-                <form id="createClassForm">
-                    {% csrf_token %}
-                    <div class="form-grid">
-                        <!-- Class Name -->
-                        <div class="form-group">
-                            <label for="className"><i class="fas fa-tag"></i> Class Name <span class="required">*</span></label>
-                            <select id="className" name="class_name" required>
-                                <option value="">Select Class</option>
-                                {% if institution.institution_type == 'primary' %}
-                                <option value="Pre-Nursery">Pre-Nursery</option>
-                                <option value="Nursery 1">Nursery 1</option>
-                                <option value="Nursery 2">Nursery 2</option>
-                                <option value="Kindergarten">Kindergarten</option>
-                                <option value="Basic 1">Basic 1</option>
-                                <option value="Basic 2">Basic 2</option>
-                                <option value="Basic 3">Basic 3</option>
-                                <option value="Basic 4">Basic 4</option>
-                                <option value="Basic 5">Basic 5</option>
-                                <option value="Basic 6">Basic 6</option>
-                                {% elif institution.institution_type == 'secondary' %}
-                                <option value="JSS 1">JSS 1</option>
-                                <option value="JSS 2">JSS 2</option>
-                                <option value="JSS 3">JSS 3</option>
-                                <option value="SSS 1">SSS 1</option>
-                                <option value="SSS 2">SSS 2</option>
-                                <option value="SSS 3">SSS 3</option>
-                                {% endif %}
-                            </select>
-                        </div>
-
-                        <!-- Class Code -->
-                        <div class="form-group">
-                            <label for="classCode"><i class="fas fa-barcode"></i> Class Code <span class="required">*</span></label>
-                            <input type="text" id="classCode" name="class_code" placeholder="e.g., B1A-2024" required>
-                            <small>Unique identifier for this class</small>
-                        </div>
-
-                        <!-- Academic Session -->
-                        <div class="form-group">
-                            <label for="academicSession"><i class="fas fa-calendar"></i> Academic Session <span class="required">*</span></label>
-                            <select id="academicSession" name="academic_session" required>
-                                <option value="">Select Session</option>
-                                <option value="2024/2025">2024/2025</option>
-                                <option value="2025/2026">2025/2026</option>
-                                <option value="2026/2027">2026/2027</option>
-                            </select>
-                        </div>
-
-                        <!-- Class Teacher -->
-                        <div class="form-group">
-                            <label for="classTeacher"><i class="fas fa-chalkboard-user"></i> Class Teacher <span class="required">*</span></label>
-                            <select id="classTeacher" name="class_teacher" required>
-                                <option value="">Select Teacher</option>
-                                <option value="1">Ms. Sarah Johnson</option>
-                                <option value="2">Mr. Michael Brown</option>
-                                <option value="3">Mrs. Lisa Davis</option>
-                                <option value="4">Mr. Robert Wilson</option>
-                            </select>
-                            <small>Only teachers added via Add Staff page appear here</small>
-                        </div>
-
-                        <!-- Maximum Capacity -->
-                        <!-- <div class="form-group">
-                            <label for="maxCapacity"><i class="fas fa-users"></i> Maximum Capacity <span class="required">*</span></label>
-                            <input type="number" id="maxCapacity" name="max_capacity" placeholder="e.g., 30" min="1" max="100" required>
-                        </div> -->
-
-                        <!-- Description -->
-                        <!-- <div class="form-group full-width">
-                            <label for="description"><i class="fas fa-align-left"></i> Description (Optional)</label>
-                            <textarea id="description" name="description" rows="3" placeholder="Additional information about this class..."></textarea>
-                        </div> -->
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-check-circle"></i> Create Classroom
-                        </button>
-                        <a href="{% url 'principal-dashboard'}" class="btn-secondary">Cancel</a>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Existing Classes -->
-            <div class="existing-classes">
-                <div class="card-header">
-                    <h3><i class="fas fa-list"></i> Existing Classes (Current Session)</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="classes-grid">
-                    <div class="class-card">
-                        <div class="class-header">
-                            <h4>Basic 5A</h4>
-                            <span class="class-code">B5A-2024</span>
-                        </div>
-                        <div class="class-body">
-                            <p><i class="fas fa-chalkboard-user"></i> Mrs. Adeyemi</p>
-                            <p><i class="fas fa-users"></i> 28/35 students</p>
-                        </div>
-                        <div class="class-footer">
-                            <span class="session">2024/2025</span>
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                        </div>
-                    </div>
-                    
-                    <div class="class-card">
-                        <div class="class-header">
-                            <h4>JSS 2B</h4>
-                            <span class="class-code">J2B-2024</span>
-                        </div>
-                        <div class="class-body">
-                            <p><i class="fas fa-chalkboard-user"></i> Mr. Okafor</p>
-                            <p><i class="fas fa-users"></i> 32/35 students</p>
-                        </div>
-                        <div class="class-footer">
-                            <span class="session">2024/2025</span>
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<main class="dashboard-main">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2><i class="fas fa-plus-circle"></i> Create New Classroom</h2>
+            <p>Add a new class to your school</p>
         </div>
-    </main>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
-        <div class="toast-content">
-            <i class="fas fa-check-circle"></i>
-            <span id="toastMessage">Class created successfully</span>
+        <!-- Create Class Form Card -->
+        <div class="form-card">
+            <form id="createClassForm" method="POST" action="{% url 'create-classroom' %}">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <!-- Class Name -->
+                    <div class="form-group">
+                        <label for="className"><i class="fas fa-tag"></i> Class Name <span
+                                class="required">*</span></label>
+                        <select id="className" name="class_name" required>
+                            <option value="">Select Class</option>
+                            {% if institution.institution_type == 'primary' %}
+                            <option value="Pre-Nursery">Pre-Nursery</option>
+                            <option value="Nursery 1">Nursery 1</option>
+                            <option value="Nursery 2">Nursery 2</option>
+                            <option value="Kindergarten">Kindergarten</option>
+                            <option value="Basic 1">Basic 1</option>
+                            <option value="Basic 2">Basic 2</option>
+                            <option value="Basic 3">Basic 3</option>
+                            <option value="Basic 4">Basic 4</option>
+                            <option value="Basic 5">Basic 5</option>
+                            <option value="Basic 6">Basic 6</option>
+                            {% elif institution.institution_type == 'secondary' %}
+                            <option value="JSS 1">JSS 1</option>
+                            <option value="JSS 2">JSS 2</option>
+                            <option value="JSS 3">JSS 3</option>
+                            <option value="SSS 1">SSS 1</option>
+                            <option value="SSS 2">SSS 2</option>
+                            <option value="SSS 3">SSS 3</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <!-- Class Code -->
+                    <div class="form-group">
+                        <label for="classCode"><i class="fas fa-barcode"></i> Class Code <span
+                                class="required">*</span></label>
+                        <input type="text" id="classCode" name="class_code" placeholder="e.g., A , Gold" required>
+                        <small>Unique identifier for this class</small>
+                    </div>
+
+                    <!-- Academic Session -->
+                    <div class="form-group">
+                        <label for="academicSession"><i class="fas fa-calendar"></i> Academic Session <span
+                                class="required">*</span></label>
+                        <select id="academicSession" name="academic_session" required>
+                            <option value="">Select Session</option>
+                        </select>
+                    </div>
+
+                    <!-- Class Teacher -->
+                    <div class="form-group">
+                        <label for="classTeacher"><i class="fas fa-chalkboard-user"></i> Class Teacher <span
+                                class="required">*</span></label>
+                        <select id="classTeacher" name="class_teacher" required>
+                            <option value="">Select Teacher</option>
+                            {% for staff in staffs %}
+                            <option value="{{ staff.staff.id }}">{% if staff.staff.gender == 'male' %} Mr. {% else %} Mrs. {% endif %}
+                                {{ staff.staff.first_name }} {{ staff.staff.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <small>Only teachers added via Add Staff page appear here</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-check-circle"></i> Create Classroom
+                    </button>
+                    <a href="{% url 'classroom-list' %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Existing Classes -->
+        <div class="existing-classes">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> Existing Classes (Current Session)</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="classes-grid">
+                <div class="class-card">
+                    <div class="class-header">
+                        <h4>Basic 5A</h4>
+                        <span class="class-code">B5A-2024</span>
+                    </div>
+                    <div class="class-body">
+                        <p><i class="fas fa-chalkboard-user"></i> Mrs. Adeyemi</p>
+                        <p><i class="fas fa-users"></i> 28/35 students</p>
+                    </div>
+                    <div class="class-footer">
+                        <span class="session">2024/2025</span>
+                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                    </div>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <h4>JSS 2B</h4>
+                        <span class="class-code">J2B-2024</span>
+                    </div>
+                    <div class="class-body">
+                        <p><i class="fas fa-chalkboard-user"></i> Mr. Okafor</p>
+                        <p><i class="fas fa-users"></i> 32/35 students</p>
+                    </div>
+                    <div class="class-footer">
+                        <span class="session">2024/2025</span>
+                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</main>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">
+    <div class="toast-content">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Class created successfully</span>
+    </div>
+</div>
 
 {% endblock content %}
 
