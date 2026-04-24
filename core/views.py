@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -8,9 +9,15 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.db import IntegrityError
+from django.db.models import Count
+
+from datetime import datetime
 import uuid
 
-from .models import Institution, Staff
+from .models import (Institution,
+                     Staff,
+                     Classroom,
+                     Student)
 
 # Create your views here.
 User = get_user_model()
@@ -277,14 +284,14 @@ class AddStaffPage(View):
                 return redirect('add-staff')
 
             except User.DoesNotExist:
-                html_content = render_to_string('emails/invite_staff.html')
+                # html_content = render_to_string('emails/invite_staff.html')
 
-                send_mail(subject='PT-Associate Invite',
-                          message='You have been invited to signup with PT-Associate as a teacher',
-                          from_email=None,
-                          recipient_list=[teacher_email],
-                          html_message=html_content
-                          )
+                # send_mail(subject='PT-Associate Invite',
+                #           message='You have been invited to signup with PT-Associate as a teacher',
+                #           from_email=None,
+                #           recipient_list=[teacher_email],
+                #           html_message=html_content
+                #           )
 
                 messages.success(
                     request, f'Invite has been sent to {teacher_email}')
@@ -317,7 +324,7 @@ class CreateClassroom(View):
             teacher = User.objects.get(id=class_teacher_id)
             institution = Institution.objects.get(principal=request.user.id)
             staff = Staff.objects.get(staff=teacher, institution=institution)
-        
+
         except User.DoesNotExist:
             messages.error(
                 request, message='User does not exist')
@@ -328,21 +335,36 @@ class CreateClassroom(View):
                 request, message='Institution does not exist'
             )
             return redirect('create-classroom')
-        
+
         except Staff.DoesNotExist:
             messages.error(
                 request, message='Teacher is not a staff of your institution, add as staff first'
             )
             return redirect('create-classroom')
-        
-        
 
+        Classroom.objects.create(classroom_name=class_name,
+                                 classroom_code=class_code,
+                                 academic_session=academic_session,
+                                 teacher=teacher,
+                                 institution=institution)
+
+        messages.success(
+            request, message='Classroom created successfully'
+        )
+        return redirect('create-classroom')
 
 
 class ClassroomList(View):
     @method_decorator(login_required)
     def get(self, request):
-        context = {}
+        try:
+            institution = Institution.objects.get(principal=request.user)
+            classrooms = Classroom.objects.filter(
+                institution=institution).annotate(student_count=Count('students'))
+        except Classroom.DoesNotExist:
+            classrooms = None
+
+        context = {'classrooms': classrooms}
         return render(request, 'core/classroom_list.html', context)
 
     @method_decorator(login_required)
@@ -354,3 +376,68 @@ class MessagesPage(View):
     @method_decorator(login_required)
     def get(self, request):
         return render(request, 'core/messages.html')
+
+
+class CreateStudent(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        try:
+            classroom = Classroom.objects.get(teacher=request.user)
+
+        except Classroom.DoesNotExist:
+            classroom = None
+
+        context = {'classroom': classroom}
+        return render(request, 'core/create_student.html', context)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        middle_name = request.POST.get('middle_name')
+        date_of_birth = request.POST.get('date_of_birth')
+        gender = request.POST.get('gender')
+        parent_email = request.POST.get('parent_email')
+
+        # Get parent and classroom3 record
+        try:
+            parent = User.objects.get(email=parent_email)
+            classroom = Classroom.objects.get(teacher=request.user)
+
+        except User.DoesNotExist:
+
+            html_content = render_to_string('emails/invite_parent.html')
+
+            send_mail(subject='PT-Associate Invite',
+                      message='You have been invited to signup with PT-Associate as a parent',
+                      from_email=None,
+                      recipient_list=[parent_email],
+                      html_message=html_content
+                      )
+
+            messages.success(
+                request, message='Invitation link has been sent to parent')
+            parent = None
+
+        except Classroom.DoesNotExist:
+            messages.error(
+                request, message='Classroom does not exist'
+            )
+            return redirect('create-student')
+
+        dob = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+
+        Student.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            middle_name=middle_name if middle_name is not None else None,
+            date_of_birth=dob,
+            gender=gender,
+            parent=parent if parent is not None else None,
+            classroom=classroom
+        )
+
+        messages.success(
+            request, message='Student record created successfully'
+        )
+        return redirect('create-student')

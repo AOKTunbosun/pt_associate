@@ -57,31 +57,82 @@
         <!-- Stats Summary -->
         <div class="stats-row">
             <div class="stat-mini">
-                <span class="stat-mini-value" id="totalClasses">0</span>
+                <span class="stat-mini-value" id="totalClasses">
+                    {% if classrooms is None %}
+                    0
+                    {% else %}
+                    {{ classrooms.count }}
+                    {% endif %}
+                </span>
                 <span class="stat-mini-label">Total Classes</span>
             </div>
             <div class="stat-mini">
                 <span class="stat-mini-value" id="totalStudents">0</span>
                 <span class="stat-mini-label">Total Students</span>
             </div>
-            <div class="stat-mini">
-                <span class="stat-mini-value" id="avgClassSize">0</span>
+            <!-- <div class="stat-mini">
+                <span class="stat-mini-value" id="avgClassSize">
+                    {% if classrooms is None %}
+                    0
+                    {% else %}
+                    {{ classrooms.count }}
+                    {% endif %}
+                </span>
                 <span class="stat-mini-label">Avg Class Size</span>
-            </div>
+            </div> -->
         </div>
-
+        
+        {% if classrooms is not None %}
+        {% for class in classrooms %}
         <!-- Classes Grid -->
         <div class="classes-grid" id="classesGrid">
-            <!-- Class cards will be dynamically inserted here -->
+            <div class="class-card" data-id="{{ class.id }}">
+                <div class="class-header">
+                    <span class="class-name">{{ class.classroom_name }} {{ class.classroom_code }}</span>
+                    <span class="class-code">{{ class.classroom_code }}</span>
+                </div>
+                <div class="class-body">
+                    <div class="class-info">
+                        <i class="fas fa-chalkboard-user"></i>
+                        <span>{{ class.teacher.first_name }} {{ class.teacher.last_name }}</span>
+                    </div>
+                    <div class="class-stats">
+                        <div class="class-stat">
+                            <span class="class-stat-value">{{ class.student_count }}</span>
+                            <span class="class-stat-label">Enrolled</span>
+                        </div>
+                        <!-- <div class="class-stat">
+                            <span class="class-stat-value">${classroom.capacity}</span>
+                            <span class="class-stat-label">Capacity</span>
+                        </div>
+                        <div class="class-stat">
+                            <span class="class-stat-value">${Math.round((classroom.students / classroom.capacity) * 100)}%</span>
+                            <span class="class-stat-label">Full</span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="class-footer">
+                    <span class="class-session"><i class="fas fa-calendar"></i> {{ class.academic_session }}</span>
+                    <div class="class-actions">
+                        <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        {% endfor %}
+        
+        {% else %}
 
         <!-- Empty State -->
-        <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-state" id="emptyState">
             <i class="fas fa-school-circle-exclamation"></i>
             <h3>No classrooms found</h3>
             <p>Get started by creating your first classroom</p>
-            <a href="{% url 'create-classroom' %}" class="btn-primary">Create New Classroom</a>
+            <!-- <a href="{% url 'create-classroom' %}" class="btn-primary">Create New Classroom</a> -->
         </div>
+        {% endif %}
     </div>
 </main>
 

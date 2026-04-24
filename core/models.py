@@ -66,8 +66,11 @@ class Classroom(models.Model):
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=False)
+    date_of_birth = models.DateField(null=True)
+    gender = models.CharField(null=True, max_length=8, choices=[('male', 'male'), ('female', 'female')])
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=False, related_name='students')
     parent = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

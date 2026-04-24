@@ -71,10 +71,10 @@
                     <li><a href="{% url 'messages' %}"><i class="fas fa-comments"></i> Messages</a></li>
                     {% endif %}
 
-                    {% if request.path == '/announcements/' %}
-                    <li><a href="#" class="active"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    {% if request.path == '/create-student/' %}
+                    <li><a href="{% url 'create-student' %}" class="active"><i class="fas fa-user-plus"></i> Add Student</a></li>
                     {% else %}
-                    <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li><a href="{% url 'create-student' %}"><i class="fas fa-user-plus"></i> Add Student</a></li>
                     {% endif %}
 
                     {% if request.path == '/students/' %}
