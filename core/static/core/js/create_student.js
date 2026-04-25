@@ -30,28 +30,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
     
-    function showToast(message, isSuccess = true) {
-        toastMessage.textContent = message;
-        toast.classList.add('show');
+    // function showToast(message, isSuccess = true) {
+    //     toastMessage.textContent = message;
+    //     toast.classList.add('show');
         
-        if (!isSuccess) {
-            toast.querySelector('i').className = 'fas fa-exclamation-circle';
-            toast.querySelector('i').style.color = '#ff4757';
-        } else {
-            toast.querySelector('i').className = 'fas fa-check-circle';
-            toast.querySelector('i').style.color = '#4CAF50';
-        }
+    //     if (!isSuccess) {
+    //         toast.querySelector('i').className = 'fas fa-exclamation-circle';
+    //         toast.querySelector('i').style.color = '#ff4757';
+    //     } else {
+    //         toast.querySelector('i').className = 'fas fa-check-circle';
+    //         toast.querySelector('i').style.color = '#4CAF50';
+    //     }
         
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
+    //     setTimeout(() => {
+    //         toast.classList.remove('show');
+    //     }, 3000);
+    // }
     
     // Form submission
     const form = document.getElementById('createStudentForm');
     
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
+        // e.preventDefault();
         
         // Get form values
         const firstName = document.getElementById('firstName').value.trim();
@@ -93,22 +93,22 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
         submitBtn.disabled = true;
         
-        setTimeout(() => {
-            // Simulate response
-            // If parent email exists -> success
-            // If parent email doesn't exist -> invite sent
-            const random = Math.random();
+        // setTimeout(() => {
+        //     // Simulate response
+        //     // If parent email exists -> success
+        //     // If parent email doesn't exist -> invite sent
+        //     const random = Math.random();
             
-            if (random > 0.3) {
-                showToast(`Student ${firstName} ${lastName} registered successfully! Parent has been notified.`);
-                form.reset();
-            } else {
-                showToast(`Parent account not found. Invitation sent to ${parentEmail} to sign up.`, true);
-                form.reset();
-            }
+        //     if (random > 0.3) {
+        //         showToast(`Student ${firstName} ${lastName} registered successfully! Parent has been notified.`);
+        //         form.reset();
+        //     } else {
+        //         showToast(`Parent account not found. Invitation sent to ${parentEmail} to sign up.`, true);
+        //         form.reset();
+        //     }
             
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
+        //     submitBtn.innerHTML = originalText;
+        //     submitBtn.disabled = false;
+        // }, 1500);
     });
 });

@@ -399,21 +399,22 @@ class CreateStudent(View):
         gender = request.POST.get('gender')
         parent_email = request.POST.get('parent_email')
 
-        # Get parent and classroom3 record
+        # Get parent and classroom record
         try:
-            parent = User.objects.get(email=parent_email)
             classroom = Classroom.objects.get(teacher=request.user)
+            print(classroom)
+            parent = User.objects.get(email=parent_email)
 
         except User.DoesNotExist:
 
             html_content = render_to_string('emails/invite_parent.html')
 
-            send_mail(subject='PT-Associate Invite',
-                      message='You have been invited to signup with PT-Associate as a parent',
-                      from_email=None,
-                      recipient_list=[parent_email],
-                      html_message=html_content
-                      )
+            # send_mail(subject='PT-Associate Invite',
+            #           message='You have been invited to signup with PT-Associate as a parent',
+            #           from_email=None,
+            #           recipient_list=[parent_email],
+            #           html_message=html_content
+            #           )
 
             messages.success(
                 request, message='Invitation link has been sent to parent')
