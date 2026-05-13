@@ -36,6 +36,8 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,7 +78,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pt_associate.wsgi.application'
+# WSGI_APPLICATION = 'pt_associate.wsgi.application'
+ASGI_APPLICATION = 'pt_associate.asgi.application'
 
 
 # Database
@@ -162,3 +165,11 @@ DEFAULT_FROM_EMAIL = "noreply@resend.dev"
 RESEND_API_KEY = env('RESEND_API_KEY')
 
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [env("REDIS_URL")],
+        },
+    },
+}

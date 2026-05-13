@@ -5,247 +5,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PT-Associate - Bridging Teachers & Parents{% endblock title %}</title>
-
+    <title>{% block title %}PT-Associate{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/navbar-footer.css' %}">
-    
     {% block extracss %}
-
-    {% endblock extracss %}
+    {% endblock %}
 </head>
 
 <body>
-    {% block navbar %}
-    {% if request.user.is_authenticated %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <header class="dashboard-header">
-        <div class="header-container">
-            <div class="logo">
-                <h1>PT-Associate</h1>
-            </div>
-    
-            <nav class="main-nav">
-                <ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'landing' %}">PT-Associate</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
 
+                    <!-- Show different nav items based on user role -->
+                    {% if user.is_authenticated %}
+
+                    <!-- Common Dashboard for all logged in users -->
+                    <li class="nav-item">
+                        <a class="nav-link" 
+                        href="
+                        {% if request.user.is_principal %}
+                        {% url 'principal-dashboard' %}
+                        {% elif request.user.is_burser %}
+                        {% url 'burser-dashboard' %}
+                        {% elif request.user.is_teacher %}
+                        {% url 'teacher-dashboard' %}
+                        {% elif request.user.is_parent %}
+                        {% url 'parent-dashboard' %}
+                        {% else %}
+                        {% url 'landing' %}
+                        {% endif %}">
+                        <i class="fas fa-home"></i>
+                            Dashboard</a></li>
+
+                    <!-- PRINCIPAL NAVIGATION -->
                     {% if request.user.is_principal %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'add-staff' %}"><i
+                                class="fas fa-user-plus"></i> Add Staff</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i
+                                class="fas fa-chalkboard-user"></i> Teachers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'classroom-list' %}"><i
+                                class="fas fa-school"></i> Classes</a></li>
 
-                    {% if request.path == '/principal-dashboard/' %}
-                    <li><a href="{% url 'principal-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                    {% else %}
-                    <li><a href="{% url 'principal-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
-                    {% endif %}
+                    <!-- BURSAR NAVIGATION -->
+                    {% elif request.user.is_burser %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
+                            Messages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'announcement_list' %}"><i
+                                class="fas fa-bullhorn"></i> Announcements</a></li>
 
-                    {% if request.path == '/teachers/' %}
-                    <li><a href="#" class="active"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
-                    {% else %}
-                    <li><a href="#"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
-                    {% endif %}
-                    
-                    {% if request.path == '/classrooms/' %}
-                    <li><a href="{% url 'classroom-list' %}" class="active"><i class="fas fa-school"></i> Classes</a></li>
-                    {% else %}
-                    <li><a href="{% url 'classroom-list' %}"><i class="fas fa-school"></i> Classes</a></li>
-                    {% endif %}
-
-                    {% if request.path == '/add-staff/' %}
-                    <li><a href="{% url 'add-staff' %}" class="active"><i class="fas fa-user-plus"></i> Add Staff</a></li>
-                    {% else %}
-                    <li><a href="{% url 'add-staff' %}"><i class="fas fa-user-plus"></i> Add Staff</a></li>
-                    {% endif %}
-
-
-
-
+                    <!-- TEACHER NAVIGATION -->
                     {% elif request.user.is_teacher %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
+                            Messages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student-list' %}"><i
+                                class="fas fa-users"></i> Students</a></li>
 
-                    {% if request.path == '/dashboard/' %}
-                    <li><a href="{% url 'teacher-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                    {% else %}
-                    <li><a href="{% url 'teacher-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <!-- PARENT NAVIGATION -->
+                    {% elif request.user.is_parent %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
+                            Messages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-child"></i>
+                            My Children</a></li>
+
+                    
                     {% endif %}
 
-                    {% if request.path == '/messages/' %}
-                    <li><a href="{% url 'messages' %}" class="active"><i class="fas fa-comments"></i> Messages</a></li>
-                    {% else %}
-                    <li><a href="{% url 'messages' %}"><i class="fas fa-comments"></i> Messages</a></li>
-                    {% endif %}
+                    <!-- Logout for all logged in users -->
+                    <li class="nav-item"><a class="nav-link text-danger" href="{% url 'logout' %}"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a></li>
 
-                    {% if request.path == '/create-student/' %}
-                    <li><a href="{% url 'create-student' %}" class="active"><i class="fas fa-user-plus"></i> Add Student</a></li>
                     {% else %}
-                    <li><a href="{% url 'create-student' %}"><i class="fas fa-user-plus"></i> Add Student</a></li>
-                    {% endif %}
-
-                    {% if request.path == '/students/' %}
-                    <li><a href="#" class="active"><i class="fas fa-user-graduate"></i> Students</a></li>
-                    {% else %}
-                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
-                    {% endif %}
-
+                    <!-- For non-logged in users (Landing Page) -->
+                    <li class="nav-item"><a class="nav-link" href="{% url 'landing' %}#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'landing' %}#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'landing' %}#about">About</a></li>
+                    <!-- Replace the Login and Get Started buttons with this -->
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary ms-2 px-3" href="{% url 'login' %}"
+                            style="display: inline-block;">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary ms-2 px-3 text-white" href="{% url 'signup' %}"
+                            style="display: inline-block;">Get Started</a>
+                    </li>
                     {% endif %}
 
                 </ul>
-            </nav>
-            
-
-            <div class="header-right">
-                <!-- Role Toggle Switch -->
-                <!-- <div class="role-toggle-container">
-                    <div class="role-toggle">
-                        <button class="role-btn active" data-role="parent">
-                            <i class="fas fa-user"></i>
-                            <span>Parent</span>
-                        </button>
-                        <button class="role-btn" data-role="teacher">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                            <span>Teacher</span>
-                        </button>
-                    </div>
-                </div> -->
-    
-                <!-- User Profile -->
-                <div class="user-profile">
-                    <div class="notification-bell">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-count">3</span>
-                    </div>
-                    <div class="user-info">
-                        <img src="https://ui-avatars.com/api/?name=John+Smith&background=0066cc&color=fff"
-                            alt="User Avatar">
-                        <div class="user-details">
-                            <span class="user-name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-                            <span class="user-role">
-                                {% if request.user.is_parent == True %}
-                                Parent
-                                {% elif request.user.is_principal == True %}
-                                Principal
-                                {% elif request.user.is_burser == True %}
-                                Burser
-                                {% else %}
-                                Teacher
-                                {% endif %}
-                            </span>
-                        </div>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                </div>
             </div>
-
-    
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
-
-    
-    <div class="drop-down" id="dropDown" style="display: none;">
-        <a href="#" class="btn btn-secondary">Profile</a>
-        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
-
-    </div>
-
-
-    {% else %}
-    <nav class="not-auth">
-        <div class="nav-container">
-            <div class="logo">PT-Associate</div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            <div class="nav-cta">
-                <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
-                <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
-            </div>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
 
-    <div class="mobile-nav" id="mobileNav">
-        <ul>
-            <li><a href="#features" onclick="toggleMobileMenu()">Features</a></li>
-            <li><a href="#how-it-works" onclick="toggleMobileMenu()">How It Works</a></li>
-            <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
-        </ul>
-        <div class="mobile-nav-cta">
-            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
-            <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
-        </div>
-    </div>
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
-    {% endif %}
-
-    {% endblock navbar %}
-
-    <div class="wrapper">
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-
-
-    {% block content %}
-
-
-    {% endblock content %}
-
-
-    {% block footer %}
-    <footer class="main-footer">
-        <div class="footer-container">
-            <p>&copy; 2024 PT-Associate. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Us</a>
-                <a href="#">Help Center</a>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>PT-Associate</h5>
+                    <p>Connecting parents and teachers for student success.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p class="text-white-50">Email: support@pt-associate.com</p>
+                </div>
+            </div>
+            <div class="text-center pt-3 border-top border-secondary">
+                <p class="mb-0 text-white-50">&copy; 2024 PT-Associate. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    {% endblock footer %}
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-    {% block navbarjs %}
-
-    {% if request.user.is_authenticated %}
-    
-    <script src="{% static 'js/navbar-footer.js' %}"></script>
-    
-    {% else %}
-
-    <script>
-        function toggleMobileMenu() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-        }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function (event) {
-            const mobileNav = document.getElementById('mobileNav');
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-
-            if (!mobileNav.contains(event.target) && !menuBtn.contains(event.target)) {
-                mobileNav.classList.remove('active');
-            }
-        });
-    </script>
-    
-    {% endif %}
-
-    {% endblock navbarjs %}
-
-    {% block extrajs %}
-
-    {% endblock extrajs %}
-
+    {% block extra_js %}
+    {% endblock %}
 </body>
 
 </html>

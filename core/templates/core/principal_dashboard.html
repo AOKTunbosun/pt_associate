@@ -1,282 +1,309 @@
 {% extends 'main.html' %}
 {% load static %}
 
-
-<title>{% block title %}Principal Dashboard - PT-Associate{% endblock title %}</title>
-{% block extracss %}
-<link rel="stylesheet" href="{% static 'core/css/principal_dashboard.css' %}">
-{% endblock extracss %}
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-
+{% block title %}Principal Dashboard - PT-Associate{% endblock %}
 
 {% block content %}
 
-<main class="dashboard-main">
-    <div class="container">
-        <!-- Welcome Section -->
-        <section class="welcome-section">
-            <div class="welcome-card">
-                {% if request.user.gender == 'male' %}
-                <h2>Welcome back, Mr. {{ request.user.last_name }}</h2>
-                {% else %}
-                <h2>Welcome back, Mrs. {{ request.user.last_name }}</h2>
-                {% endif %}
-                <p>School overview and key metrics at a glance.</p>
-            </div>
-        </section>
-
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>Total Students</h3>
-                    <p class="stat-number">486</p>
-                    <span class="stat-trend">+12 this month</span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-chalkboard-user"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>Total Teachers</h3>
-                    <p class="stat-number">24</p>
-                    <span class="stat-trend">+2 new</span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-school"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>Total Classes</h3>
-                    <p class="stat-number">18</p>
-                    <span class="stat-trend">K-12</span>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-            <!-- Left Column -->
-            <div class="left-column">
-                <!-- School Overview -->
-                <section class="dashboard-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-school"></i> School Overview</h3>
-                        <a href="#" class="view-all">View All</a>
-                    </div>
-                    <div class="classes-overview">
-                        <div class="grade-section">
-                            <h4>Elementary School (K-5)</h4>
-                            <div class="class-item">
-                                <span class="class-name">Grade 1A</span>
-                                <span class="teacher-name">Ms. Sarah Johnson</span>
-                                <span class="student-count">24 students</span>
-                            </div>
-                            <div class="class-item">
-                                <span class="class-name">Grade 2B</span>
-                                <span class="teacher-name">Mr. Michael Brown</span>
-                                <span class="student-count">22 students</span>
-                            </div>
-                            <div class="class-item">
-                                <span class="class-name">Grade 3C</span>
-                                <span class="teacher-name">Mrs. Lisa Davis</span>
-                                <span class="student-count">26 students</span>
-                            </div>
-                        </div>
-
-                        <div class="grade-section">
-                            <h4>Middle School (6-8)</h4>
-                            <div class="class-item">
-                                <span class="class-name">Grade 6A</span>
-                                <span class="teacher-name">Mr. Robert Wilson</span>
-                                <span class="student-count">28 students</span>
-                            </div>
-                            <div class="class-item">
-                                <span class="class-name">Grade 7B</span>
-                                <span class="teacher-name">Ms. Emily Chen</span>
-                                <span class="student-count">27 students</span>
-                            </div>
-                        </div>
-
-                        <div class="grade-section">
-                            <h4>High School (9-12)</h4>
-                            <div class="class-item">
-                                <span class="class-name">Grade 10A</span>
-                                <span class="teacher-name">Dr. James Miller</span>
-                                <span class="student-count">30 students</span>
-                            </div>
-                            <div class="class-item">
-                                <span class="class-name">Grade 11B</span>
-                                <span class="teacher-name">Ms. Patricia Lee</span>
-                                <span class="student-count">28 students</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Recent School-wide Announcements -->
-                <section class="dashboard-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-bullhorn"></i> Recent Announcements</h3>
-                        <button class="btn-small"><i class="fas fa-plus"></i> New</button>
-                    </div>
-                    <div class="announcements-list">
-                        <div class="announcement-item">
-                            <div class="announcement-badge school-wide">
-                                <i class="fas fa-school"></i> School-wide
-                            </div>
-                            <h4>Parent-Teacher Conference Week</h4>
-                            <p>Parent-teacher conferences scheduled for March 25-29. All teachers please prepare
-                                progress reports.</p>
-                            <div class="announcement-meta">
-                                <span><i class="fas fa-clock"></i> 2 hours ago</span>
-                                <span><i class="fas fa-eye"></i> 142 views</span>
-                            </div>
-                        </div>
-
-                        <div class="announcement-item">
-                            <div class="announcement-badge school-wide">
-                                <i class="fas fa-school"></i> School-wide
-                            </div>
-                            <h4>Science Fair 2025</h4>
-                            <p>Annual Science Fair will be held on April 15. All classes are encouraged to participate.
-                            </p>
-                            <div class="announcement-meta">
-                                <span><i class="fas fa-clock"></i> 1 day ago</span>
-                                <span><i class="fas fa-eye"></i> 98 views</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Right Column -->
-            <div class="right-column">
-                <!-- Teacher Management -->
-                <section class="dashboard-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-chalkboard-user"></i> Teacher Management</h3>
-                        <button class="btn-small"><i class="fas fa-plus"></i> Add</button>
-                    </div>
-                    <div class="teachers-list">
-                        <div class="teacher-item">
-                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=0066cc&color=fff"
-                                alt="Teacher">
-                            <div class="teacher-details">
-                                <h4>Ms. Sarah Johnson</h4>
-                                <p>Grade 1A • 5 years experience</p>
-                                <span class="teacher-status active">Active</span>
-                            </div>
-                            <div class="teacher-actions">
-                                <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="teacher-item">
-                            <img src="https://ui-avatars.com/api/?name=Michael+Brown&background=0066cc&color=fff"
-                                alt="Teacher">
-                            <div class="teacher-details">
-                                <h4>Mr. Michael Brown</h4>
-                                <p>Grade 2B • 3 years experience</p>
-                                <span class="teacher-status active">Active</span>
-                            </div>
-                            <div class="teacher-actions">
-                                <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="teacher-item">
-                            <img src="https://ui-avatars.com/api/?name=Robert+Wilson&background=0066cc&color=fff"
-                                alt="Teacher">
-                            <div class="teacher-details">
-                                <h4>Mr. Robert Wilson</h4>
-                                <p>Grade 6A • 8 years experience</p>
-                                <span class="teacher-status active">Active</span>
-                            </div>
-                            <div class="teacher-actions">
-                                <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Recent Activity -->
-                <section class="dashboard-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-activity"></i> Recent Activity</h3>
-                        <a href="#" class="view-all">View All</a>
-                    </div>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-comment"></i>
-                            </div>
-                            <div class="activity-details">
-                                <p><strong>Mrs. Davis</strong> sent a message to parent of Emily Smith</p>
-                                <span class="activity-time">15 minutes ago</span>
-                            </div>
-                        </div>
-
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-bullhorn"></i>
-                            </div>
-                            <div class="activity-details">
-                                <p><strong>Mr. Brown</strong> posted an announcement for Grade 2B</p>
-                                <span class="activity-time">1 hour ago</span>
-                            </div>
-                        </div>
-
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                            <div class="activity-details">
-                                <p>New student <strong>John Thompson</strong> enrolled in Grade 5A</p>
-                                <span class="activity-time">3 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Quick Reports -->
-                <section class="dashboard-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-chart-line"></i> Quick Reports</h3>
-                    </div>
-                    <div class="reports-list">
-                        <a href="#" class="report-link">
-                            <i class="fas fa-users"></i>
-                            <span>Student Enrollment Report</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                        <a href="#" class="report-link">
-                            <i class="fas fa-comments"></i>
-                            <span>Communication Summary</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                        <a href="#" class="report-link">
-                            <i class="fas fa-chart-simple"></i>
-                            <span>Teacher Performance</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </section>
+<div class="container py-4">
+    
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="bg-primary text-white rounded-3 p-4">
+                <h2 class="mb-2">Welcome back, Dr. James Wilson</h2>
+                <p class="mb-0 opacity-75">School overview and key metrics at a glance</p>
             </div>
         </div>
     </div>
-</main>
+    
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">486</h3>
+                    <p class="text-muted mb-0">Total Students</p>
+                    <small class="text-success">+12 this month</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chalkboard-user fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">24</h3>
+                    <p class="text-muted mb-0">Total Teachers</p>
+                    <small class="text-success">+2 new</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-school fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">18</h3>
+                    <p class="text-muted mb-0">Total Classes</p>
+                    <small class="text-muted">K-12</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
+                    <h3 class="mb-1">5</h3>
+                    <p class="text-muted mb-0">Pending Issues</p>
+                    <small class="text-danger">3 urgent</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- School Overview & Teacher Management -->
+    <div class="row g-4 mb-4">
+        <!-- School Overview -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3 pb-0">
+                    <h5 class="mb-0"><i class="fas fa-school text-primary me-2"></i>School Overview</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Elementary -->
+                    <h6 class="fw-bold text-secondary mb-2">Elementary School (K-5)</h6>
+                    <div class="list-group list-group-flush mb-3">
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 1A</span>
+                            <span class="text-primary">Ms. Sarah Johnson</span>
+                            <span class="badge bg-secondary">24 students</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 2B</span>
+                            <span class="text-primary">Mr. Michael Brown</span>
+                            <span class="badge bg-secondary">22 students</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 3C</span>
+                            <span class="text-primary">Mrs. Lisa Davis</span>
+                            <span class="badge bg-secondary">26 students</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Middle School -->
+                    <h6 class="fw-bold text-secondary mb-2 mt-3">Middle School (6-8)</h6>
+                    <div class="list-group list-group-flush mb-3">
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 6A</span>
+                            <span class="text-primary">Mr. Robert Wilson</span>
+                            <span class="badge bg-secondary">28 students</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 7B</span>
+                            <span class="text-primary">Ms. Emily Chen</span>
+                            <span class="badge bg-secondary">27 students</span>
+                        </div>
+                    </div>
+                    
+                    <!-- High School -->
+                    <h6 class="fw-bold text-secondary mb-2 mt-3">High School (9-12)</h6>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 10A</span>
+                            <span class="text-primary">Dr. James Miller</span>
+                            <span class="badge bg-secondary">30 students</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <span>Grade 11B</span>
+                            <span class="text-primary">Ms. Patricia Lee</span>
+                            <span class="badge bg-secondary">28 students</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teacher Management -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-chalkboard-user text-primary me-2"></i>Teacher Management</h5>
+                    <a href="{% url 'add-staff' %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Add Teacher
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=0066cc&color=fff" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-0">Ms. Sarah Johnson</h6>
+                                    <small class="text-muted">Grade 1A • 5 years exp</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=Michael+Brown&background=0066cc&color=fff" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-0">Mr. Michael Brown</h6>
+                                    <small class="text-muted">Grade 2B • 3 years exp</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=Robert+Wilson&background=0066cc&color=fff" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-0">Mr. Robert Wilson</h6>
+                                    <small class="text-muted">Grade 6A • 8 years exp</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name=Emily+Chen&background=0066cc&color=fff" class="rounded-circle" width="40" height="40">
+                                <div>
+                                    <h6 class="mb-0">Ms. Emily Chen</h6>
+                                    <small class="text-muted">Grade 7B • 4 years exp</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">View All Teachers <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Announcements & Recent Activity -->
+    <div class="row g-4">
+        <!-- School-wide Announcements -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn text-primary me-2"></i>School-wide Announcements</h5>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newAnnouncementModal">
+                        <i class="fas fa-plus"></i> New
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3 pb-2 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">Parent-Teacher Conference Week</h6>
+                                <p class="text-muted small mb-1">Parent-teacher conferences scheduled for March 25-29. All teachers please prepare progress reports.</p>
+                                <small class="text-muted"><i class="fas fa-clock me-1"></i>2 hours ago</small>
+                            </div>
+                            <span class="badge bg-primary">142 views</span>
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">Science Fair 2025</h6>
+                                <p class="text-muted small mb-1">Annual Science Fair will be held on April 15. All classes are encouraged to participate.</p>
+                                <small class="text-muted"><i class="fas fa-clock me-1"></i>1 day ago</small>
+                            </div>
+                            <span class="badge bg-primary">98 views</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1">Staff Professional Development</h6>
+                                <p class="text-muted small mb-1">Mandatory training for all teachers on April 5. Venue: School Hall.</p>
+                                <small class="text-muted"><i class="fas fa-clock me-1"></i>3 days ago</small>
+                            </div>
+                            <span class="badge bg-primary">67 views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-3 pb-0">
+                    <h5 class="mb-0"><i class="fas fa-activity text-primary me-2"></i>Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex gap-3 mb-3 pb-2 border-bottom">
+                        <i class="fas fa-comment text-primary mt-1"></i>
+                        <div>
+                            <p class="mb-1"><strong>Mrs. Davis</strong> sent a message to parent of Emily Smith</p>
+                            <small class="text-muted">15 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3 pb-2 border-bottom">
+                        <i class="fas fa-bullhorn text-primary mt-1"></i>
+                        <div>
+                            <p class="mb-1"><strong>Mr. Brown</strong> posted an announcement for Grade 2B</p>
+                            <small class="text-muted">1 hour ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3 pb-2 border-bottom">
+                        <i class="fas fa-user-plus text-primary mt-1"></i>
+                        <div>
+                            <p class="mb-1">New student <strong>John Thompson</strong> enrolled in Grade 5A</p>
+                            <small class="text-muted">3 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <i class="fas fa-chalkboard-user text-primary mt-1"></i>
+                        <div>
+                            <p class="mb-1"><strong>Dr. Miller</strong> updated student grades</p>
+                            <small class="text-muted">Yesterday</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- New Announcement Modal -->
+<div class="modal fade" id="newAnnouncementModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Announcement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" placeholder="Announcement title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea class="form-control" rows="4" placeholder="Write your announcement here..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Audience</label>
+                        <select class="form-select">
+                            <option>All Users</option>
+                            <option>Teachers Only</option>
+                            <option>Parents Only</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Publish</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-{% endblock content %}
+{% endblock %}

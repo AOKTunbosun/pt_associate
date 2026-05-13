@@ -1,0 +1,12 @@
+{% for message in messages %}
+
+{% include "core/partials/chat_partials/message.html" %}
+
+{% empty %}
+
+<div class="empty-state">
+    <i class="fas fa-comments"></i>
+    <p class="mb-0">No messages yet. Start a conversation!</p>
+</div>
+
+{% endfor %}

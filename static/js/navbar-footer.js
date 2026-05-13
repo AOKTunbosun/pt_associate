@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ====================================
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mainNav = document.querySelector('.main-nav');
+    const mobileNavButtons = document.querySelector('.mobile-nav-buttons');
 
     if (mobileMenuBtn && mainNav) {
         mobileMenuBtn.addEventListener('click', function (e) {
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Toggle mobile menu class
             mainNav.classList.toggle('mobile-open');
+            mobileNavButtons.classList.toggle('mobile-open');
 
             // Toggle icon and body scroll
             if (mainNav.classList.contains('mobile-open')) {
@@ -48,4 +50,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
+    const userInfo = document.querySelector('.user-info')
+    const navButtons = document.querySelector('.nav-buttons')
+    const navBtn = document.getElementById('navBtn')
+
+    if (userInfo && navButtons) {
+        userInfo.addEventListener('click', (e) => {
+            e.stopPropagation()
+            
+            navBtn.classList.toggle('dropdown');
+            navButtons.classList.toggle('dropdown');
+            // profileBtn.classList.toggle('wide-nav-buttons');
+            
+        })
+    }
+
 });

@@ -1,142 +1,142 @@
 {% extends 'main.html' %}
 {% load static %}
 
+{% block title %}Messages - PT-Associate{% endblock %}
 
-<title>{% block title %}Messages - PT-Associate{% endblock title %}</title>
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'core/css/messages.css' %}">
-{% endblock extracss %}
-
+{% endblock %}
 
 {% block content %}
 
-<main class="messages-main">
-    <div class="container">
-        <div class="role-indicator">
-                <div class="role-indicator-content">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Currently viewing as: <strong id="current-role">Parent</strong></span>
-                    <div class="role-switch-info">
-                        <i class="fas fa-info-circle"></i>
-                        <span>You can switch between roles using the toggle above</span>
-                    </div>
+<div class="container-fluid px-0 messages-wrapper">
+    <div class="messages-container">
+
+        <!-- Conversations Sidebar -->
+        <div class="conversations-sidebar" id="conversationsSidebar">
+            <div class="sidebar-header">
+                <h5 class="mb-3"><i class="fas fa-comments text-primary me-2"></i>Messages</h5>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search conversations..."
+                        id="searchInput">
                 </div>
             </div>
-    </div>
 
-    <div id="parent-section" class="messages-content active">
-        <section class="greeting-section">
-            <div class="greeting-card">
-                <h3>Here are your messages, {{ request.user.first_name }}!</h3>
-                <p>Check out the teachers' messages</p>
-            </div>
-        </section>
+            <div class="conversations-list" id="conversationsList">
 
-        <div class="messages-grid">
-            <div class="left-column">
-                <input class="search-bar" placeholder="Search" name="search-bar">
-                <p><a href="#">Unread</a></p>
-                <p><a href="#">Recent</a></p>
+                {% for conversation in conversations %}
 
-            </div>
+                {% include "core/partials/chat_partials/conversation_item.html" %}
 
-            <div class="right-column">
-                <section class="messages-card">
-                    <div class="messages-card-header">
-                        <h2>Messages</h2>
-                    </div>
-                    <div class="messages-list">
-                        <a href="#">
-                        <div class="messages-item unread">
-                            <div class="sender-initials">
-                                <h5>AK</h5>
-                            </div>
-                            <div class="message-content">
-                                <h4>Mr. Keruwole <span class="message-badge">Computer Teacher</span></h4>
-                                <p class="message-preview">The computer training will begin next week.</p>
+                {% empty %}
 
-                                <div class="message-meta-data">
-                                    <span>5 minutes ago</span>
-                                    <span class="unread-indicator">Unread</span>
-                                </div>
+                <div class="text-muted p-3">
+                    No conversations yet
+                </div>
 
-                            </div>
-                        </div>
-                        </a>
-
-
-                    </div>
-
-
-                </section>
+                {% endfor %}
 
             </div>
-
         </div>
 
-    </div>
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
 
+            {% if conversation %}
 
-    <div id="teacher-section" class="messages-content">
-        <section class="greeting-section">
-            <div class="greeting-card">
-                <h3>Here are your messages, Mr. {{ request.user.last_name }}!</h3>
-                <p>Check out the parents' messages</p>
-            </div>
-        </section>
-
-        <div class="messages-grid">
-            <div class="left-column">
-                <input class="search-bar" placeholder="Search" name="search-bar">
-                <p><a href="#">All</a></p>
-                <p><a href="#">Unread</a></p>
-                <p><a href="#">Sent</a></p>
-
+            <!-- CHAT HEADER -->
+            <div class="chat-header bg-white d-flex justify-content-between align-items-center p-3 border-bottom">
+                {% include "core/partials/chat_partials/chat_header.html" %}
             </div>
 
-            <div class="right-column">
-                <section class="messages-card">
-                    <div class="messages-card-header">
-                        <h2>Messages</h2>
-                    </div>
-                    <div class="messages-list">
-                        <a href="#">
-                        <div class="messages-item unread">
-                            <div class="sender-initials">
-                                <h5>OA</h5>
-                            </div>
-                            <div class="message-content">
-                                <h4>Mr. Bosun <span class="message-badge">Ola's Parent</span></h4>
-                                <p class="message-preview">When will the midterm break end.</p>
-
-                                <div class="message-meta-data">
-                                    <span>30 minutes ago</span>
-                                    <span class="unread-indicator">Unread</span>
-                                </div>
-
-                            </div>
-                        </div>
-                        </a>
-
-
-                    </div>
-
-
-                </section>
-
+            <!-- MESSAGES -->
+            <div class="messages-area bg-light" id="messagesArea" hx-ext="ws"
+                ws-connect="/ws/messages/{{ conversation.uid }}/" ws-swap="beforeend">
+                {% include "core/partials/chat_partials/messages_container.html" %}
             </div>
+
+            <!-- INPUT -->
+            <form class="message-input-area bg-white p-3 border-top" hx-post="{% url 'send-message' conversation.uid %}"
+                hx-target="#messagesArea" hx-swap="beforeend" hx-on::after-request="this.reset()">
+
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+
+                    {{ form.body }}
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+            </form>
+
+            {% else %}
+
+            <!-- EMPTY STATE -->
+            <div class="empty-chat-area d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+                <i class="fas fa-comments fa-3x mb-3"></i>
+                <p class="mb-0">Select a conversation to start chatting</p>
+            </div>
+
+            {% endif %}
 
         </div>
-
-
-
     </div>
+</div>
 
-</main>
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<!-- New Message Modal -->
+<div class="modal fade" id="newMessageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Recipient</label>
+                    <select class="form-select" id="recipientSelect">
+                        <option value="">Select...</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Student (Optional)</label>
+                    <select class="form-select" id="studentSelect">
+                        <option value="">Not specified</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" rows="4" id="newMessageText"
+                        placeholder="Type your message here..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="sendNewMessageBtn">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-{% endblock content %}
+<!-- Floating New Message Button -->
+<button class="btn btn-primary rounded-circle floating-new-msg-btn" id="newMessageFloatBtn">
+    <i class="fas fa-plus"></i>
+</button>
 
-{% block extrajs %}
+{% endblock %}
+
+{% block extra_js %}
 <script src="{% static 'core/js/messages.js' %}"></script>
-{% endblock extrajs %}
+{% endblock %}

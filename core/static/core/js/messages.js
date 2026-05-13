@@ -1,53 +1,112 @@
+// Messages Page JavaScript
 document.addEventListener('DOMContentLoaded', function () {
+    // DOM Elements
+    const conversationsList = document.getElementById('conversationsList');
+    const chatHeader = document.getElementById('chatHeader');
+    const messagesArea = document.getElementById('messagesArea');
+    const messageInput = document.getElementById('id_body');
+    const sendBtn = document.getElementById('sendBtn');
+    const typingIndicator = document.getElementById('typingIndicator');
+    const searchInput = document.getElementById('searchInput');
+    const newMessageFloatBtn = document.getElementById('newMessageFloatBtn');
+    const sendNewMessageBtn = document.getElementById('sendNewMessageBtn');
+    const conversationsSidebar = document.getElementById('conversationsSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    const roleButtons = document.querySelectorAll('.role-btn');
-    const parentMessages = document.getElementById('parent-section');
-    const teacherMessages = document.getElementById('teacher-section');
-    const currentRoleElement = document.getElementById('current-role');
-    const userRoleElement = document.querySelector('.user-role');
+    const newMessageModal = new bootstrap.Modal(document.getElementById('newMessageModal'));
 
-    function switchRole(role) {
-        roleButtons.forEach(btn => {
-            if (btn.dataset.role === role) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+    
+    // Close sidebar on mobile when conversation is selected
+    function closeSidebarOnMobile() {
+        if (window.innerWidth <= 768) {
+            conversationsSidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        }
+    }
+
+
+
+    function scrollToBottom() {
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+
+    if (messageInput) {
+        messageInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
         });
 
-        if (role === 'parent') {
-            parentMessages.classList.add('active');
-            teacherMessages.classList.remove('active');
-            currentRoleElement.textContent = 'Parent';
-            if (userRoleElement) {
-                userRoleElement.textContent = 'Viewing as Parent';
+        messageInput.addEventListener('input', function () {
+            typingIndicator.style.display = 'block';
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                typingIndicator.style.display = 'none';
+            }, 1000);
+        });
+    }
+
+    // Sidebar overlay click to close
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function () {
+            conversationsSidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // New message button
+    if (newMessageFloatBtn) {
+        newMessageFloatBtn.addEventListener('click', () => newMessageModal.show());
+    }
+
+    if (sendNewMessageBtn) {
+        sendNewMessageBtn.addEventListener('click', function () {
+            const recipient = recipientSelect?.value;
+            const message = document.getElementById('newMessageText')?.value;
+            if (recipient && message) {
+                alert(`New message would be sent to ${recipient}`);
+                newMessageModal.hide();
+                document.getElementById('newMessageText').value = '';
+            } else {
+                alert('Please fill in recipient and message');
             }
-        } else if (role === 'teacher') {
-            parentMessages.classList.remove('active');
-            teacherMessages.classList.add('active');
-            currentRoleElement.textContent = 'Teacher';
-            if (userRoleElement) {
-                userRoleElement.textContent = 'Viewing as Teacher';
-            }
+        });
+    }
+
+    // Search functionality
+    if (searchInput) {
+        searchInput.addEventListener('input', renderConversations);
+    }
+
+    // Handle window resize - reset sidebar state
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            conversationsSidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
         }
+    });
 
-         document.title = `Messages (${role.charAt(0).toUpperCase() + role.slice(1)}) - PT-Associate`;
+    // Mobile sidebar toggle
+    const mobileConvToggle = document.getElementById('mobileConvToggle');
 
-        // Store preference in localStorage
-        localStorage.setItem('pt-associate-role', role);
+    if (mobileConvToggle) {
+
+        mobileConvToggle.addEventListener('click', function () {
+
+            conversationsSidebar.classList.add('open');
+            sidebarOverlay.classList.add('active');
+
+        });
 
     }
 
-    roleButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const role = this.dataset.role;
-            switchRole(role);
-        });
-    });
+    scrollToBottom();
 
-    const savedRole = localStorage.getItem('pt-associate-role') || 'parent';
-    switchRole(savedRole);
-
-
-
-})
+});

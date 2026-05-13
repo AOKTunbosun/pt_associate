@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PT-Associate - Bridging Teachers & Parents{% endblock title %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/navbar-footer.css' %}">
+
+    {% block extracss %}
+
+    {% endblock extracss %}
+</head>
+
+<body>
+    {% block navbar %}
+    {% if request.user.is_authenticated %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <header class="dashboard-header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>PT-Associate</h1>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+
+                    {% if request.user.is_principal %}
+
+                    {% if request.path == '/principal-dashboard/' %}
+                    <li><a href="{% url 'principal-dashboard' %}" class="active"><i class="fas fa-home"></i>
+                            Dashboard</a></li>
+                    {% else %}
+                    <li><a href="{% url 'principal-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/teachers/' %}
+                    <li><a href="#" class="active"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
+                    {% else %}
+                    <li><a href="#"><i class="fas fa-chalkboard-user"></i> Teachers</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/classrooms/' %}
+                    <li><a href="{% url 'classroom-list' %}" class="active"><i class="fas fa-school"></i> Classes</a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'classroom-list' %}"><i class="fas fa-school"></i> Classes</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/add-staff/' %}
+                    <li><a href="{% url 'add-staff' %}" class="active"><i class="fas fa-user-plus"></i> Add Staff</a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'add-staff' %}"><i class="fas fa-user-plus"></i> Add Staff</a></li>
+                    {% endif %}
+
+
+
+
+                    {% elif request.user.is_teacher %}
+
+                    {% if request.path == '/dashboard/' %}
+                    <li><a href="{% url 'parent-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'parent-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/messages/' %}
+                    <li><a href="{% url '-messages' %}" class="active"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% else %}
+                    <li><a href="{% url 'teacher-messages' %}"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/create-student/' %}
+                    <li><a href="{% url 'create-student' %}" class="active"><i class="fas fa-user-plus"></i> Add
+                            Student</a></li>
+                    {% else %}
+                    <li><a href="{% url 'create-student' %}"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/students/' %}
+                    <li><a href="#" class="active"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    {% else %}
+                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    {% endif %}
+
+                    {% elif request.user.is_parent %}
+
+                    {% if request.path == '/dashboard/' %}
+                    <li><a href="{% url 'teacher-dashboard' %}" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'teacher-dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/messages/' %}
+                    <li><a href="{% url 'teacher-messages' %}" class="active"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% else %}
+                    <li><a href="{% url 'teacher-messages' %}"><i class="fas fa-comments"></i> Messages</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/create-student/' %}
+                    <li><a href="{% url 'create-student' %}" class="active"><i class="fas fa-user-plus"></i> Add
+                            Student</a></li>
+                    {% else %}
+                    <li><a href="{% url 'create-student' %}"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                    {% endif %}
+
+                    {% if request.path == '/students/' %}
+                    <li><a href="#" class="active"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    {% else %}
+                    <li><a href="#"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    {% endif %}
+
+
+                    {% endif %}
+
+                </ul>
+
+                {% if request.user.is_authenticated %}
+                <div class="mobile-nav-buttons">
+                    <a href="#">
+                        <button class="btn btn-secondary" id="profileBtn">
+                            <i class="fas fa-cog"></i> Profile settings
+                        </button>
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <button class="btn btn-primary" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </a>
+                </div>
+                {% endif %}
+
+            </nav>
+
+
+            <div class="header-right">
+
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+
+                    <div class="user-info">
+                        <img src="https://ui-avatars.com/api/?name=John+Smith&background=0066cc&color=fff"
+                            alt="User Avatar">
+                        <div class="user-details">
+                            <span class="user-name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                            <span class="user-role">
+                                {% if request.user.is_parent == True %}
+                                Parent
+                                {% elif request.user.is_principal == True %}
+                                Principal
+                                {% elif request.user.is_burser == True %}
+                                Burser
+                                {% else %}
+                                Teacher
+                                {% endif %}
+                            </span>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+
+                </div>
+
+                <div id="navBtn">
+                    <div class="nav-buttons">
+                        <a href="#">
+                            <button class="btn btn-secondary wide-nav-buttons" id="profileBtn">
+                                <i class="fas fa-cog"></i> Profile settings
+                            </button>
+                        </a>
+                        <a href="{% url 'logout' %}">
+                            <button class="btn btn-primary wide-nav-buttons" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+
+    <div class="drop-down" id="dropDown" style="display: none;">
+        <a href="#" class="btn btn-secondary">Profile</a>
+        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+    </div>
+
+
+    {% else %}
+    <nav class="not-auth">
+        <div class="nav-container">
+            <div class="logo">PT-Associate</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <ul>
+            <li><a href="#features" onclick="toggleMobileMenu()">Features</a></li>
+            <li><a href="#how-it-works" onclick="toggleMobileMenu()">How It Works</a></li>
+            <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
+        </ul>
+        <div class="mobile-nav-cta">
+            <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% endblock navbar %}
+
+    <div class="wrapper">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+
+    {% block content %}
+
+
+    {% endblock content %}
+
+
+    {% block footer %}
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>&copy; 2024 PT-Associate. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Help Center</a>
+            </div>
+        </div>
+    </footer>
+
+    {% endblock footer %}
+
+    {% block navbarjs %}
+
+    {% if request.user.is_authenticated %}
+
+    <script src="{% static 'js/navbar-footer.js' %}"></script>
+
+    {% else %}
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+
+            if (!mobileNav.contains(event.target) && !menuBtn.contains(event.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+    </script>
+
+    {% endif %}
+
+    {% endblock navbarjs %}
+
+    {% block extrajs %}
+
+    {% endblock extrajs %}
+
+</body>
+
+</html>

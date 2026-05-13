@@ -1,0 +1,77 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+<title>{% block title %}Messages - PT-Associate{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/messages.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<main class="messages-main">
+ 
+    <div id="teacher-section" class="messages-content active">
+        <section class="greeting-section">
+            <div class="greeting-card">
+                <h3>Here are your messages, Mr. {{ request.user.last_name }}!</h3>
+                <p>Check out the parents' messages</p>
+            </div>
+        </section>
+
+        <div class="messages-grid">
+            <div class="left-column">
+                <input class="search-bar" placeholder="Search" name="search-bar">
+                <p><a href="#">All</a></p>
+                <p><a href="#">Unread</a></p>
+                <p><a href="#">Sent</a></p>
+
+            </div>
+
+            <div class="right-column">
+                <section class="messages-card">
+                    <div class="messages-card-header">
+                        <h2>Messages</h2>
+                    </div>
+                    <div class="messages-list">
+                        <a href="#">
+                        <div class="messages-item unread">
+                            <div class="sender-initials">
+                                <h5>OA</h5>
+                            </div>
+                            <div class="message-content">
+                                <h4>Mr. Bosun <span class="message-badge">Ola's Parent</span></h4>
+                                <p class="message-preview">When will the midterm break end.</p>
+
+                                <div class="message-meta-data">
+                                    <span>30 minutes ago</span>
+                                    <span class="unread-indicator">Unread</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</main>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/messages.js' %}"></script>
+{% endblock extrajs %}

@@ -1,0 +1,98 @@
+/* Teacher Student List Page Styles */
+.table th {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.parent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.parent-badge.linked {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.parent-badge.unlinked {
+    background-color: #fff3e0;
+    color: #ed6c02;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.pending {
+    background-color: #fff3e0;
+    color: #ed6c02;
+}
+
+.action-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.action-btns .btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card hover effect */
+.card {
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Table responsive fixes */
+@media (max-width: 768px) {
+    .table th, .table td {
+        white-space: nowrap;
+    }
+    
+    .action-btns {
+        flex-direction: row;
+    }
+    
+    .stats-cards .col-md-3 {
+        margin-bottom: 12px;
+    }
+}
+
+/* Checkbox styling */
+.form-check-input {
+    cursor: pointer;
+}
+
+/* Toast positioning */
+.toast-container {
+    z-index: 1060;
+}

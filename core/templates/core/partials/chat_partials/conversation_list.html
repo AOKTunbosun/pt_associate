@@ -1,0 +1,16 @@
+<div class="conversations-list" id="conversationsList">
+
+    {% for conversation in conversations %}
+
+        {% include "core/partials/chat_partials/conversation_item.html" with conversation=conversation active=active %}
+
+    {% empty %}
+
+        <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p class="mb-0">No conversations yet</p>
+        </div>
+
+    {% endfor %}
+
+</div>

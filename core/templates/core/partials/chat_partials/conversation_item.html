@@ -1,0 +1,53 @@
+<a href="{% url 'conversation-detail' conversation.uid %}" class="conversation-link" style="text-decoration: none;">
+    <div class="conversation-item {% if conversation.uid == active_uid %}active{% endif %}">
+
+        <!-- Avatar (initials) -->
+        <div
+            class="conversation-avatar d-flex align-items-center justify-content-center bg-primary text-white rounded-circle">
+
+            {% if request.user == conversation.parent %}
+            {{ conversation.teacher.first_name|first|upper }}{{ conversation.teacher.last_name|first|upper }}
+            {% else %}
+            {{ conversation.parent.first_name|first|upper }}{{ conversation.parent.last_name|first|upper }}
+            {% endif %}
+
+        </div>
+
+        <div class="conversation-info">
+
+            <div class="conversation-header">
+                <h6 class="conversation-name">
+
+                    {% if request.user == conversation.parent %}
+                    {{ conversation.teacher.first_name }} {{ conversation.teacher.last_name }}
+                    {% else %}
+                    {{ conversation.parent.first_name }} {{ conversation.parent.last_name }}
+                    {% endif %}
+
+                </h6>
+
+                <span class="conversation-time">
+                    {{ conversation.updated_at|timesince }} ago
+                </span>
+            </div>
+
+            <div class="conversation-preview">
+
+                <p class="conversation-last-msg">
+
+                    {% with conversation.messages.last as last_message %}
+                    {% if last_message %}
+                    {{ last_message.body|truncatechars:40 }}
+                    {% else %}
+                    No messages yet
+                    {% endif %}
+                    {% endwith %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</a>

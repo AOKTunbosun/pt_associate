@@ -1,0 +1,39 @@
+<div class="message-row {% if message.sender == current_user %}sent{% else %}received{% endif %}">
+
+    {% if message.sender != current_user %}
+        <div class="message-avatar d-flex align-items-center justify-content-center bg-primary text-white rounded-circle">
+
+            {{ message.sender.first_name|first|upper }}
+            {{ message.sender.last_name|first|upper }}
+
+        </div>
+    {% endif %}
+
+    <div class="message-bubble {% if message.sender == current_user %}sent{% else %}received{% endif %}">
+
+        {% if message.sender != current_user %}
+            <small class="message-sender-name">
+                {{ message.sender.first_name }} {{ message.sender.last_name }}
+            </small>
+        {% endif %}
+
+        <p class="message-text">
+            {{ message.body }}
+        </p>
+
+        <small class="message-time">
+            {{ message.created_at|timesince }} ago
+        </small>
+
+    </div>
+
+    {% if message.sender == current_user %}
+        <div class="message-avatar d-flex align-items-center justify-content-center bg-success text-white rounded-circle">
+
+            {{ current_user.first_name|first|upper }}
+            {{ current_user.last_name|first|upper }}
+
+        </div>
+    {% endif %}
+
+</div>

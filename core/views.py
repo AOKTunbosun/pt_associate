@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.utils.decorators import method_decorator
@@ -10,14 +10,22 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.db import IntegrityError
 from django.db.models import Count
+from django.db.models import Q
+from django.http import HttpResponse
 
-from datetime import datetime
+from datetime import datetime, date
 import uuid
 
 from .models import (Institution,
                      Staff,
                      Classroom,
-                     Student)
+                     Student,
+                     Conversation,
+                     Message)
+
+from core.services.chat_broadcast import broadcast_message
+from .forms import MessageForm
+from core.services.messages import create_message
 
 # Create your views here.
 User = get_user_model()
@@ -42,7 +50,7 @@ class LoginPage(View):
 
         email = request.POST.get('email').strip()
         password = request.POST.get('password').strip()
-        remember = request.POST.get('remember')
+        remember = request.POST.get('remember_me')
 
         try:
             user = User.objects.get(email=email)
@@ -105,11 +113,11 @@ class SignupPage(View):
 
         if request.POST.get('form_type') == 'individual':
 
-            first_name = request.POST.get('firstName')
-            last_name = request.POST.get('lastName')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
             email = request.POST.get('email')
             phone = request.POST.get('phone')
-            account_type = request.POST.get('accountType')
+            account_type = request.POST.get('account_type')
             gender = request.POST.get('gender')
             password = request.POST.get('password')
 
@@ -158,12 +166,12 @@ class SignupPage(View):
                 return redirect('signup')
 
         elif request.POST.get('form_type') == 'institution':
-            institution_name = request.POST.get('institutionName')
-            institution_principal_email = request.POST.get('institutionEmail')
-            institution_type = request.POST.get('institutionType')
+            institution_name = request.POST.get('institution_name')
+            institution_principal_email = request.POST.get('principal_email')
+            institution_type = request.POST.get('institution_type')
             location = request.POST.get('location')
             institution_principal_password = request.POST.get(
-                'institutionPassword')
+                'principal_password')
 
             try:
                 user = User.objects.get(email=institution_principal_email)
@@ -212,14 +220,7 @@ class SignupPage(View):
                 return redirect('signup')
 
 
-class DashboardPage(View):
-
-    @method_decorator(login_required)
-    def get(self, request):
-        context = {}
-        return render(request, 'core/dashboard.html', context)
-
-
+@method_decorator(login_required, name='dispatch')
 class ParentDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -227,6 +228,7 @@ class ParentDashboardPage(View):
         return render(request, 'core/parent_dashboard.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class TeacherDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -234,6 +236,7 @@ class TeacherDashboardPage(View):
         return render(request, 'core/teacher_dashboard.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class PrincipalDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -242,6 +245,7 @@ class PrincipalDashboardPage(View):
         return render(request, 'core/principal_dashboard.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class AddStaffPage(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -303,6 +307,7 @@ class AddStaffPage(View):
             return redirect('signup')
 
 
+@method_decorator(login_required, name='dispatch')
 class CreateClassroom(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -354,6 +359,7 @@ class CreateClassroom(View):
         return redirect('create-classroom')
 
 
+@method_decorator(login_required, name='dispatch')
 class ClassroomList(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -372,12 +378,44 @@ class ClassroomList(View):
         pass
 
 
+@method_decorator(login_required, name='dispatch')
 class MessagesPage(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        return render(request, 'core/messages.html')
 
+    def get(self, request, conversation_uid=None):
 
+        conversations = Conversation.objects.filter(
+            parent=request.user
+        ) | Conversation.objects.filter(
+            teacher=request.user
+        )
+
+        conversation = None
+        messages = []
+
+        if conversation_uid:
+            conversation = get_object_or_404(
+                Conversation,
+                uid=conversation_uid
+            )
+
+            if request.user not in [conversation.parent, conversation.teacher]:
+                return HttpResponse(status=403)
+
+            messages = conversation.messages.all()
+
+        context = {
+            "conversations": conversations,
+            "conversation": conversation,
+            "active_uid": conversation.uid if conversation else None,
+            "messages": messages,
+            "current_user": request.user,
+            "form": MessageForm()
+        }
+
+        return render(request, "core/messages.html", context)
+    
+
+@method_decorator(login_required, name='dispatch')
 class CreateStudent(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -424,7 +462,7 @@ class CreateStudent(View):
             messages.error(
                 request, message='Classroom does not exist'
             )
-            return redirect('create-student')
+            return redirect('student-list')
 
         dob = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
 
@@ -441,4 +479,103 @@ class CreateStudent(View):
         messages.success(
             request, message='Student record created successfully'
         )
-        return redirect('create-student')
+        return redirect('student-list')
+
+
+@method_decorator(login_required, name='dispatch')
+class StudentList(View):
+    def get(self, request):
+        classroom = Classroom.objects.prefetch_related('students').get(teacher=request.user)
+        students = classroom.students.all()
+
+
+        students_list = []
+        for each in students:
+            student = {
+            'id': each.id,
+            'first_name': each.first_name,
+            'last_name': each.last_name,
+            'full_name': f'{each.first_name} {each.last_name}',
+            'date_of_birth': each.date_of_birth,
+            'gender': each.gender.capitalize(),
+            # Calculate age based on date of birth, accounting for whether the birthday has occurred this year
+            'age': (date.today().year - each.date_of_birth.year) -1 if (date.today().month, date.today().day) < (each.date_of_birth.month, each.date_of_birth.day) else (date.today().year - each.date_of_birth.year),
+            'parent_email': each.parent.email if each.parent is not None else None,
+            'parent_name': f'{each.parent.first_name} {each.parent.last_name}' if each.parent is not None else None,
+            'parent_linked': True if each.parent is not None else False,
+            'status': 'active'
+            }
+            students_list.append(student)
+
+
+        context = {'students': students_list}
+        return render(request, 'core/teacher_student_list.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class ConversationStart(View):
+    def get(self, request, student_id):
+        student = get_object_or_404(
+            Student,
+            id=student_id
+        )
+
+        if request.user.is_parent:
+            parent=request.user
+            teacher=student.classroom.teacher
+
+            if student.parent != request.user:
+                return redirect('messages')
+            
+        elif request.user.is_teacher:
+            parent = student.parent
+            teacher = request.user
+
+            if student.classroom.teacher != request.user:
+                return redirect('messages')
+        
+        else:
+            return redirect('messages')
+
+
+        conversation, created = Conversation.objects.get_or_create(
+            student=student,
+            parent=parent,
+            teacher=teacher
+        )
+
+        return redirect('conversation-detail', conversation.uid)
+
+
+@method_decorator(login_required, name='dispatch')
+class SendMessageView(View):
+
+    def post(self, request, conversation_uid):
+
+        conversation = get_object_or_404(
+            Conversation,
+            uid=conversation_uid
+        )
+
+        if request.user not in [conversation.parent, conversation.teacher]:
+            return HttpResponse(status=403)
+
+        form = MessageForm(request.POST)
+
+        if form.is_valid():
+
+            message = Message.objects.create(
+                conversation=conversation,
+                sender=request.user,
+                body=form.cleaned_data['body']
+            )
+
+            # IMPORTANT: update conversation timestamp
+            conversation.save()
+
+            # 👉 NEW: broadcast via WebSocket
+            broadcast_message(request, conversation, message)
+
+            return HttpResponse(status=204)  # no HTML needed
+
+        return HttpResponse(status=400)

@@ -1,0 +1,65 @@
+<div class="d-flex align-items-center">
+
+    <!-- Mobile toggle -->
+    <!-- <button class="mobile-conversations-toggle" id="mobileConvToggle">
+        <i class="fas fa-bars"></i>
+    </button> -->
+
+    <!-- Contact info -->
+    <div class="chat-contact-info">
+
+        <div
+            class="conversation-avatar d-flex align-items-center justify-content-center bg-primary text-white rounded-circle">
+
+            {% if request.user == conversation.parent %}
+            {{ conversation.teacher.first_name|first|upper }}{{ conversation.teacher.last_name|first|upper }}
+            {% else %}
+            {{ conversation.parent.first_name|first|upper }}{{ conversation.parent.last_name|first|upper }}
+            {% endif %}
+
+        </div>
+
+        <div class="chat-contact-details">
+
+            {% if request.user == conversation.parent %}
+
+            <h6>
+                {{ conversation.teacher.first_name }}
+                {{ conversation.teacher.last_name }}
+            </h6>
+
+            <small>
+                Teacher
+            </small>
+
+            {% else %}
+
+            <h6>
+                {{ conversation.parent.first_name }}
+                {{ conversation.parent.last_name }}
+            </h6>
+
+            <small>
+                Parent
+            </small>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Actions -->
+<div class="chat-actions">
+
+    <button class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-user-graduate"></i> View Student
+    </button>
+
+    <button class="btn btn-sm btn-outline-danger">
+        <i class="fas fa-flag"></i> Report
+    </button>
+
+</div>
