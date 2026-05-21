@@ -59,8 +59,13 @@
             </div>
 
             <!-- INPUT -->
-            <form class="message-input-area bg-white p-3 border-top" hx-post="{% url 'send-message' conversation.uid %}"
-                hx-target="#messagesArea" hx-swap="beforeend" hx-on::after-request="this.reset()" enctype="multipart/form-data">
+            <form class="message-input-area bg-white p-3 border-top" 
+            hx-post="{% url 'send-message' conversation.uid %}"
+            hx-target="#messagesArea" 
+            hx-swap="beforeend" 
+            hx-on::after-request="this.reset()" 
+            enctype="multipart/form-data"
+            hx-encoding="multipart/form-data">
 
                 {% csrf_token %}
 
@@ -70,6 +75,7 @@
                     <button type="button" class="btn btn-outline-secondary" id="fileBtn">
                         <i class="fas fa-paperclip"></i>
                     </button>
+                    <div id="filePreview" class="text-muted small mt-1"></div>
 
                     {{ form.body }}
 
