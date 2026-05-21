@@ -60,12 +60,14 @@
 
             <!-- INPUT -->
             <form class="message-input-area bg-white p-3 border-top" hx-post="{% url 'send-message' conversation.uid %}"
-                hx-target="#messagesArea" hx-swap="beforeend" hx-on::after-request="this.reset()">
+                hx-target="#messagesArea" hx-swap="beforeend" hx-on::after-request="this.reset()" enctype="multipart/form-data">
 
                 {% csrf_token %}
 
+                {{ form.file }}
+
                 <div class="input-group">
-                    <button type="button" class="btn btn-outline-secondary">
+                    <button type="button" class="btn btn-outline-secondary" id="fileBtn">
                         <i class="fas fa-paperclip"></i>
                     </button>
 
@@ -139,4 +141,11 @@
 
 {% block extra_js %}
 <script src="{% static 'core/js/messages.js' %}"></script>
+<script>
+    function scrollToBottom() {
+        const messagesArea = document.getElementById('messagesArea');
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+    scrollToBottom();
+</script>
 {% endblock %}

@@ -6,7 +6,6 @@ urlpatterns = [
     path('login/', views.LoginPage.as_view(), name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('signup/', views.SignupPage.as_view(), name='signup'),
-    #     path('dashboard/', views.DashboardPage.as_view(), name='dashboard'),
     path('parent-dashboard/', views.ParentDashboardPage.as_view(),
          name='parent-dashboard'),
     path('teacher-dashboard/', views.TeacherDashboardPage.as_view(),
@@ -25,5 +24,9 @@ urlpatterns = [
          views.ConversationStart.as_view(), name='start-conversation'),
     path('student-list/', views.StudentList.as_view(), name='student-list'),
     path("messages/<uuid:conversation_uid>/send/",
-         views.SendMessageView.as_view(), name="send-message")
+         views.SendMessageView.as_view(), name="send-message"),
+    path('staff-list/', views.StaffListPage.as_view(), name='staff-list'),
+    path('bursar-dashboard/', views.BursarDashboardPage.as_view(),
+         name='bursar-dashboard'),
+    path('announcements/', views.AnnouncementPage.as_view(), name='announcements'),
 ]

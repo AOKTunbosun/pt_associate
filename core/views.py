@@ -77,8 +77,9 @@ class LoginPage(View):
                 login(request, user)
                 return redirect('principal-dashboard')
 
-            # elif user.is_burser == True:
-            #     pass
+            elif user.is_burser == True:
+                login(request, user)
+                return redirect('bursar-dashboard')
 
             elif user.is_parent == True:
                 login(request, user)
@@ -240,9 +241,46 @@ class TeacherDashboardPage(View):
 class PrincipalDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
+        institution = Institution.objects.get(principal=request.user)
+        classrooms = institution.classrooms.all()
+        staff = institution.institution_staff.all()
 
-        context = {}
+        students = []
+        for classroom in classrooms:
+            for student in classroom.students.all():
+                students.append(student)
+
+        context = {
+            'total_number_of_students': len(students),
+            'number_of_classrooms': len(classrooms),
+            'classrooms': classrooms,
+            'total_staff': len(staff),
+            'institution': institution
+        }
         return render(request, 'core/principal_dashboard.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class BursarDashboardPage(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        institution = Institution.objects.get(burser=request.user)
+        # students = 
+
+        context = {
+            'total_students': 486,
+            'total_parents': 412,
+            'total_classes': 18,
+            'announcements': [
+                {
+                    'id': 1,
+                    'title': 'Fee Payment Deadline',
+                    'message': 'First term fees due by March 30th.',
+                    'created_at': datetime.strptime('2024-03-10', '%Y-%m-%d').date(),
+                },
+            ]
+        }
+        return render(request, 'core/bursar_dashboard.html', context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -413,7 +451,7 @@ class MessagesPage(View):
         }
 
         return render(request, "core/messages.html", context)
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateStudent(View):
@@ -485,28 +523,27 @@ class CreateStudent(View):
 @method_decorator(login_required, name='dispatch')
 class StudentList(View):
     def get(self, request):
-        classroom = Classroom.objects.prefetch_related('students').get(teacher=request.user)
+        classroom = Classroom.objects.prefetch_related(
+            'students').get(teacher=request.user)
         students = classroom.students.all()
-
 
         students_list = []
         for each in students:
             student = {
-            'id': each.id,
-            'first_name': each.first_name,
-            'last_name': each.last_name,
-            'full_name': f'{each.first_name} {each.last_name}',
-            'date_of_birth': each.date_of_birth,
-            'gender': each.gender.capitalize(),
-            # Calculate age based on date of birth, accounting for whether the birthday has occurred this year
-            'age': (date.today().year - each.date_of_birth.year) -1 if (date.today().month, date.today().day) < (each.date_of_birth.month, each.date_of_birth.day) else (date.today().year - each.date_of_birth.year),
-            'parent_email': each.parent.email if each.parent is not None else None,
-            'parent_name': f'{each.parent.first_name} {each.parent.last_name}' if each.parent is not None else None,
-            'parent_linked': True if each.parent is not None else False,
-            'status': 'active'
+                'id': each.id,
+                'first_name': each.first_name,
+                'last_name': each.last_name,
+                'full_name': f'{each.first_name} {each.last_name}',
+                'date_of_birth': each.date_of_birth,
+                'gender': each.gender.capitalize(),
+                # Calculate age based on date of birth, accounting for whether the birthday has occurred this year
+                'age': (date.today().year - each.date_of_birth.year) - 1 if (date.today().month, date.today().day) < (each.date_of_birth.month, each.date_of_birth.day) else (date.today().year - each.date_of_birth.year),
+                'parent_email': each.parent.email if each.parent is not None else None,
+                'parent_name': f'{each.parent.first_name} {each.parent.last_name}' if each.parent is not None else None,
+                'parent_linked': True if each.parent is not None else False,
+                'status': 'active'
             }
             students_list.append(student)
-
 
         context = {'students': students_list}
         return render(request, 'core/teacher_student_list.html', context)
@@ -521,22 +558,21 @@ class ConversationStart(View):
         )
 
         if request.user.is_parent:
-            parent=request.user
-            teacher=student.classroom.teacher
+            parent = request.user
+            teacher = student.classroom.teacher
 
             if student.parent != request.user:
                 return redirect('messages')
-            
+
         elif request.user.is_teacher:
             parent = student.parent
             teacher = request.user
 
             if student.classroom.teacher != request.user:
                 return redirect('messages')
-        
+
         else:
             return redirect('messages')
-
 
         conversation, created = Conversation.objects.get_or_create(
             student=student,
@@ -560,15 +596,17 @@ class SendMessageView(View):
         if request.user not in [conversation.parent, conversation.teacher]:
             return HttpResponse(status=403)
 
-        form = MessageForm(request.POST)
+        form = MessageForm(request.POST, request.FILES)
 
         if form.is_valid():
+            print(request.FILES)
 
-            message = Message.objects.create(
-                conversation=conversation,
-                sender=request.user,
-                body=form.cleaned_data['body']
-            )
+            message = form.save(commit=False)
+
+            message.conversation = conversation
+            message.sender = request.user
+
+            message.save()
 
             # IMPORTANT: update conversation timestamp
             conversation.save()
@@ -579,3 +617,66 @@ class SendMessageView(View):
             return HttpResponse(status=204)  # no HTML needed
 
         return HttpResponse(status=400)
+
+
+@method_decorator(login_required, name='dispatch')
+class StaffListPage(View):
+    def get(self, request):
+        # views.py
+        context = {
+            'staff_list': [
+                {
+                    'id': 1,
+                    'name': 'Mrs. Sarah Johnson',
+                    'email': 'sarah.johnson@school.edu',
+                    'role': 'teacher',           # 'teacher' or 'bursar'
+                    'role_display': 'Teacher',   # 'Teacher' or 'Bursar'
+                    'initials': 'SJ',
+                    'date_added': datetime.strptime('2024-01-15', '%Y-%m-%d').date()
+                },
+                {
+                    'id': 2,
+                    'name': 'Mr. Michael Brown',
+                    'email': 'michael.brown@school.edu',
+                    'role': 'teacher',
+                    'role_display': 'Teacher',
+                    'initials': 'MB',
+                    'date_added': datetime.strptime('2024-01-20', '%Y-%m-%d').date(),
+                },
+                {
+                    'id': 3,
+                    'name': 'Mr. John Adebayo',
+                    'email': 'john.adebayo@school.edu',
+                    'role': 'bursar',
+                    'role_display': 'Bursar',
+                    'initials': 'JA',
+                    'date_added': datetime.strptime('2024-01-10', '%Y-%m-%d').date(),
+                },
+            ]
+        }
+
+        return render(request, 'core/staff_list.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class AnnouncementPage(View):
+    def get(self, request):
+        context = {
+            'announcements': [
+                {
+                    'id': 1,
+                    'title': 'Fee Payment Deadline',
+                    'message': 'First term fees are due by March 30th. Please make payments at the bursary office.',
+                    'author': 'Mr. John Adebayo (Bursar)',
+                    'created_at': datetime.strptime('2024-03-10 10:30:00', '%Y-%m-%d %H:%M:%S'),
+                },
+                {
+                    'id': 2,
+                    'title': 'School Resumption Date',
+                    'message': 'School will resume for second term on April 15th. All students are expected back.',
+                    'author': 'Dr. James Wilson (Principal)',
+                    'created_at': datetime.strptime('2024-03-05 09:00:00', '%Y-%m-%d %H:%M:%S'),
+                },
+            ]
+        }
+        return render(request, 'core/announcements.html', context)

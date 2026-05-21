@@ -41,7 +41,7 @@
                         {% if request.user.is_principal %}
                         {% url 'principal-dashboard' %}
                         {% elif request.user.is_burser %}
-                        {% url 'burser-dashboard' %}
+                        {% url 'bursar-dashboard' %}
                         {% elif request.user.is_teacher %}
                         {% url 'teacher-dashboard' %}
                         {% elif request.user.is_parent %}
@@ -56,8 +56,8 @@
                     {% if request.user.is_principal %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'add-staff' %}"><i
                                 class="fas fa-user-plus"></i> Add Staff</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i
-                                class="fas fa-chalkboard-user"></i> Teachers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'staff-list' %}"><i
+                                class="fas fa-chalkboard-user"></i> Staff</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'classroom-list' %}"><i
                                 class="fas fa-school"></i> Classes</a></li>
 
@@ -65,7 +65,7 @@
                     {% elif request.user.is_burser %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
                             Messages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'announcement_list' %}"><i
+                    <li class="nav-item"><a class="nav-link" href="#"><i
                                 class="fas fa-bullhorn"></i> Announcements</a></li>
 
                     <!-- TEACHER NAVIGATION -->

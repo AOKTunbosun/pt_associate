@@ -1,5 +1,6 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load string_filter %}
 
 {% block title %}Principal Dashboard - PT-Associate{% endblock %}
 
@@ -11,7 +12,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="bg-primary text-white rounded-3 p-4">
-                <h2 class="mb-2">Welcome back, Dr. James Wilson</h2>
+                <h2 class="mb-2">Welcome back, {% if request.user.gender == 'male' %} Mr. {% else %} Mrs. {% endif %}{{ request.user.first_name }} {{ request.user.last_name }}</h2>
                 <p class="mb-0 opacity-75">School overview and key metrics at a glance</p>
             </div>
         </div>
@@ -23,9 +24,8 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-users fa-2x text-primary mb-2"></i>
-                    <h3 class="mb-1">486</h3>
+                    <h3 class="mb-1">{{ total_number_of_students }}</h3>
                     <p class="text-muted mb-0">Total Students</p>
-                    <small class="text-success">+12 this month</small>
                 </div>
             </div>
         </div>
@@ -33,9 +33,8 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-chalkboard-user fa-2x text-primary mb-2"></i>
-                    <h3 class="mb-1">24</h3>
-                    <p class="text-muted mb-0">Total Teachers</p>
-                    <small class="text-success">+2 new</small>
+                    <h3 class="mb-1">{{ total_staff }}</h3>
+                    <p class="text-muted mb-0">Total Staff</p>
                 </div>
             </div>
         </div>
@@ -43,19 +42,8 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-school fa-2x text-primary mb-2"></i>
-                    <h3 class="mb-1">18</h3>
+                    <h3 class="mb-1">{{ number_of_classrooms }}</h3>
                     <p class="text-muted mb-0">Total Classes</p>
-                    <small class="text-muted">K-12</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
-                    <h3 class="mb-1">5</h3>
-                    <p class="text-muted mb-0">Pending Issues</p>
-                    <small class="text-danger">3 urgent</small>
                 </div>
             </div>
         </div>
@@ -70,43 +58,39 @@
                     <h5 class="mb-0"><i class="fas fa-school text-primary me-2"></i>School Overview</h5>
                 </div>
                 <div class="card-body">
+                    {% if institution.institution_type == 'primary' %}
+                    {% for classroom in classrooms %}
                     <!-- Elementary -->
-                    <h6 class="fw-bold text-secondary mb-2">Elementary School (K-5)</h6>
+                    {% if classroom.classroom_name|startswith:"Kindergarten" or classroom.classroom_name|startswith:"Nursery" %}
+                    <h6 class="fw-bold text-secondary mb-2">Elementary School (Kindergarten - Nursery)</h6>
                     <div class="list-group list-group-flush mb-3">
+
                         <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
-                            <span>Grade 1A</span>
-                            <span class="text-primary">Ms. Sarah Johnson</span>
-                            <span class="badge bg-secondary">24 students</span>
-                        </div>
-                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
-                            <span>Grade 2B</span>
-                            <span class="text-primary">Mr. Michael Brown</span>
-                            <span class="badge bg-secondary">22 students</span>
-                        </div>
-                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
-                            <span>Grade 3C</span>
-                            <span class="text-primary">Mrs. Lisa Davis</span>
-                            <span class="badge bg-secondary">26 students</span>
-                        </div>
+                            <span>{{ classroom.classroom_name }}</span>
+                            <span class="text-primary">{{ classroom.teacher.first_name }} {{ classroom.teacher.last_name }}</span>
+                            <span class="badge bg-secondary">{{ classroom.students.count }} students</span>
+                        </div>                       
+                        
                     </div>
                     
                     <!-- Middle School -->
-                    <h6 class="fw-bold text-secondary mb-2 mt-3">Middle School (6-8)</h6>
+                    {% elif classroom.classroom_name|startswith:"Basic" %}
+                    <h6 class="fw-bold text-secondary mb-2 mt-3">Basic School (Basic 1-6)</h6>
                     <div class="list-group list-group-flush mb-3">
                         <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
-                            <span>Grade 6A</span>
-                            <span class="text-primary">Mr. Robert Wilson</span>
-                            <span class="badge bg-secondary">28 students</span>
+                            <span>{{ classroom.classroom_name }}</span>
+                            <span class="text-primary">{{ classroom.teacher.first_name }} {{ classroom.teacher.last_name }}</span>
+                            <span class="badge bg-secondary">{{ classroom.students.count }} students</span>
                         </div>
-                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
-                            <span>Grade 7B</span>
-                            <span class="text-primary">Ms. Emily Chen</span>
-                            <span class="badge bg-secondary">27 students</span>
-                        </div>
+                        {% endif %}
                     </div>
                     
+                    {% endfor %}
+                    {% elif institution.institution_type == 'secondary' %}
+                    {% for classroom in classrooms %}
+
                     <!-- High School -->
-                    <h6 class="fw-bold text-secondary mb-2 mt-3">High School (9-12)</h6>
+                    <h6 class="fw-bold text-secondary mb-2 mt-3">Secondary School (JSS1 - SS3)</h6>
                     <div class="list-group list-group-flush">
                         <div class="list-group-item px-0 d-flex justify-content-between align-items-center">
                             <span>Grade 10A</span>
@@ -119,6 +103,9 @@
                             <span class="badge bg-secondary">28 students</span>
                         </div>
                     </div>
+
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@ class Institution(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.school_name
+        return self.institution_name
 
 
 class Classroom(models.Model):
@@ -134,14 +134,13 @@ class Conversation(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
 
-    
     student = models.ForeignKey(
         Student,
         on_delete=models.SET_NULL,
         null=True,
         blank=True
     )
-    
+
     parent = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
@@ -177,7 +176,13 @@ class Message(models.Model):
     sender = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True)
 
-    body = models.TextField()
+    body = models.TextField(blank=True, null=True)
+
+    file = models.FileField(
+        upload_to="chat_files/",
+        null=True,
+        blank=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 

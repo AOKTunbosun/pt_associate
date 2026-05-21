@@ -1,0 +1,80 @@
+/* Staff List Page Styles */
+.table th {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.role-badge.teacher {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.role-badge.bursar {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.action-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.action-btns .btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card hover effect */
+.card {
+    transition: box-shadow 0.2s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table th, .table td {
+        white-space: nowrap;
+    }
+}
+
+/* Avatar circle */
+.staff-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #0066cc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}

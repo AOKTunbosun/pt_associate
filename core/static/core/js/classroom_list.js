@@ -1,249 +1,178 @@
+// Classroom List Page - Only for interactivity (filters, modals, toasts)
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
-    // const menuBtn = document.querySelector('.mobile-menu-btn');
-    // const nav = document.querySelector('.main-nav');
-    
-    // if (menuBtn && nav) {
-    //     menuBtn.addEventListener('click', function() {
-    //         if (nav.style.display === 'flex') {
-    //             nav.style.display = 'none';
-    //         } else {
-    //             nav.style.display = 'flex';
-    //             nav.style.flexDirection = 'column';
-    //             nav.style.position = 'absolute';
-    //             nav.style.top = '60px';
-    //             nav.style.left = '0';
-    //             nav.style.right = '0';
-    //             nav.style.backgroundColor = 'white';
-    //             nav.style.padding = '20px';
-    //             nav.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
-    //         }
-    //     });
-    // }
-    
-    // Sample classroom data
-    let classrooms = [
-        {
-            id: 1,
-            name: 'Basic 5A',
-            code: 'B5A-2024',
-            teacher: 'Mrs. Adeyemi',
-            teacherId: 5,
-            students: 28,
-            capacity: 35,
-            session: '2024/2025',
-            level: 'primary'
-        },
-        {
-            id: 2,
-            name: 'JSS 2B',
-            code: 'J2B-2024',
-            teacher: 'Mr. Okafor',
-            teacherId: 3,
-            students: 32,
-            capacity: 35,
-            session: '2024/2025',
-            level: 'jss'
-        },
-        {
-            id: 3,
-            name: 'SSS 1A',
-            code: 'S1A-2024',
-            teacher: 'Dr. Eze',
-            teacherId: 7,
-            students: 30,
-            capacity: 40,
-            session: '2024/2025',
-            level: 'sss'
-        },
-        {
-            id: 4,
-            name: 'Nursery 2',
-            code: 'N2-2024',
-            teacher: 'Ms. Grace',
-            teacherId: 2,
-            students: 20,
-            capacity: 25,
-            session: '2024/2025',
-            level: 'nursery'
-        },
-        {
-            id: 5,
-            name: 'Basic 3B',
-            code: 'B3B-2024',
-            teacher: 'Mr. Chukwu',
-            teacherId: 4,
-            students: 25,
-            capacity: 30,
-            session: '2024/2025',
-            level: 'primary'
-        }
-    ];
-    
-    // DOM elements
-    const classesGrid = document.getElementById('classesGrid');
-    const emptyState = document.getElementById('emptyState');
-    const totalClassesSpan = document.getElementById('totalClasses');
-    const totalStudentsSpan = document.getElementById('totalStudents');
-    const avgClassSizeSpan = document.getElementById('avgClassSize');
+    // DOM Elements
     const sessionFilter = document.getElementById('sessionFilter');
     const levelFilter = document.getElementById('levelFilter');
     const searchInput = document.getElementById('searchInput');
+    const classesGrid = document.getElementById('classesGrid');
+    const filterEmptyState = document.getElementById('filterEmptyState');
+    const totalStudentsSpan = document.getElementById('totalStudents');
     
-    // Delete modal elements
-    const deleteModal = document.getElementById('deleteModal');
-    const deleteClassNameSpan = document.getElementById('deleteClassName');
+    // Get all classroom card items
+    function getClassroomItems() {
+        return document.querySelectorAll('.class-card-item');
+    }
+    
+    // Update total students count
+    function updateTotalStudents() {
+        let total = 0;
+        getClassroomItems().forEach(item => {
+            if (item.style.display !== 'none') {
+                const enrolledSpan = item.querySelector('.text-primary');
+                if (enrolledSpan && enrolledSpan.closest('.col-6')) {
+                    const enrolledText = enrolledSpan.textContent;
+                    const enrolled = parseInt(enrolledText) || 0;
+                    total += enrolled;
+                }
+            }
+        });
+        if (totalStudentsSpan) {
+            totalStudentsSpan.textContent = total;
+        }
+    }
+    
+    // Filter function
+    function filterTable() {
+        const sessionValue = sessionFilter?.value || 'all';
+        const levelValue = levelFilter?.value || 'all';
+        const searchTerm = searchInput?.value.toLowerCase() || '';
+        
+        let visibleCount = 0;
+        
+        getClassroomItems().forEach(item => {
+            const itemSession = item.getAttribute('data-session') || '';
+            const itemLevel = item.getAttribute('data-level') || '';
+            const itemName = item.getAttribute('data-name') || '';
+            const itemTeacher = item.getAttribute('data-teacher') || '';
+            
+            let matchesSession = true;
+            let matchesLevel = true;
+            let matchesSearch = true;
+            
+            if (sessionValue !== 'all') {
+                matchesSession = itemSession === sessionValue;
+            }
+            
+            if (levelValue !== 'all') {
+                matchesLevel = itemLevel === levelValue;
+            }
+            
+            if (searchTerm) {
+                matchesSearch = itemName.includes(searchTerm) || itemTeacher.includes(searchTerm);
+            }
+            
+            if (matchesSession && matchesLevel && matchesSearch) {
+                item.style.display = '';
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        // Show/hide filter empty state
+        const hasItems = getClassroomItems().length > 0;
+        if (visibleCount === 0 && hasItems) {
+            if (filterEmptyState) filterEmptyState.style.display = 'block';
+            if (classesGrid) classesGrid.style.display = 'none';
+        } else {
+            if (filterEmptyState) filterEmptyState.style.display = 'none';
+            if (classesGrid) classesGrid.style.display = 'flex';
+        }
+        
+        // Update total students
+        updateTotalStudents();
+    }
+    
+    // Delete modal
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     let classToDelete = null;
     
-    // Toast
-    const toast = document.getElementById('toast');
+    // Delete button handlers
+    document.querySelectorAll('.delete-class').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            classToDelete = { id, name };
+            document.getElementById('deleteClassName').textContent = name;
+            deleteModal.show();
+        });
+    });
+    
+    // Confirm delete
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', function() {
+        if (classToDelete) {
+            // Send POST request to Django backend
+            fetch(`/classroom/${classToDelete.id}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove row from DOM
+                    const row = document.querySelector(`.delete-class[data-id="${classToDelete.id}"]`).closest('.class-card-item');
+                    row.remove();
+                    showToast(`Classroom "${classToDelete.name}" deleted successfully`, true);
+                    
+                    // Update total classes count
+                    const totalClassesSpan = document.querySelector('.bg-primary .fw-bold');
+                    if (totalClassesSpan) {
+                        const currentCount = parseInt(totalClassesSpan.textContent);
+                        totalClassesSpan.textContent = currentCount - 1;
+                    }
+                    
+                    // Update total students
+                    updateTotalStudents();
+                    
+                    // Check if grid is empty
+                    if (getClassroomItems().length === 0) {
+                        location.reload();
+                    }
+                } else {
+                    showToast(data.error || 'Failed to delete classroom', false);
+                }
+            })
+            .catch(error => {
+                showToast('An error occurred. Please try again.', false);
+            });
+            
+            deleteModal.hide();
+            classToDelete = null;
+        }
+    });
+    
+    // Edit button handlers
+    document.querySelectorAll('.edit-class').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            window.location.href = `/classroom/${id}/edit/`;
+        });
+    });
+    
+    // Toast function
+    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
     const toastMessage = document.getElementById('toastMessage');
     
     function showToast(message, isSuccess = true) {
         toastMessage.textContent = message;
-        toast.classList.add('show');
-        
-        if (!isSuccess) {
-            toast.querySelector('i').className = 'fas fa-exclamation-circle';
-            toast.querySelector('i').style.color = '#ff4757';
+        const toastHeader = document.querySelector('#liveToast .toast-header i');
+        if (isSuccess) {
+            toastHeader.className = 'fas fa-check-circle text-success me-2';
         } else {
-            toast.querySelector('i').className = 'fas fa-check-circle';
-            toast.querySelector('i').style.color = '#4CAF50';
+            toastHeader.className = 'fas fa-exclamation-circle text-danger me-2';
         }
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+        toast.show();
     }
     
-    function renderClasses() {
-        let filtered = [...classrooms];
-        
-        // Filter by session
-        const session = sessionFilter.value;
-        if (session !== 'all') {
-            filtered = filtered.filter(c => c.session === session);
-        }
-        
-        // Filter by level
-        const level = levelFilter.value;
-        if (level !== 'all') {
-            filtered = filtered.filter(c => c.level === level);
-        }
-        
-        // Filter by search
-        const search = searchInput.value.toLowerCase();
-        if (search) {
-            filtered = filtered.filter(c => 
-                c.name.toLowerCase().includes(search) ||
-                c.teacher.toLowerCase().includes(search) ||
-                c.code.toLowerCase().includes(search)
-            );
-        }
-        
-        // Update stats
-        const totalClasses = filtered.length;
-        const totalStudents = filtered.reduce((sum, c) => sum + c.students, 0);
-        const avgClassSize = totalClasses > 0 ? Math.round(totalStudents / totalClasses) : 0;
-        
-        totalClassesSpan.textContent = totalClasses;
-        totalStudentsSpan.textContent = totalStudents;
-        avgClassSizeSpan.textContent = avgClassSize;
-        
-        // Show/hide empty state
-        if (filtered.length === 0) {
-            classesGrid.style.display = 'none';
-            emptyState.style.display = 'block';
-        } else {
-            classesGrid.style.display = 'grid';
-            emptyState.style.display = 'none';
-        }
-        
-        // Render cards
-        classesGrid.innerHTML = filtered.map(classroom => `
-            <div class="class-card" data-id="${classroom.id}">
-                <div class="class-header">
-                    <span class="class-name">${classroom.name}</span>
-                    <span class="class-code">${classroom.code}</span>
-                </div>
-                <div class="class-body">
-                    <div class="class-info">
-                        <i class="fas fa-chalkboard-user"></i>
-                        <span>${classroom.teacher}</span>
-                    </div>
-                    <div class="class-stats">
-                        <div class="class-stat">
-                            <span class="class-stat-value">${classroom.students}</span>
-                            <span class="class-stat-label">Enrolled</span>
-                        </div>
-                        <div class="class-stat">
-                            <span class="class-stat-value">${classroom.capacity}</span>
-                            <span class="class-stat-label">Capacity</span>
-                        </div>
-                        <div class="class-stat">
-                            <span class="class-stat-value">${Math.round((classroom.students / classroom.capacity) * 100)}%</span>
-                            <span class="class-stat-label">Full</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="class-footer">
-                    <span class="class-session"><i class="fas fa-calendar"></i> ${classroom.session}</span>
-                    <div class="class-actions">
-                        <button class="edit-btn" onclick="editClass(${classroom.id})"><i class="fas fa-edit"></i></button>
-                        <button class="delete-btn" onclick="deleteClass(${classroom.id}, '${classroom.name}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
+    // Event listeners
+    sessionFilter?.addEventListener('change', filterTable);
+    levelFilter?.addEventListener('change', filterTable);
+    searchInput?.addEventListener('input', filterTable);
     
-    // Edit function (global for onclick)
-    window.editClass = function(id) {
-        window.location.href = `edit_class.html?id=${id}`;
-    };
-    
-    // Delete function
-    window.deleteClass = function(id, name) {
-        classToDelete = { id, name };
-        deleteClassNameSpan.textContent = name;
-        deleteModal.classList.add('show');
-    };
-    
-    // Confirm delete
-    document.querySelector('.modal-confirm').addEventListener('click', function() {
-        if (classToDelete) {
-            classrooms = classrooms.filter(c => c.id !== classToDelete.id);
-            renderClasses();
-            showToast(`Class "${classToDelete.name}" deleted successfully`);
-            deleteModal.classList.remove('show');
-            classToDelete = null;
-        }
-    });
-    
-    // Cancel delete
-    document.querySelector('.modal-cancel').addEventListener('click', function() {
-        deleteModal.classList.remove('show');
-        classToDelete = null;
-    });
-    
-    document.querySelector('.modal-close').addEventListener('click', function() {
-        deleteModal.classList.remove('show');
-        classToDelete = null;
-    });
-    
-    // Close modal when clicking outside
-    deleteModal.addEventListener('click', function(e) {
-        if (e.target === deleteModal) {
-            deleteModal.classList.remove('show');
-            classToDelete = null;
-        }
-    });
-    
-    // Event listeners for filters
-    sessionFilter.addEventListener('change', renderClasses);
-    levelFilter.addEventListener('change', renderClasses);
-    searchInput.addEventListener('input', renderClasses);
-    
-    // Initial render
-    renderClasses();
+    // Initialize
+    filterTable();
 });
