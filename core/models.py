@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from .storage import MediaStorage
 
 import uuid
 
@@ -180,6 +181,7 @@ class Message(models.Model):
 
     file = models.FileField(
         upload_to="chat_files/",
+        storage=MediaStorage(),
         null=True,
         blank=True
     )
