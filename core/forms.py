@@ -18,7 +18,7 @@ class MessageForm(forms.ModelForm):
             "file": forms.ClearableFileInput(attrs={
                 "id": "fileInput",
                 "hidden": True,
-                "accept": ".jpg,.jpeg,.png,.webp,.pdf"
+                "accept": ".jpg,.jpeg,.png,.webp,.pdf,.gif"
             })
         }
     
@@ -34,7 +34,7 @@ class MessageForm(forms.ModelForm):
 
         ext = os.path.splitext(file.name)[1].lower()
 
-        allowed = [".jpg", ".jpeg", ".png", ".webp", ".pdf"]
+        allowed = [".jpg", ".jpeg", ".png", ".webp", ".pdf", ".gif"]
 
         if ext not in allowed:
             raise forms.ValidationError("Only images and PDFs are allowed.")

@@ -18,7 +18,12 @@
             <!-- Welcome Section -->
             <section class="welcome-section">
                 <div class="welcome-card">
-                    <h2>Welcome back,{% if request.user.gender == 'male' %} Mr. {% else %} Mrs. {% endif %} {{ request.user.last_name }}!</h2>
+                    <h2>
+                        Welcome back,{% if request.user.gender == 'male' %} 
+                        Mr. 
+                        {% else %} 
+                        Mrs. {% endif %} 
+                        {{ request.user.last_name }}!</h2>
                     <p>Here's your classroom overview and teaching activities for today.</p>
                     <div class="date-info">
                         <i class="fas fa-calendar-day"></i>
@@ -35,8 +40,7 @@
                     </div>
                     <div class="stat-content">
                         <h3>Total Students</h3>
-                        <p class="stat-number">42</p>
-                        <p class="stat-change">+2 this month</p>
+                        <p class="stat-number">{{ total_students }}</p>
                     </div>
                 </div>
 
@@ -50,28 +54,6 @@
                         <p class="stat-change">From parents</p>
                     </div>
                 </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-chalkboard"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Classes</h3>
-                        <p class="stat-number">2</p>
-                        <p class="stat-change">Registered</p>
-                    </div>
-                </div>
-
-                <!-- <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>Upcoming Events</h3>
-                            <p class="stat-number">5</p>
-                            <p class="stat-change">This week</p>
-                        </div>
-                    </div> -->
             </div>
 
             <!-- Dashboard Grid -->
@@ -81,218 +63,46 @@
                     <!-- My Classes -->
                     <section class="dashboard-card">
                         <div class="card-header">
-                            <h3><i class="fas fa-chalkboard"></i> My Classes</h3>
-                            <a href="#" class="view-all">Manage <i class="fas fa-arrow-right"></i></a>
+                            <h3><i class="fas fa-chalkboard"></i> My Class</h3>
                         </div>
+
                         <div class="classes-list">
                             <div class="class-item">
                                 <div class="class-icon">
-                                    <i class="fas fa-calculator"></i>
+                                    <i class="fas fa-chalkboard"></i>
                                 </div>
                                 <div class="class-details">
-                                    <h4>Grade 5 Mathematics</h4>
-                                    <p>Room 204 • 24 students</p>
-                                    <div class="class-progress">
-                                        <span>Lesson Progress: 75%</span>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 75%"></div>
-                                        </div>
-                                    </div>
+                                    <h4>{{ my_class.classroom_name }} {{ my_class.classroom_code }}</h4>
+                                    <p>{{ total_students }} students</p>
                                 </div>
                                 <div class="class-actions">
-                                    <button class="btn-small"><i class="fas fa-edit"></i> Edit</button>
                                     <button class="btn-small btn-primary"><i class="fas fa-eye"></i> View</button>
-                                </div>
-                            </div>
-
-                            <div class="class-item">
-                                <div class="class-icon">
-                                    <i class="fas fa-science"></i>
-                                </div>
-                                <div class="class-details">
-                                    <h4>Grade 5 Science</h4>
-                                    <p>Room 204 • 24 students</p>
-                                    <div class="class-progress">
-                                        <span>Curriculum: 60% completed</span>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 60%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="class-actions">
-                                    <button class="btn-small"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="btn-small btn-primary"><i class="fas fa-eye"></i> View</button>
-                                </div>
-                            </div>
-
-                            <div class="class-item">
-                                <div class="class-icon">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                                <div class="class-details">
-                                    <h4>Add New Class</h4>
-                                    <p>Create a new classroom and invite students</p>
-                                </div>
-                                <div class="class-actions">
-                                    <button class="btn-small btn-success"><i class="fas fa-plus"></i>
-                                        Create</button>
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    <!-- Recent Parent Messages -->
-                    <section class="dashboard-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-comments"></i> Recent Parent Messages</h3>
-                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                        <div class="messages-list">
-                            <div class="message-item unread">
-                                <div class="message-avatar">
-                                    <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=0066cc&color=fff"
-                                        alt="Parent Avatar">
-                                </div>
-                                <div class="message-content">
-                                    <h4>Jane Doe <span class="message-badge">Parent of Emily</span></h4>
-                                    <p class="message-preview">Hi Mr. Smith, I wanted to ask about Emily's
-                                        homework...</p>
-                                    <div class="message-meta">
-                                        <span><i class="fas fa-clock"></i> 45 minutes ago</span>
-                                        <span class="unread-indicator"><i class="fas fa-circle"></i> Unread</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="message-item">
-                                <div class="message-avatar">
-                                    <img src="https://ui-avatars.com/api/?name=Robert+Brown&background=0066cc&color=fff"
-                                        alt="Parent Avatar">
-                                </div>
-                                <div class="message-content">
-                                    <h4>Robert Brown <span class="message-badge">Parent of Michael</span></h4>
-                                    <p class="message-preview">Thank you for the science project feedback! Michael
-                                        is...</p>
-                                    <div class="message-meta">
-                                        <span><i class="fas fa-clock"></i> 3 hours ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="new-message-btn">
-                            <button class="btn-primary"><i class="fas fa-plus"></i> New Message to Parent</button>
-                        </div>
-                    </section>
+                    
                 </div>
 
                 <!-- Right Column -->
                 <div class="right-column">
-                    <!-- To-Do List -->
-                    <section class="dashboard-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-clipboard-list"></i> Teaching Tasks</h3>
-                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                        <div class="todo-list">
-                            <div class="todo-item">
-                                <input type="checkbox" id="todo1" checked>
-                                <label for="todo1">
-                                    <span class="todo-title">Grade Math Quiz</span>
-                                    <span class="todo-desc">Grade 5 Math quiz papers</span>
-                                    <span class="todo-date">Due: Today</span>
-                                </label>
-                            </div>
-
-                            <div class="todo-item">
-                                <input type="checkbox" id="todo2">
-                                <label for="todo2">
-                                    <span class="todo-title">Prepare Science Lab</span>
-                                    <span class="todo-desc">Set up materials for Friday's experiment</span>
-                                    <span class="todo-date">Due: Tomorrow</span>
-                                </label>
-                            </div>
-
-                            <div class="todo-item">
-                                <input type="checkbox" id="todo3">
-                                <label for="todo3">
-                                    <span class="todo-title">Parent Conference Prep</span>
-                                    <span class="todo-desc">Prepare reports for parent meetings</span>
-                                    <span class="todo-date">Due: Friday</span>
-                                </label>
-                            </div>
-
-                            <div class="todo-item">
-                                <input type="checkbox" id="todo4">
-                                <label for="todo4">
-                                    <span class="todo-title">Update Lesson Plans</span>
-                                    <span class="todo-desc">Weekly lesson plans for next week</span>
-                                    <span class="todo-date">Due: Monday</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="add-task">
-                            <input type="text" placeholder="Add new task...">
-                            <button class="btn-small"><i class="fas fa-plus"></i> Add</button>
-                        </div>
-                    </section>
-
                     <!-- Announcement Creator -->
                     <section class="dashboard-card">
                         <div class="card-header">
                             <h3><i class="fas fa-bullhorn"></i> Quick Announcement</h3>
                         </div>
-                        <div class="announcement-creator">
-                            <textarea placeholder="Create a new announcement for your classes..."></textarea>
-                            <div class="announcement-options">
-                                <div class="option">
-                                    <input type="checkbox" id="sendEmail">
-                                    <label for="sendEmail">Send email to parents</label>
-                                </div>
-                                <div class="option">
-                                    <select>
-                                        <option>Send to all classes</option>
-                                        <option>Grade 5 Mathematics</option>
-                                        <option>Grade 5 Science</option>
-                                    </select>
-                                </div>
+                        <form method="post" action="{% url 'create-announcement' %}">
+                            {% csrf_token %}
+                            <div class="announcement-creator">
+                                <input type="text" name="announcement_title" placeholder="Announcement title" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 13px;">
+                                <textarea name="announcement_body" placeholder="Create a new announcement for your student's parents..."></textarea>
+                                <button type="submit" class="btn-primary btn-block"><i class="fas fa-paper-plane"></i> Publish
+                                    Announcement</button>
                             </div>
-                            <button class="btn-primary btn-block"><i class="fas fa-paper-plane"></i> Publish
-                                Announcement</button>
-                        </div>
+                        </form>
                     </section>
 
-                    <!-- Teacher Quick Actions -->
-                    <!-- <section class="dashboard-card quick-actions">
-                            <div class="card-header">
-                                <h3><i class="fas fa-bolt"></i> Teacher Tools</h3>
-                            </div>
-                            <div class="actions-grid">
-                                <a href="#" class="action-item">
-                                    <div class="action-icon">
-                                        <i class="fas fa-chart-bar"></i>
-                                    </div>
-                                    <span>Gradebook</span>
-                                </a>
-                                <a href="#" class="action-item">
-                                    <div class="action-icon">
-                                        <i class="fas fa-file-alt"></i>
-                                    </div>
-                                    <span>Lesson Plans</span>
-                                </a>
-                                <a href="#" class="action-item">
-                                    <div class="action-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                    <span>Student Roster</span>
-                                </a>
-                                <a href="#" class="action-item">
-                                    <div class="action-icon">
-                                        <i class="fas fa-calendar-plus"></i>
-                                    </div>
-                                    <span>Schedule Event</span>
-                                </a>
-                            </div>
-                        </section> -->
                 </div>
             </div>
         </div>
@@ -301,19 +111,6 @@
 
 
 {% endblock %}
-
-<!-- Footer -->
-<!-- <footer class="dashboard-footer">
-        <div class="footer-container">
-            <p>&copy; 2024 PT-Associate. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Us</a>
-                <a href="#">Help Center</a>
-            </div>
-        </div>
-    </footer> -->
 
 {% block extrajs %}
 <script src="{% static 'core/js/dashboard.js' %}"></script>

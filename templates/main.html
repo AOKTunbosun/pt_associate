@@ -36,8 +36,7 @@
 
                     <!-- Common Dashboard for all logged in users -->
                     <li class="nav-item">
-                        <a class="nav-link" 
-                        href="
+                        <a class="nav-link" href="
                         {% if request.user.is_principal %}
                         {% url 'principal-dashboard' %}
                         {% elif request.user.is_burser %}
@@ -49,8 +48,9 @@
                         {% else %}
                         {% url 'landing' %}
                         {% endif %}">
-                        <i class="fas fa-home"></i>
-                            Dashboard</a></li>
+                            <i class="fas fa-home"></i>
+                            Dashboard</a>
+                    </li>
 
                     <!-- PRINCIPAL NAVIGATION -->
                     {% if request.user.is_principal %}
@@ -65,8 +65,8 @@
                     {% elif request.user.is_burser %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
                             Messages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i
-                                class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bullhorn"></i> Announcements</a>
+                    </li>
 
                     <!-- TEACHER NAVIGATION -->
                     {% elif request.user.is_teacher %}
@@ -82,7 +82,7 @@
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-child"></i>
                             My Children</a></li>
 
-                    
+
                     {% endif %}
 
                     <!-- Logout for all logged in users -->
@@ -110,6 +110,16 @@
             </div>
         </div>
     </nav>
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
 
     <!-- Main Content -->
     <main>

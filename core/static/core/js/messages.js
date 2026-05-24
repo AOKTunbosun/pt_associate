@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileBtn = document.getElementById("fileBtn");
     const fileInput = document.getElementById("fileInput");
     const messageInput = document.getElementById("id_body");
-    const fileInput = document.getElementById("fileInput");
+    // const fileInput = document.getElementById("fileInput");
     const filePreview = document.getElementById("filePreview");
 
     if (fileInput) {

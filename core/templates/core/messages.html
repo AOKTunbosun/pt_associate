@@ -59,13 +59,10 @@
             </div>
 
             <!-- INPUT -->
-            <form class="message-input-area bg-white p-3 border-top" 
-            hx-post="{% url 'send-message' conversation.uid %}"
-            hx-target="#messagesArea" 
-            hx-swap="beforeend" 
-            hx-on::after-request="this.reset()" 
-            enctype="multipart/form-data"
-            hx-encoding="multipart/form-data">
+            <form class="message-input-area bg-white p-3 border-top" hx-post="{% url 'send-message' conversation.uid %}"
+                hx-target="#messagesArea" hx-swap="beforeend"
+                hx-on::after-request="this.reset();document.getElementById('filePreview').innerHTML = '';"
+                enctype="multipart/form-data" hx-encoding="multipart/form-data">
 
                 {% csrf_token %}
 

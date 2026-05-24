@@ -20,8 +20,12 @@
 
                     {% if request.user == conversation.parent %}
                     {{ conversation.teacher.first_name }} {{ conversation.teacher.last_name }}
+                    <br>
+                    <small>Teacher of {{ conversation.student.first_name}}</small>
                     {% else %}
                     {{ conversation.parent.first_name }} {{ conversation.parent.last_name }}
+                    <br>
+                    <small>Parent of {{ conversation.student.first_name}}</small>
                     {% endif %}
 
                 </h6>

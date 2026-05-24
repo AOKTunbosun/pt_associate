@@ -32,8 +32,9 @@
 
         {% else %}
 
-        <a href="{{ file_url }}" target="_blank" class="file-download">
-            📄 Download file
+        <a href="{{ file_url }}" download target="_blank" class="file-download"
+            style="{% if current_user != message.sender %} color: #555; {% else %} color: white; {% endif %}">
+            📄 {{ message.file.name|cut:"chat_files/" }}
         </a>
 
         {% endif %}

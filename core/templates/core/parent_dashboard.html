@@ -38,41 +38,25 @@
                             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
                         </div>
                         <div class="children-list">
+                            {% for child in children %}
                             <div class="child-item">
                                 <div class="child-avatar">
                                     <i class="fas fa-child"></i>
                                 </div>
                                 <div class="child-details">
-                                    <h4>Emily Smith</h4>
-                                    <p>Grade 5, Room 204</p>
-                                    <!-- <div class="progress-indicator">
-                                            <span class="progress-label">Math Progress:</span>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 85%"></div>
-                                            </div>
-                                            <span class="progress-percent">85%</span>
-                                        </div> -->
+                                    <h4>{{ child.first_name}} {{ child.last_name }}</h4>
+                                    <p>{{ child.classroom.classroom_name}} {{ child.classroom.classroom_code }} in
+                                        {{ child.classroom.institution.institution_name }}</p>
                                 </div>
-                                <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
+                                <div>
+                                    <a href="{% url 'start-conversation' child.id %}">
+                                        <button
+                                            style="background-color: #0066cc; color: white; border: none; border-radius: 5px; padding: 5px; cursor: pointer;">Chat
+                                            Teacher</button>
+                                    </a>
+                                </div>
                             </div>
-
-                            <div class="child-item">
-                                <div class="child-avatar">
-                                    <i class="fas fa-child"></i>
-                                </div>
-                                <div class="child-details">
-                                    <h4>Michael Smith</h4>
-                                    <p>Grade 3, Room 112</p>
-                                    <!-- <div class="progress-indicator">
-                                            <span class="progress-label">Reading Progress:</span>
-                                            <div class="progress-bar">
-                                                <div class="progress-fill" style="width: 72%"></div>
-                                            </div>
-                                            <span class="progress-percent">72%</span>
-                                        </div> -->
-                                </div>
-                                <!-- <a href="#" class="child-link"><i class="fas fa-external-link-alt"></i></a> -->
-                            </div>
+                            {% endfor %}
                         </div>
                     </section>
 
@@ -80,25 +64,26 @@
                     <section class="dashboard-card">
                         <div class="card-header">
                             <h3><i class="fas fa-bullhorn"></i> Recent Announcements</h3>
-                            <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                            
                         </div>
                         <div class="announcements-list">
+                            {% for announcement in announcements %}
                             <div class="announcement-item">
                                 <div class="announcement-icon">
                                     <i class="fas fa-bullhorn"></i>
                                 </div>
                                 <div class="announcement-content">
-                                    <h4>Field Trip Next Friday</h4>
-                                    <p>Science Museum field trip planned for next Friday. Permission slips due
-                                        Wednesday.</p>
+                                    <h4>{{ announcement.title }}</h4>
+                                    <p>{{ announcement.body }}</p>
                                     <div class="announcement-meta">
-                                        <span><i class="fas fa-user-tie"></i> Mrs. Johnson</span>
-                                        <span><i class="fas fa-clock"></i> 2 hours ago</span>
+                                        <span><i class="fas fa-user-tie"></i> {{ announcement.author.get_full_name }} ({{ announcement.role|capfirst }})</span>
+                                        <span><i class="fas fa-clock"></i> {{ announcement.created_at|timesince }} ago</span>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
 
-                            <div class="announcement-item">
+                            <!-- <div class="announcement-item">
                                 <div class="announcement-icon">
                                     <i class="fas fa-bullhorn"></i>
                                 </div>
@@ -111,7 +96,7 @@
                                         <span><i class="fas fa-clock"></i> 1 day ago</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </section>
                 </div>

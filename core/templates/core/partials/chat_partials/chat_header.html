@@ -1,9 +1,9 @@
 <div class="d-flex align-items-center">
 
     <!-- Mobile toggle -->
-    <!-- <button class="mobile-conversations-toggle" id="mobileConvToggle">
+    <button class="mobile-conversations-toggle" id="mobileConvToggle">
         <i class="fas fa-bars"></i>
-    </button> -->
+    </button>
 
     <!-- Contact info -->
     <div class="chat-contact-info">
@@ -29,7 +29,7 @@
             </h6>
 
             <small>
-                Teacher
+                Teacher of {{ conversation.student.first_name}}
             </small>
 
             {% else %}
@@ -40,7 +40,7 @@
             </h6>
 
             <small>
-                Parent
+                Parent of {{ conversation.student.first_name}}
             </small>
 
             {% endif %}

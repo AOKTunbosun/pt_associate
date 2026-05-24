@@ -74,15 +74,45 @@ class Student(models.Model):
 
 
 class Announcement(models.Model):
+
+    ROLE_CHOICES = (
+        ("principal", "Principal"),
+        ("bursar", "Bursar"),
+        ("teacher", "Teacher"),
+    )
+
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=150)
+
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="announcements"
+    )
+
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES
+    )
+
+    title = models.CharField(max_length=255)
+
     body = models.TextField()
-    classroom_id = models.ForeignKey(
-        Classroom, on_delete=models.CASCADE, related_name='announcements')
+
+    # only needed for teacher announcements
+    assigned_class = models.ForeignKey(
+        Classroom,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+    
     def __str__(self):
-        return f'{self.classroom_id.classroom_name} Announcement'
+        return f"Announcement by {self.author.first_name} for {self.role}"
 
 
 class Staff(models.Model):

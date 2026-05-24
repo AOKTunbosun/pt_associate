@@ -59,21 +59,15 @@
                     <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>New Announcement</h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="#">
+                    <form method="post" action="{% url 'create-announcement' %}">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="title" placeholder="Announcement title" required>
+                            <input type="text" class="form-control" name="announcement_title" placeholder="Announcement title" required>
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" name="message" rows="4" placeholder="Write announcement here..." required></textarea>
+                            <textarea class="form-control" name="announcement_body" rows="4" placeholder="Write announcement here..." required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <select class="form-select" name="audience">
-                                <option value="all">All Parents</option>
-                                <option value="primary">Primary School</option>
-                                <option value="secondary">Secondary School</option>
-                            </select>
-                        </div>
+                        
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-paper-plane me-2"></i>Publish
                         </button>

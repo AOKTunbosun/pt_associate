@@ -29,4 +29,5 @@ urlpatterns = [
     path('bursar-dashboard/', views.BursarDashboardPage.as_view(),
          name='bursar-dashboard'),
     path('announcements/', views.AnnouncementPage.as_view(), name='announcements'),
+    path('create-announcement/', views.CreateAnnouncementView.as_view(), name='create-announcement'),
 ]

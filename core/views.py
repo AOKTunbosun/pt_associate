@@ -21,7 +21,8 @@ from .models import (Institution,
                      Classroom,
                      Student,
                      Conversation,
-                     Message)
+                     Message,
+                     Announcement)
 
 from core.services.chat_broadcast import broadcast_message
 from .forms import MessageForm
@@ -225,7 +226,20 @@ class SignupPage(View):
 class ParentDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
-        context = {}
+        children = Student.objects.filter(parent=request.user)
+        children_classes = children.values_list(
+            "classroom_id",
+            flat=True
+        )
+        announcements = Announcement.objects.filter(
+            Q(role__in=["principal", "bursar"]) |
+            Q(
+                role="teacher",
+                assigned_class_id__in=children_classes
+            )
+        ).distinct().order_by("-created_at")[:5]
+
+        context = {'children': children, 'announcements': announcements}
         return render(request, 'core/parent_dashboard.html', context)
 
 
@@ -233,7 +247,13 @@ class ParentDashboardPage(View):
 class TeacherDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
-        context = {}
+        classroom = Classroom.objects.get(teacher=request.user)
+        students = Student.objects.filter(classroom=classroom).all()
+
+        context = {
+            'total_students': len(students),
+            'my_class': classroom
+        }
         return render(request, 'core/teacher_dashboard.html', context)
 
 
@@ -244,18 +264,30 @@ class PrincipalDashboardPage(View):
         institution = Institution.objects.get(principal=request.user)
         classrooms = institution.classrooms.all()
         staff = institution.institution_staff.all()
+        announcements = Announcement.objects.filter(author=request.user).order_by("-created_at")[:5]
 
         students = []
         for classroom in classrooms:
             for student in classroom.students.all():
                 students.append(student)
+        
+        announcements_list = []
+        for each in announcements:
+            announcement = {
+                'id': each.id,
+                'title': each.title,
+                'message': each.body,
+                'created_at': datetime.strptime(str(each.created_at.date()), '%Y-%m-%d').date(),
+            }
+            announcements_list.append(announcement)
 
         context = {
             'total_number_of_students': len(students),
             'number_of_classrooms': len(classrooms),
             'classrooms': classrooms,
             'total_staff': len(staff),
-            'institution': institution
+            'institution': institution,
+            'announcements': announcements_list
         }
         return render(request, 'core/principal_dashboard.html', context)
 
@@ -265,20 +297,33 @@ class BursarDashboardPage(View):
     @method_decorator(login_required)
     def get(self, request):
         institution = Institution.objects.get(burser=request.user)
-        # students = 
+        classrooms = institution.classrooms.all()
+        announcements = Announcement.objects.filter(author=request.user).order_by("-created_at")[:5]
+
+        parents = []
+        students = []
+        for classroom in classrooms:
+            for student in classroom.students.all():
+                students.append(student)
+                
+                if student.parent:
+                    parents.append(student.parent)
+        
+        announcements_list = []
+        for each in announcements:
+            announcement = {
+                'id': each.id,
+                'title': each.title,
+                'message': each.body,
+                'created_at': datetime.strptime(str(each.created_at.date()), '%Y-%m-%d').date(),
+            }
+            announcements_list.append(announcement)
 
         context = {
-            'total_students': 486,
-            'total_parents': 412,
-            'total_classes': 18,
-            'announcements': [
-                {
-                    'id': 1,
-                    'title': 'Fee Payment Deadline',
-                    'message': 'First term fees due by March 30th.',
-                    'created_at': datetime.strptime('2024-03-10', '%Y-%m-%d').date(),
-                },
-            ]
+            'total_students': len(students),
+            'total_parents': len(parents),
+            'total_classes': len(classrooms),
+            'announcements': announcements_list
         }
         return render(request, 'core/bursar_dashboard.html', context)
 
@@ -545,7 +590,21 @@ class StudentList(View):
             }
             students_list.append(student)
 
-        context = {'students': students_list}
+        total_linked_parents = 0
+        for student in students_list:
+            if student['parent_linked']:
+                total_linked_parents += 1
+
+        total_students_age = 0
+        for student in students_list:
+            if student['age'] is not None:
+                total_students_age += student['age']
+
+        context = {'total_students': len(students_list),
+                   'total_linked_parents': total_linked_parents,
+                   'total_not_linked_parents': len(students_list) - total_linked_parents,
+                   'avg_age': int(round(total_students_age / len(students_list), 0)),
+                   'students': students_list}
         return render(request, 'core/teacher_student_list.html', context)
 
 
@@ -680,3 +739,41 @@ class AnnouncementPage(View):
             ]
         }
         return render(request, 'core/announcements.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class CreateAnnouncementView(View):
+
+    def post(self, request):
+        announcement_title = request.POST.get('announcement_title')
+        announcement_body = request.POST.get('announcement_body')
+
+        user = request.user
+
+        if user.is_teacher and not (user.is_principal or user.is_burser):
+            classroom = Classroom.objects.get(teacher=user)
+
+            Announcement.objects.create(
+                author=user,
+                role="teacher",
+                title=announcement_title,
+                body=announcement_body,
+                assigned_class=classroom
+            )
+
+        elif user.is_principal or user.is_burser:
+            Announcement.objects.create(
+                author=user,
+                role="principal" if user.is_principal else 'bursar',
+                title=announcement_title,
+                body=announcement_body,
+                assigned_class=None
+            )
+
+        else:
+            return HttpResponse(status=403)
+
+        messages.success(request, "Announcement published successfully.")
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
