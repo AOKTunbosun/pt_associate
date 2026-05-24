@@ -65,9 +65,7 @@
                     {% elif request.user.is_burser %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
                             Messages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bullhorn"></i> Announcements</a>
-                    </li>
-
+                
                     <!-- TEACHER NAVIGATION -->
                     {% elif request.user.is_teacher %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
@@ -79,9 +77,6 @@
                     {% elif request.user.is_parent %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'messages' %}"><i class="fas fa-comments"></i>
                             Messages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-child"></i>
-                            My Children</a></li>
-
 
                     {% endif %}
 

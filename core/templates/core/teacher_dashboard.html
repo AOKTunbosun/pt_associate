@@ -19,10 +19,10 @@
             <section class="welcome-section">
                 <div class="welcome-card">
                     <h2>
-                        Welcome back,{% if request.user.gender == 'male' %} 
-                        Mr. 
-                        {% else %} 
-                        Mrs. {% endif %} 
+                        Welcome back,{% if request.user.gender == 'male' %}
+                        Mr.
+                        {% else %}
+                        Mrs. {% endif %}
                         {{ request.user.last_name }}!</h2>
                     <p>Here's your classroom overview and teaching activities for today.</p>
                     <div class="date-info">
@@ -82,7 +82,7 @@
                         </div>
                     </section>
 
-                    
+
                 </div>
 
                 <!-- Right Column -->
@@ -95,15 +95,54 @@
                         <form method="post" action="{% url 'create-announcement' %}">
                             {% csrf_token %}
                             <div class="announcement-creator">
-                                <input type="text" name="announcement_title" placeholder="Announcement title" style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 13px;">
-                                <textarea name="announcement_body" placeholder="Create a new announcement for your student's parents..."></textarea>
-                                <button type="submit" class="btn-primary btn-block"><i class="fas fa-paper-plane"></i> Publish
+                                <input type="text" name="announcement_title" placeholder="Announcement title"
+                                    style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; font-size: 13px;">
+                                <textarea name="announcement_body"
+                                    placeholder="Create a new announcement for your student's parents..."></textarea>
+                                <button type="submit" class="btn-primary btn-block"><i class="fas fa-paper-plane"></i>
+                                    Publish
                                     Announcement</button>
                             </div>
                         </form>
                     </section>
 
                 </div>
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Recent Announcements</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                {% for announcement in announcements %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ announcement.title }}</h6>
+                                            <p class="mb-1 small text-muted">
+                                                {{ announcement.message|truncatechars:100 }}</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar-alt me-1"></i>
+                                                {{ announcement.created_at|date:"d M, Y" }}
+                                            </small>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger delete-announcement"
+                                            data-id="{{ announcement.id }}" data-title="{{ announcement.title }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="list-group-item text-center py-4">
+                                    <i class="fas fa-bullhorn fa-2x text-muted mb-2"></i>
+                                    <p class="mb-0 text-muted">No announcements yet</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

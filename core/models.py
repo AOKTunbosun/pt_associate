@@ -134,33 +134,6 @@ class Staff(models.Model):
         return f'{self.staff.first_name} {self.staff.last_name} is a staff of {self.institution.institution_name}'
 
 
-class ChatGroup(models.Model):
-    id = models.AutoField(primary_key=True)
-    group_name = models.CharField(max_length=150, null=False)
-    classroom = models.ForeignKey(
-        Classroom, on_delete=models.CASCADE, related_name='chat_groups')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.group_name} in {self.classroom.classroom_name}'
-
-
-class GroupMessage(models.Model):
-    id = models.AutoField(primary_key=True)
-    group = models.ForeignKey(
-        ChatGroup, on_delete=models.CASCADE, related_name='chat_messages')
-    author = models.ForeignKey(
-        CustomUser, on_delete=models.SET_NULL, null=True)
-    body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Message from {self.author.first_name} in {self.group.group_name}'
-
-    class Meta:
-        ordering = ['-created']
-
-
 class Conversation(models.Model):
     id = models.AutoField(primary_key=True)
     uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)

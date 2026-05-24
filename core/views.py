@@ -249,10 +249,24 @@ class TeacherDashboardPage(View):
     def get(self, request):
         classroom = Classroom.objects.get(teacher=request.user)
         students = Student.objects.filter(classroom=classroom).all()
+        announcements = Announcement.objects.filter(author=request.user).order_by("-created_at")[:5]
+
+        
+        announcements_list = []
+        for each in announcements:
+            announcement = {
+                'id': each.id,
+                'title': each.title,
+                'message': each.body,
+                'created_at': datetime.strptime(str(each.created_at.date()), '%Y-%m-%d').date(),
+            }
+            announcements_list.append(announcement)
+
 
         context = {
             'total_students': len(students),
-            'my_class': classroom
+            'my_class': classroom,
+            'announcements': announcements_list
         }
         return render(request, 'core/teacher_dashboard.html', context)
 
@@ -280,6 +294,16 @@ class PrincipalDashboardPage(View):
                 'created_at': datetime.strptime(str(each.created_at.date()), '%Y-%m-%d').date(),
             }
             announcements_list.append(announcement)
+        
+        staffs = []
+        for each in staffs:
+            class_assigned = each.teaches_in.all()
+            staff = {
+                'first_name': each.first_name,
+                'last_name': each.last_name,
+                'class_assigned': class_assigned
+            }
+            staffs.append(staff)
 
         context = {
             'total_number_of_students': len(students),
@@ -287,7 +311,8 @@ class PrincipalDashboardPage(View):
             'classrooms': classrooms,
             'total_staff': len(staff),
             'institution': institution,
-            'announcements': announcements_list
+            'announcements': announcements_list,
+            'staffs': staffs
         }
         return render(request, 'core/principal_dashboard.html', context)
 
@@ -490,7 +515,7 @@ class MessagesPage(View):
             "conversations": conversations,
             "conversation": conversation,
             "active_uid": conversation.uid if conversation else None,
-            "messages": messages,
+            "conversation_messages": messages,
             "current_user": request.user,
             "form": MessageForm()
         }
