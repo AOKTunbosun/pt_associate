@@ -150,10 +150,12 @@ RATELIMIT_ENABLE = True
 RATELIMIT_VIEW = 'django_ratelimit.views.ratelimit_view'
 
 # Shared cache backend for rate limiting
+REDIS_URL = env('REDIS_URL', default='redis://127.0.0.1:6381/1')
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': env('REDIS_URL'),
+        'LOCATION': REDIS_URL,
     },
 }
 
@@ -169,7 +171,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [env("REDIS_URL")],
+            "hosts": [REDIS_URL],
         },
     },
 }
