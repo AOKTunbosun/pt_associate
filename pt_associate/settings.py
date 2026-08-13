@@ -164,7 +164,7 @@ RATELIMIT_CACHE = 'default'
 EMAIL_BACKEND = "core.email_backend.ResendBackend"
 DEFAULT_FROM_EMAIL = "noreply@resend.dev"
 
-RESEND_API_KEY = env('RESEND_API_KEY')
+RESEND_API_KEY = env('RESEND_API_KEY', default='')
 
 
 CHANNEL_LAYERS = {
