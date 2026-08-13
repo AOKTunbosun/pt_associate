@@ -126,7 +126,7 @@ class SignupPage(View):
             username = email.split('@')[0] + str(uuid.uuid4())[:10]
 
             if User.objects.filter(email=email).exists():
-                messages.error(request, 'Email already exist')
+                messages.error(request, 'Account with email already exist')
                 return redirect('signup')
 
             try:

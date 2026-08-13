@@ -11,8 +11,12 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    
     <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+
+    {% block extrascript %}
+
+    {% endblock %}
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/navbar-footer.css' %}">
     {% block extracss %}

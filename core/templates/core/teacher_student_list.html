@@ -120,9 +120,6 @@
                         <table class="table table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="ps-3" style="width: 50px">
-                                        <input type="checkbox" id="selectAllCheckbox">
-                                    </th>
                                     <th>Student Name</th>
                                     <th>Gender</th>
                                     <th>Date of Birth</th>
@@ -138,10 +135,6 @@
 
                                 {% for student in students %}
                                 <tr>
-                                    <td class="ps-3">
-                                        <input type="checkbox" class="student-checkbox" data-id="{{ student.id }}">
-                                    </td>
-                                    <!-- <td>${index + 1}</td> -->
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"

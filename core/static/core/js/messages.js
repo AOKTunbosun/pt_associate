@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileBtn = document.getElementById("fileBtn");
     const fileInput = document.getElementById("fileInput");
     const messageInput = document.getElementById("id_body");
-    // const fileInput = document.getElementById("fileInput");
     const filePreview = document.getElementById("filePreview");
 
     if (fileInput) {
@@ -44,5 +43,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     }
+
+
+    const mobileConvToggle = document.getElementById("mobileConvToggle");
+    const conversationsSidebar = document.getElementById("conversationsSidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+
+    mobileConvToggle.addEventListener("click", function () {
+        conversationsSidebar.style.left = 0;
+    });
+
+    closeSidebar.addEventListener("click", function () {
+        conversationsSidebar.style.left = '-100%';
+    });
 
 });
